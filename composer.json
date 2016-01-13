@@ -1,0 +1,32 @@
+{
+    "name":         "fproject/amqp-helper",
+    "description":  "AMQP Helper Component Library",
+    "keywords":     ["AMQP", "F-Project", "fproject"],
+    "homepage":     "https://github.com/fproject/amqp-helper",
+    "type":         "library",
+    "license" : "Apache License 2.0",
+    "authors":      [
+        {
+          "name": "Bui Sy Nguyen",
+          "email": "nguyenbs@f-project.net",
+          "homepage": "http://f-project.net"
+        }
+    ],
+    "require-dev": {
+      "phpunit/phpunit": "*"
+    },
+    "require": {
+      "php": ">=5.4.0",
+      "fproject/php-common": "*"
+    },
+
+    "autoload": {
+        "psr-4" : {
+          "fproject\\": "fproject/"
+        }
+    },
+
+    "config" : {
+      "process-timeout" : 1800
+    }
+}
