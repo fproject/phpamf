@@ -1,8 +1,8 @@
 {
-    "name":         "fproject/amqp-helper",
-    "description":  "AMQP Helper Component Library",
-    "keywords":     ["AMQP", "F-Project", "fproject"],
-    "homepage":     "https://github.com/fproject/amqp-helper",
+    "name":         "fproject/phpamf",
+    "description":  "PHP implementation of Action Message Format",
+    "keywords":     ["amf", "F-Project", "fproject"],
+    "homepage":     "https://github.com/fproject/phpamf",
     "type":         "library",
     "license" : "Apache License 2.0",
     "authors":      [
