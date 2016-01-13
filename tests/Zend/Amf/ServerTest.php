@@ -745,16 +745,6 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($request, $this->_server->getRequest());
     }
 
-    /**
-     * @expectedException Zend_Amf_Server_Exception
-     */
-    public function testSetRequestShouldRaiseExceptionOnInvalidRequestObjects()
-    {
-        require_once 'Zend/XmlRpc/Request.php';
-        $request = new Zend_XmlRpc_Request;
-        $this->_server->setRequest($request);
-    }
-
     public function testSetResponseShouldAllowValidStringClassNames()
     {
         $this->_server->setResponse('Zend_Amf_Response');
@@ -776,16 +766,6 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $response = new Zend_Amf_Response;
         $this->_server->setResponse($response);
         $this->assertSame($response, $this->_server->getResponse());
-    }
-
-    /**
-     * @expectedException Zend_Amf_Server_Exception
-     */
-    public function testSetResponseShouldRaiseExceptionOnInvalidResponseObjects()
-    {
-        require_once 'Zend/XmlRpc/Response.php';
-        $response = new Zend_XmlRpc_Response;
-        $this->_server->setResponse($response);
     }
 
     public function testGetFunctionsShouldReturnArrayOfDispatchables()
@@ -1084,7 +1064,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $response = $this->_server->getResponse()->getAMFBodies();
         $this->assertTrue($response[0]->getData() instanceof Zend_Amf_Value_Messaging_ErrorMessage);
         // test the same while ensuring Zend_Json is loaded
-        require_once 'Zend/Json.php';
+        require_once 'Json.php';
         $this->_server->handle($request);
         $response = $this->_server->getResponse()->getAMFBodies();
         $this->assertTrue($response[0]->getData() instanceof Zend_Amf_Value_Messaging_ErrorMessage);

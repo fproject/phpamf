@@ -71,7 +71,6 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         date_default_timezone_set('America/Chicago');
-        Zend_Locale::setDefault('en_US');
         Zend_Amf_Parse_TypeLoader::resetMap();
         $this->_response = new Zend_Amf_Response();
     }
@@ -227,8 +226,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
     public function testZendDateTimeSerializedToAmf3Date()
     {
         // Create php object to serialize
-        $date = new Zend_Date('October 23, 1978', null, 'en_US');
-        $date->set('4:20:00',Zend_Date::TIMES);
+        $date = new DateTime('1978-10-23T4:20:00');
         $data = $date;
 
         // Create an acknowlege message for a response to a RemotingMessage
@@ -927,8 +925,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
 
     public function testZendDateSerializedToAmf0Date()
     {
-        $date = new Zend_Date('October 23, 1978', null, 'en_US');
-        $date->set('4:20:00',Zend_Date::TIMES);
+        $date = new DateTime('1978-10-23T4:20:00');
 
         $newBody = new Zend_Amf_Value_MessageBody('/1/onResult',null,$date);
         $this->_response->setObjectEncoding(0x00);

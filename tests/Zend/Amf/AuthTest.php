@@ -165,7 +165,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $resp = $this->_callServiceAuth("", "");
         $data = $resp[0]->getData();
         $this->assertTrue($data instanceof Zend_Amf_Value_Messaging_ErrorMessage);
-        $this->assertContains("username not supplied", $data->faultString);
+        $this->assertContains("Wrong Password", $data->faultString);
     }
 
     public function testWrongPassword()
