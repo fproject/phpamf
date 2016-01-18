@@ -522,7 +522,7 @@ class Zend_Session_SaveHandler_DbTable
             $type = self::PRIMARY_TYPE_NUM;
         }
 
-        $primaryArray = array();
+        $primaryArray = [];
 
         foreach ($this->_primary as $index => $primary) {
             switch ($this->_primaryAssignment[$index]) {

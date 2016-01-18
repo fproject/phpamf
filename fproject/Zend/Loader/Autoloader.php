@@ -42,7 +42,7 @@ class Zend_Loader_Autoloader
     /**
      * @var array Concrete autoloader callback implementations
      */
-    protected $_autoloaders = array();
+    protected $_autoloaders = [];
 
     /**
      * @var array Default autoloader callback
@@ -70,7 +70,7 @@ class Zend_Loader_Autoloader
     /**
      * @var array Namespace-specific autoloaders
      */
-    protected $_namespaceAutoloaders = array();
+    protected $_namespaceAutoloaders = [];
 
     /**
      * @var bool Whether or not to suppress file not found warnings
@@ -327,7 +327,7 @@ class Zend_Loader_Autoloader
     public function getClassAutoloaders($class)
     {
         $namespace   = false;
-        $autoloaders = array();
+        $autoloaders = [];
 
         // Add concrete namespaced autoloaders
         foreach (array_keys($this->_namespaceAutoloaders) as $ns) {
@@ -565,7 +565,7 @@ class Zend_Loader_Autoloader
         $path       = rtrim($path, '/');
         $path       = rtrim($path, '\\');
         $versionLen = strlen($version);
-        $versions   = array();
+        $versions   = [];
         $dirs       = glob("$path/*", GLOB_ONLYDIR);
         foreach ((array) $dirs as $dir) {
             $dirName = substr($dir, strlen($path) + 1);

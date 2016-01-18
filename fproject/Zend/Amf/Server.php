@@ -61,7 +61,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * Array of dispatchables
      * @var array
      */
-    protected $_methods = array();
+    protected $_methods = [];
 
     /**
      * Array of classes that can be called without being explicitly loaded
@@ -70,7 +70,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      *
      * @var array
      */
-    protected $_classAllowed = array();
+    protected $_classAllowed = [];
 
     /**
      * Loader for classes in added directories
@@ -99,7 +99,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * Dispatch table of name => method pairs
      * @var array
      */
-    protected $_table = array();
+    protected $_table = [];
 
     /**
      *
@@ -867,7 +867,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      */
     protected function _buildDispatchTable()
     {
-        $table = array();
+        $table = [];
         foreach ($this->_methods as $key => $dispatchable) {
             if ($dispatchable instanceof Zend_Server_Reflection_Function_Abstract) {
                 $ns   = $dispatchable->getNamespace();
@@ -1008,7 +1008,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
             'object',
             'stdclass',
         );
-        $types      = array();
+        $types      = [];
         foreach ($prototypes as $prototype) {
             foreach ($prototype->getParameters() as $parameter) {
                 $type = $parameter->getType();

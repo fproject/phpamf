@@ -697,7 +697,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
     protected function _parseDigestAuth($header)
     {
         $temp = null;
-        $data = array();
+        $data = [];
 
         // See ZF-1052. Detect invalid usernames instead of just returning a
         // 400 code.

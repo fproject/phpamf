@@ -55,7 +55,7 @@ class Zend_Amf_Adobe_Introspector
     /**
      * @var array Map of the known types
      */
-    protected $_typesMap = array();
+    protected $_typesMap = [];
 
     /**
      * @var DOMDocument XML document to store data

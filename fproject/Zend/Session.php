@@ -237,7 +237,7 @@ class Zend_Session extends Zend_Session_Abstract
      */
     public static function getOptions($optionName = null)
     {
-        $options = array();
+        $options = [];
         foreach (ini_get_all('session') as $sysOptionName => $sysOptionValues) {
             $options[substr($sysOptionName, 8)] = $sysOptionValues['local_value'];
         }
@@ -873,7 +873,7 @@ class Zend_Session extends Zend_Session_Abstract
             throw new Zend_Session_Exception(parent::_THROW_NOT_READABLE_MSG);
         }
 
-        $spaces  = array();
+        $spaces  = [];
         if (isset($_SESSION)) {
             $spaces = array_keys($_SESSION);
             foreach($spaces as $key => $space) {

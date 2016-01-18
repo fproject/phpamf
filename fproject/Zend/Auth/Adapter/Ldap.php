@@ -249,7 +249,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
          */
         require_once 'Zend/Ldap/Exception.php';
 
-        $messages = array();
+        $messages = [];
         $messages[0] = ''; // reserved
         $messages[1] = ''; // reserved
 
@@ -274,7 +274,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
 
         $code = Zend_Auth_Result::FAILURE;
         $messages[0] = "Authority not found: $username";
-        $failedAuthorities = array();
+        $failedAuthorities = [];
 
         /* Iterate through each server and try to authenticate the supplied
          * credentials against it.

@@ -49,13 +49,13 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
      * An array of reference objects per amf body
      * @var array
      */
-    protected $_referenceObjects = array();
+    protected $_referenceObjects = [];
 
     /**
      * An array of reference strings per amf body
      * @var array
      */
-    protected $_referenceStrings = array();
+    protected $_referenceStrings = [];
 
     /**
      * An array of TraitsInfo objects
@@ -251,7 +251,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
             return $refObj;
 
         // Create a holder for the array in the reference list
-        $data = array();
+        $data = [];
         $this->_referenceObjects[] =& $data;
         $key = $this->readString();
 

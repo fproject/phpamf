@@ -103,11 +103,11 @@ class Zend_Amf_Parse_Resource_MysqliResult
      */
     public function parse($resource) {
 
-        $result = array();
+        $result = [];
         $fieldcnt = mysqli_num_fields($resource);
 
 
-        $fields_transform = array();
+        $fields_transform = [];
 
         for($i=0;$i<$fieldcnt;$i++) {
             $finfo = mysqli_fetch_field_direct($resource, $i);

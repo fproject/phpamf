@@ -54,7 +54,7 @@ class Zend_Amf_Adobe_Auth extends Zend_Amf_Auth_Abstract
      *
      * @var array
      */
-    protected $_users = array();
+    protected $_users = [];
 
     /**
      * Create auth adapter

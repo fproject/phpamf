@@ -49,9 +49,9 @@ class Zend_Amf_Parse_Resource_MysqlResult
      * @return array
      */
     public function parse($resource) {
-        $result = array();
+        $result = [];
         $fieldcnt = mysql_num_fields($resource);
-        $fields_transform = array();
+        $fields_transform = [];
         for($i=0;$i<$fieldcnt;$i++) {
             $type = mysql_field_type($resource, $i);
             if(isset(self::$fieldTypes[$type])) {

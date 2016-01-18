@@ -52,7 +52,7 @@ abstract class Zend_Session_Abstract
      *
      * @var array
      */
-    protected static $_expiringData = array();
+    protected static $_expiringData = [];
 
 
     /**
