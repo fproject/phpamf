@@ -235,29 +235,6 @@ class Zend_Loader
     }
 
     /**
-     * Attempt to include() the file.
-     *
-     * include() is not prefixed with the @ operator because if
-     * the file is loaded and contains a parse error, execution
-     * will halt silently and this is difficult to debug.
-     *
-     * Always set display_errors = Off on production servers!
-     *
-     * @param  string  $filespec
-     * @param  boolean $once
-     * @return boolean
-     * @deprecated Since 1.5.0; use loadFile() instead
-     */
-    protected static function _includeFile($filespec, $once = false)
-    {
-        if ($once) {
-            return include_once $filespec;
-        } else {
-            return include $filespec ;
-        }
-    }
-
-    /**
      * Standardise the filename.
      *
      * Convert the supplied filename into the namespace-aware standard,

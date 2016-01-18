@@ -846,19 +846,6 @@ class Zend_Session extends Zend_Session_Abstract
 
 
     /**
-     * namespaceGet() - get all variables in a namespace
-     * Deprecated: Use getIterator() in Zend_Session_Namespace.
-     *
-     * @param string $namespace
-     * @return array
-     */
-    public static function namespaceGet($namespace)
-    {
-        return parent::_namespaceGetAll($namespace);
-    }
-
-
-    /**
      * getIterator() - return an iteratable object for use in foreach and the like,
      * this completes the IteratorAggregate interface
      *
