@@ -587,12 +587,19 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
         return false;
     }
 
+    private static $_bigEndian;
+
     /**
      * Looks if the system is Big Endain or not
      * @return bool
      */
-    static private function isSystemBigEndian() {
-        $tmp = pack('d', 1); // determine the multi-byte ordering of this machine temporarily pack 1
-        return ($tmp == "\0\0\0\0\0\0\360\77");
+    static private function isSystemBigEndian()
+    {
+        if(!isset(self::$_bigEndian))
+        {
+            $tmp = pack('d', 1); // determine the multi-byte ordering of this machine temporarily pack 1
+            self::$_bigEndian = ($tmp == "\0\0\0\0\0\0\360\77");
+        }
+        return self::$_bigEndian;
     }
 }
