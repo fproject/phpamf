@@ -62,7 +62,7 @@ class Zend_Amf_Value_Messaging_AbstractMessage
     public $headers;
 
     /**
-     * @var string Message body
+     * @var string|array Message body
      */
     public $body;
 

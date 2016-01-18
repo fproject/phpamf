@@ -74,7 +74,7 @@ class Zend_Amf_Value_MessageBody
      * For server generated responses, it may contain any ActionScript
      * data/objects that the server was expected to provide.
      *
-     * @var string
+     * @var string|Zend_Amf_Value_Messaging_AbstractMessage $_data
      */
     protected $_data;
 
@@ -146,7 +146,7 @@ class Zend_Amf_Value_MessageBody
     /**
      * Retrieve response data
      *
-     * @return string
+     * @return string|Zend_Amf_Value_Messaging_AbstractMessage
      */
     public function getData()
     {
