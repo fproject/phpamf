@@ -45,6 +45,7 @@ require_once 'Zend/Session.php';
  */
 class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
 {
+    /** @var  Zend_Amf_Server $_server */
     protected $_server;
 
     public static function main()
