@@ -515,7 +515,11 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
         return ['object' => $returnObject, 'className' => $className];
     }
 
-    // Read Externalizable object such as {ArrayCollection} and {ObjectProxy}
+    /**
+     * Read Externalizable object such as {ArrayCollection} and {ObjectProxy}
+     * @param $className
+     * @param $object
+     */
     protected function readExternalizable($className, $object)
     {
         $object->externalizedData = $this->readTypeMarker();
