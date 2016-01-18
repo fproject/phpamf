@@ -220,6 +220,59 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * ActionScript mx.messaging.messages.CommandMessage to Zend_Amf_Value_Messaging_CommandMessage
+     *
+     */
+    public function testAmf3CommandMessageRequest()
+    {
+        $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/amf3CommandMessageRequest.bin');
+        // send the mock object request to be deserialized
+        $this->_request->initialize($myRequest);
+        // Make sure the encoding type is properly set.
+        $this->assertEquals(0x03, $this->_request->getObjectEncoding());
+        // Make sure that no headers where recieved
+        $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
+        // Make sure that the message body was set after deserialization
+        $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
+        $bodies = $this->_request->getAmfBodies();
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        $message = $bodies[0]->getData();
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_CommandMessage);
+        // Make sure that our endpoint is properly set.
+        $this->assertEquals(5, $message->operation);
+
+    }
+
+    /**
+     * ActionScript Date to Php DateTime
+     *
+     */
+    public function testTypedVectorParameterDeserializedToPHPArray()
+    {
+        $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/amf3CommandMessageRequest.bin');
+        // send the mock object request to be deserialized
+        $this->_request->initialize($myRequest);
+        // Make sure the encoding type is properly set.
+        $this->assertEquals(0x03, $this->_request->getObjectEncoding());
+        // Make sure that no headers where recieved
+        $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
+        // Make sure that the message body was set after deserialization
+        $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
+        $bodies = $this->_request->getAmfBodies();
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        $message = $bodies[0]->getData();
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        // Make sure that our endpoint is properly set.
+        $this->assertEquals('save', $message->operation);
+        $this->assertEquals('ContactService', $message->source);
+        $data = $message->body;
+        // Make sure that the array was deserialized properly and check its value
+        $this->assertEquals(1978, $data[0]->format('Y'));
+
+    }
+
+
+    /**
      * Try and read in the largest Amf Integer to PHP int
      *
      */
