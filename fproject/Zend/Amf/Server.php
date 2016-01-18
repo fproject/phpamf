@@ -765,9 +765,10 @@ class Zend_Amf_Server implements Zend_Server_Interface
      *
      * @param  string|object $class
      * @param  string $namespace Optional
-     * @param  mixed $arg Optional arguments to pass to a method
+     * @param  mixed $argv Optional arguments to pass to a method
      * @return Zend_Amf_Server
      * @throws Zend_Amf_Server_Exception on invalid input
+     * @throws Zend_Server_Reflection_Exception
      */
     public function setClass($class, $namespace = '', $argv = null)
     {
@@ -783,6 +784,8 @@ class Zend_Amf_Server implements Zend_Server_Interface
         if (2 < func_num_args()) {
             $argv = array_slice(func_get_args(), 2);
         }
+
+        echo print_r($argv,true);
 
         // Use the class name as the name space by default.
 
