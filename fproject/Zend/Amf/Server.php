@@ -782,7 +782,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
 
         echo print_r($argv,true);
 
-        $argv = null;
+        //$argv = null;
 
         if (2 < func_num_args()) {
             $arg = $argv;
