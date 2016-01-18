@@ -258,8 +258,10 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
+        /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
         $message = $bodies[0]->getData();
         $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
@@ -267,6 +269,8 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('ContactService', $message->source);
         $data = $message->body;
         // Make sure that the array was deserialized properly and check its value
+        $this->assertTrue(is_array($data), 'Deserilized body must be an array');
+        $data = $data[0];
         $this->assertTrue(is_array($data), 'Deserilized vector data must be an array');
         foreach($data as $element)
         {
