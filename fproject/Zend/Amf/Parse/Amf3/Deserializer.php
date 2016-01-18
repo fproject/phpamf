@@ -291,22 +291,26 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
         switch ($type)
         {
             case Zend_Amf_Constants::AMF3_VECTOR_INT:
-                $vector = $this->readIntVector($len, $fixed);
+                $eltSize = 4;
+                $numberFormat = "ival";
                 break;
             case Zend_Amf_Constants::AMF3_VECTOR_UINT:
-                $vector = $this->readUintVector($len, $fixed);
+                $eltSize = 4;
+                $numberFormat = "Ival";
                 break;
             case Zend_Amf_Constants::AMF3_VECTOR_NUMBER:
-                $vector = $this->readNumberVector($len, $fixed);
+                $eltSize = 8;
+                $numberFormat = "dval";
                 break;
             case Zend_Amf_Constants::AMF3_VECTOR_OBJECT:
-                $vector = $this->readObjectVector($len, $fixed);
-                break;
+                return $this->readObjectVector($len, $fixed);
             default:
                 // Unknown vector type tag {type}
                 $this->throwZendException('Undefined vector type: {0}',[$type]);
         }
-        return $vector;
+        $bigEndian = self::isSystemBigEndian();
+
+        return $this->readNumericVector($len, $fixed, $eltSize, $numberFormat, $bigEndian);
     }
 
     /**
@@ -316,7 +320,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
      * @return array
      * @throws Zend_Amf_Exception
      */
-    public function readIntVector($len, $fixed)
+    public function readNumericVector($len, $fixed, $eltSize, $numberFormat,$bigEndian)
     {
         if ($fixed)
         {
@@ -332,77 +336,17 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
 
         for ($i = 0; $i < $len; $i++)
         {
-            $value = $this->_stream->readInt();
-            if($fixed)
-                $vector[$i] = $value;
-            else
-                $vector[] = $value;
-        }
+            $bytes = $this->_stream->readBytes($eltSize);
+            if ($bigEndian)
+                $bytes = strrev($bytes);
+            $array = unpack($numberFormat, $bytes);
 
-        return $vector;
-    }
-
-    /**
-     * Read amf Vector.<uint> to PHP array
-     * @param int $len
-     * @param bool $fixed
-     * @return array
-     * @throws Zend_Amf_Exception
-     */
-    public function readUintVector($len, $fixed)
-    {
-        if ($fixed)
-        {
-            $vector = array_fill(0, $len, 0);
-        }
-        else
-        {
-            $vector = [];
-        }
-
-        // Create a holder for the array in the reference list
-        $this->_referenceObjects[] =& $vector;
-
-        for ($i = 0; $i < $len; $i++)
-        {
-            $value = ($this->_stream->readByte() & 0xFF) << 24;
-            $value += ($this->_stream->readByte() & 0xFF) << 16;
-            $value += ($this->_stream->readByte() & 0xFF) << 8;
-            $value += ($this->_stream->readByte() & 0xFF);
-
-            if($fixed)
-                $vector[$i] = $value;
-            else
-                $vector[] = $value;
-        }
-
-        return $vector;
-    }
-
-    /**
-     * Read amf Vector.<Number> to PHP array
-     * @param int $len
-     * @param bool $fixed
-     * @return array
-     * @throws Zend_Amf_Exception
-     */
-    public function readNumberVector($len, $fixed)
-    {
-        if ($fixed)
-        {
-            $vector = array_fill(0, $len, NAN);
-        }
-        else
-        {
-            $vector = [];
-        }
-
-        // Create a holder for the array in the reference list
-        $this->_referenceObjects[] =& $vector;
-
-        for ($i = 0; $i < $len; $i++)
-        {
-            $value = $this->_stream->readDouble();
+            // Unsigned Integers don't work in PHP amazingly enough. If you go into the "upper" region
+            // on the Actionscript side, this will come through as a negative without this cast to a float
+            // see http://php.net/manual/en/language.types.integer.php
+            $value = $array["val"];
+            if ($numberFormat === "Ival")
+                $value = floatval(sprintf('%u', $value));
 
             if($fixed)
                 $vector[$i] = $value;
@@ -616,6 +560,11 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
         return Zend_Xml_Security::scan($string);
     }
 
+    /**
+     * @param $message
+     * @param array $params
+     * @throws Zend_Amf_Exception
+     */
     private function throwZendException($message, $params=[])
     {
         require_once 'Zend/Amf/Exception.php';
@@ -636,5 +585,14 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
             return $this->_referenceObjects[$refMarker];
         }
         return false;
+    }
+
+    /**
+     * Looks if the system is Big Endain or not
+     * @return bool
+     */
+    static private function isSystemBigEndian() {
+        $tmp = pack('d', 1); // determine the multi-byte ordering of this machine temporarily pack 1
+        return ($tmp == "\0\0\0\0\0\0\360\77");
     }
 }

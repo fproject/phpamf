@@ -344,8 +344,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($data), 'Deserialized vector data must be an array');
         foreach($data as $element)
         {
-            $this->assertTrue(is_int($element), 'Deserialized vector element must be an unsigned int');
-            $this->assertGreaterThan(-1, $element);
+            $this->assertTrue(is_float($element) || ctype_digit((string)$element), 'Deserialized vector element must be an unsigned int');
         }
     }
 
