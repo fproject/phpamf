@@ -325,25 +325,6 @@ class Zend_Acl
     }
 
     /**
-     * Adds a Resource having an identifier unique to the ACL
-     *
-     * The $parent parameter may be a reference to, or the string identifier for,
-     * the existing Resource from which the newly added Resource will inherit.
-     *
-     * @deprecated in version 1.9.1 and will be available till 2.0.  New code
-     *             should use addResource() instead.
-     *
-     * @param  Zend_Acl_Resource_Interface        $resource
-     * @param  Zend_Acl_Resource_Interface|string $parent
-     * @throws Zend_Acl_Exception
-     * @return Zend_Acl Provides a fluent interface
-     */
-    public function add(Zend_Acl_Resource_Interface $resource, $parent = null)
-    {
-        return $this->addResource($resource, $parent);
-    }
-
-    /**
      * Returns the identified Resource
      *
      * The $resource parameter can either be a Resource or a Resource identifier.
@@ -1203,19 +1184,6 @@ class Zend_Acl
         return $visitor['byRoleId'][$roleId];
     }
 
-
-    /**
-     * @return array of registered roles (Deprecated)
-     * @deprecated Deprecated since version 1.10 (December 2009)
-     */
-    public function getRegisteredRoles()
-    {
-        trigger_error('The method getRegisteredRoles() was deprecated as of '
-                    . 'version 1.0, and may be removed. You\'re encouraged '
-                    . 'to use getRoles() instead.');
-
-        return $this->_getRoleRegistry()->getRoles();
-    }
 
     /**
      * Returns an array of registered roles.

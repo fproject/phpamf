@@ -217,64 +217,6 @@ class Zend_Loader
     }
 
     /**
-     * spl_autoload() suitable implementation for supporting class autoloading.
-     *
-     * Attach to spl_autoload() using the following:
-     * <code>
-     * spl_autoload_register(array('Zend_Loader', 'autoload'));
-     * </code>
-     *
-     * @deprecated Since 1.8.0
-     * @param  string $class
-     * @return string|false Class name on success; false on failure
-     */
-    public static function autoload($class)
-    {
-        trigger_error(__CLASS__ . '::' . __METHOD__ . ' is deprecated as of 1.8.0 and will be removed with 2.0.0; use Zend_Loader_Autoloader instead', E_USER_NOTICE);
-        try {
-            @self::loadClass($class);
-            return $class;
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
-    /**
-     * Register {@link autoload()} with spl_autoload()
-     *
-     * @deprecated Since 1.8.0
-     * @param string $class (optional)
-     * @param boolean $enabled (optional)
-     * @return void
-     * @throws Zend_Exception if spl_autoload() is not found
-     * or if the specified class does not have an autoload() method.
-     */
-    public static function registerAutoload($class = 'Zend_Loader', $enabled = true)
-    {
-        trigger_error(__CLASS__ . '::' . __METHOD__ . ' is deprecated as of 1.8.0 and will be removed with 2.0.0; use Zend_Loader_Autoloader instead', E_USER_NOTICE);
-        require_once 'Zend/Loader/Autoloader.php';
-        $autoloader = Zend_Loader_Autoloader::getInstance();
-        $autoloader->setFallbackAutoloader(true);
-
-        if ('Zend_Loader' != $class) {
-            self::loadClass($class);
-            $methods = get_class_methods($class);
-            if (!in_array('autoload', (array) $methods)) {
-                require_once 'Zend/Exception.php';
-                throw new Zend_Exception("The class \"$class\" does not have an autoload() method");
-            }
-
-            $callback = array($class, 'autoload');
-
-            if ($enabled) {
-                $autoloader->pushAutoloader($callback);
-            } else {
-                $autoloader->removeAutoloader($callback);
-            }
-        }
-    }
-
-    /**
      * Ensure that filename does not contain exploits
      *
      * @param  string $filename
