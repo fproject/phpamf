@@ -780,17 +780,9 @@ class Zend_Amf_Server implements Zend_Server_Interface
             throw new Zend_Amf_Server_Exception('Invalid method or class; must be a classname or object');
         }
 
-        echo print_r($argv,true);
-
-        //$argv = null;
-
         if (2 < func_num_args()) {
-            $arg = $argv;
             $argv = array_slice(func_get_args(), 2);
-            $argv[0] = $arg;
         }
-
-        echo print_r($argv,true);
 
         // Use the class name as the name space by default.
 
