@@ -220,6 +220,32 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * ActionScript Date to Php DateTime
+     *
+     */
+    public function testComplexTypedObjectParameterDeserializedToPhp()
+    {
+        $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/complexTypedObjectAmf3Request.bin');
+        // send the mock object request to be deserialized
+        $this->_request->initialize($myRequest);
+        // Make sure the encoding type is properly set.
+        $this->assertEquals(0x03, $this->_request->getObjectEncoding());
+        // Make sure that no headers where recieved
+        $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
+        // Make sure that the message body was set after deserialization
+        $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
+        $bodies = $this->_request->getAmfBodies();
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        $message = $bodies[0]->getData();
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        // Make sure that our endpoint is properly set.
+        $this->assertEquals('saveAll', $message->operation);
+        $this->assertEquals('ProjectService', $message->source);
+        $data = $message->body;
+
+    }
+
+    /**
      * ActionScript mx.messaging.messages.CommandMessage to Zend_Amf_Value_Messaging_CommandMessage
      *
      */
@@ -244,7 +270,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * ActionScript Date to Php DateTime
+     * ActionScript Vector.<Contact> to PHP Contact[] array
      *
      */
     public function testTypedObjectVectorParameterDeserializedToPHPArray()
@@ -279,7 +305,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * ActionScript Date to Php DateTime
+     * ActionScript Vector.<int> to PHP int[] array
      *
      */
     public function testIntVectorParameterDeserializedToPHPArray()
@@ -314,7 +340,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * ActionScript Date to Php DateTime
+     * ActionScript Vector.<uint> to PHP float[] array
      *
      */
     public function testUIntVectorParameterDeserializedToPHPArray()
@@ -349,7 +375,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * ActionScript Date to Php DateTime
+     * ActionScript Vector.<Number> to PHP float[] array
      *
      */
     public function testNumberVectorParameterDeserializedToPHPArray()
