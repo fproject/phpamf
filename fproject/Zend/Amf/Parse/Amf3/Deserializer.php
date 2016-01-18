@@ -286,7 +286,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
             return $refObj;
 
         $len = ($ref >> 1);
-        $fixed = (bool)$this->_stream->readInt();
+        $fixed = (bool)$this->_stream->readByte();
 
         switch ($type)
         {
@@ -424,6 +424,8 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
     {
         if($len == 0)
             return [];
+
+        $elementClass = $this->readString();
 
         if ($fixed)
         {
