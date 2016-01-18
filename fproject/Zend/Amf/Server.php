@@ -787,7 +787,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
         if (2 < func_num_args()) {
             $arg = $argv;
             $argv = array_slice(func_get_args(), 2);
-            $argv[2] = $arg;
+            $argv[0] = $arg;
         }
 
         echo print_r($argv,true);
