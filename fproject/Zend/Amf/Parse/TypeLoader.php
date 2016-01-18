@@ -99,7 +99,7 @@ final class Zend_Amf_Parse_TypeLoader
     {
         $class    = self::getMappedClassName($className);
         if(!$class) {
-            $class = str_replace('.', '_', $className);
+            $class = str_replace('.', '\\', $className);
         }
         elseif(isset(self::$failureCache[$className])) {
             return self::$failureCache[$className];

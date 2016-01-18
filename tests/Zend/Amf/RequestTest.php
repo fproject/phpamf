@@ -225,6 +225,10 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
      */
     public function testComplexTypedObjectParameterDeserializedToPhp()
     {
+        require_once "WorkCalendar.php";
+        Zend_Amf_Parse_TypeLoader::$classMap = array_merge(Zend_Amf_Parse_TypeLoader::$classMap,[
+            'net.fproject.calendar.WorkCalendar' => 'WorkCalendar',
+        ]);
         $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/complexTypedObjectAmf3Request.bin');
         // send the mock object request to be deserialized
         $this->_request->initialize($myRequest);
@@ -242,7 +246,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('SampleService', $message->source);
         $data = $message->body;
-
+        $this->assertTrue(is_array($data), 'Deserialized body must be an array');
+        $data = $data[0];
+        $this->assertInstanceOf('WorkCalendar', $data, "must be an instance of WorkCalendar");
     }
 
     /**
@@ -266,7 +272,6 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_CommandMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals(5, $message->operation);
-
     }
 
     /**
