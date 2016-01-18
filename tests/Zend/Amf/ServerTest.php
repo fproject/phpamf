@@ -588,6 +588,9 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $result = $this->_server->handle($request);
         $bodies = $result->getAmfBodies();
         $found  = false;
+
+        echo print_r($bodies,true);
+
         foreach ($bodies as $body) {
             $data  = $body->getData();
             if ('Zend_Amf_Value_Messaging_AcknowledgeMessage' == get_class($data)) {
