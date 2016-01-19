@@ -308,9 +308,8 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
                 // Unknown vector type tag {type}
                 $this->throwZendException('Undefined vector type: {0}',[$type]);
         }
-        $bigEndian = self::isSystemBigEndian();
 
-        return $this->readNumericVector($len, $fixed, $eltSize, $numberFormat, $bigEndian);
+        return $this->readNumericVector($len, $fixed, $eltSize, $numberFormat);
     }
 
     /**
@@ -320,7 +319,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
      * @return array
      * @throws Zend_Amf_Exception
      */
-    public function readNumericVector($len, $fixed, $eltSize, $numberFormat,$bigEndian)
+    public function readNumericVector($len, $fixed, $eltSize, $numberFormat)
     {
         if ($fixed)
         {
@@ -337,7 +336,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
         for ($i = 0; $i < $len; $i++)
         {
             $bytes = $this->_stream->readBytes($eltSize);
-            if ($bigEndian)
+            if (!Zend_Amf_Util_BinaryStream::isBigEndian())
                 $bytes = strrev($bytes);
             $array = unpack($numberFormat, $bytes);
 
@@ -586,21 +585,5 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
             return $this->_referenceObjects[$refMarker];
         }
         return false;
-    }
-
-    private static $_bigEndian;
-
-    /**
-     * Looks if the system is Big Endain or not
-     * @return bool
-     */
-    static private function isSystemBigEndian()
-    {
-        if(!isset(self::$_bigEndian))
-        {
-            $tmp = pack('d', 1); // determine the multi-byte ordering of this machine temporarily pack 1
-            self::$_bigEndian = ($tmp == "\0\0\0\0\0\0\360\77");
-        }
-        return self::$_bigEndian;
     }
 }

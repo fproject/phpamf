@@ -320,7 +320,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
      * ActionScript Vector.<Contact> to PHP Contact[] array
      *
      */
-    public function xtestTypedObjectVectorParameterDeserializedToPHPArray()
+    public function testTypedObjectVectorParameterDeserializedToPHPArray()
     {
         $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/typedObjectVectorAmf3Request.bin');
         // send the mock object request to be deserialized
@@ -355,7 +355,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
      * ActionScript Vector.<int> to PHP int[] array
      *
      */
-    public function xtestIntVectorParameterDeserializedToPHPArray()
+    public function testIntVectorParameterDeserializedToPHPArray()
     {
         $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/intVectorAmf3Request.bin');
         // send the mock object request to be deserialized
@@ -390,7 +390,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
      * ActionScript Vector.<uint> to PHP float[] array
      *
      */
-    public function xtestUIntVectorParameterDeserializedToPHPArray()
+    public function testUIntVectorParameterDeserializedToPHPArray()
     {
         $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/uintVectorAmf3Request.bin');
         // send the mock object request to be deserialized
@@ -425,7 +425,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
      * ActionScript Vector.<Number> to PHP float[] array
      *
      */
-    public function xtestNumberVectorParameterDeserializedToPHPArray()
+    public function testNumberVectorParameterDeserializedToPHPArray()
     {
         $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/numberVectorAmf3Request.bin');
         // send the mock object request to be deserialized

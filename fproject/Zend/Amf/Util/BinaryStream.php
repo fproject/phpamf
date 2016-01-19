@@ -43,7 +43,16 @@ class Zend_Amf_Util_BinaryStream
     /**
      * @var bool BigEndian encoding?
      */
-    protected $_bigEndian;
+    protected static $_bigEndian;
+
+    /**
+     * Check if system is using BigEndian encoding
+     * @return boolean
+     */
+    public static function isBigEndian()
+    {
+        return self::$_bigEndian;
+    }
 
     /**
      * @var int Current position in stream
@@ -76,7 +85,18 @@ class Zend_Amf_Util_BinaryStream
         $this->_needle       = 0;
         $this->_mbStringFunctionsOverloaded = function_exists('mb_strlen') && (ini_get('mbstring.func_overload') !== '') && ((int)ini_get('mbstring.func_overload') & 2);
         $this->_streamLength = $this->_mbStringFunctionsOverloaded ? mb_strlen($stream, '8bit') : strlen($stream);
-        $this->_bigEndian    = (pack('l', 1) === "\x00\x00\x00\x01");
+        self::checkSystemBigEndian();
+    }
+
+    /**
+     * Looks if the system is Big Endian or not
+     */
+    static private function checkSystemBigEndian()
+    {
+        if(!isset(self::$_bigEndian))
+        {
+            self::$_bigEndian  = (pack('l', 1) === "\x00\x00\x00\x01");
+        }
     }
 
     /**
@@ -270,7 +290,7 @@ class Zend_Amf_Util_BinaryStream
         $bytes = $this->_mbStringFunctionsOverloaded ? mb_substr($this->_stream, $this->_needle, 8, '8bit') : substr($this->_stream, $this->_needle, 8);
         $this->_needle+= 8;
 
-        if (!$this->_bigEndian) {
+        if (!self::$_bigEndian) {
             $bytes = strrev($bytes);
         }
 
@@ -291,7 +311,7 @@ class Zend_Amf_Util_BinaryStream
     public function writeDouble($stream)
     {
         $stream = pack('d', $stream);
-        if (!$this->_bigEndian) {
+        if (!self::$_bigEndian) {
             $stream = strrev($stream);
         }
         $this->_stream.= $stream;
