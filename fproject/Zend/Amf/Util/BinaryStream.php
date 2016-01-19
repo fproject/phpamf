@@ -63,7 +63,7 @@ class Zend_Amf_Util_BinaryStream
      * little Endian encoding.
      *
      * @param  string $stream use '' if creating a new stream or pass a string if reading.
-     * @return void
+     * @throws Zend_Amf_Exception
      */
     public function __construct($stream)
     {
