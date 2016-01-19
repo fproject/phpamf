@@ -138,7 +138,8 @@ class Zend_Loader_Autoloader
      * Set the default autoloader implementation
      *
      * @param  string|array $callback PHP callback
-     * @return void
+     * @return $this
+     * @throws Zend_Loader_Exception
      */
     public function setDefaultAutoloader($callback)
     {
@@ -202,6 +203,7 @@ class Zend_Loader_Autoloader
      *
      * @param  string|array $namespace
      * @return Zend_Loader_Autoloader
+     * @throws Zend_Loader_Exception
      */
     public function registerNamespace($namespace)
     {
@@ -224,6 +226,7 @@ class Zend_Loader_Autoloader
      *
      * @param  string|array $namespace
      * @return Zend_Loader_Autoloader
+     * @throws Zend_Loader_Exception
      */
     public function unregisterNamespace($namespace)
     {
@@ -455,7 +458,6 @@ class Zend_Loader_Autoloader
      *
      * Registers instance with spl_autoload stack
      *
-     * @return void
      */
     protected function __construct()
     {
@@ -503,7 +505,8 @@ class Zend_Loader_Autoloader
      *
      * @param  string $path
      * @param  string $version
-     * @return void
+     * @return mixed
+     * @throws Zend_Loader_Exception
      */
     protected function _getVersionPath($path, $version)
     {
@@ -555,6 +558,7 @@ class Zend_Loader_Autoloader
      * @param  string $path
      * @param  string $version
      * @return array
+     * @throws Zend_Loader_Exception
      */
     protected function _getAvailableVersions($path, $version)
     {
