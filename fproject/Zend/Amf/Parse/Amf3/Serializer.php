@@ -405,7 +405,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
     }
 
     /**
-     * Write object to ouput stream
+     * Write object to output stream
      *
      * @param mixed $object
      * @return Zend_Amf_Parse_Amf3_Serializer
