@@ -17,7 +17,8 @@
     },
     "require": {
       "php": ">=5.4.0",
-      "fproject/php-common": "*"
+      "fproject/php-common": "*",
+      "fproject/fprj-php": "*"
     },
 
     "autoload": {

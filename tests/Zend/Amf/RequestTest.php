@@ -226,9 +226,8 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     public function testComplexTypedObjectParameterDeserializedToPhp()
     {
         require_once "WorkCalendar.php";
-        Zend_Amf_Parse_TypeLoader::$classMap = array_merge(Zend_Amf_Parse_TypeLoader::$classMap,[
-            'net.fproject.calendar.WorkCalendar' => 'WorkCalendar',
-        ]);
+        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.WorkCalendar'] = 'WorkCalendar';
+
         $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/complexTypedObjectAmf3Request.bin');
         // send the mock object request to be deserialized
         $this->_request->initialize($myRequest);
@@ -238,8 +237,10 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
+        /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
         $message = $bodies[0]->getData();
         $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
@@ -249,6 +250,45 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($data), 'Deserialized body must be an array');
         $data = $data[0];
         $this->assertInstanceOf('WorkCalendar', $data, "must be an instance of WorkCalendar");
+    }
+
+    /**
+     * ActionScript Date to Php DateTime
+     *
+     */
+    public function testComplexTypedObjectParameterDeserializedToPhpUsingPSR0()
+    {
+        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.WorkCalendar'] = 'fproject\calendar\WorkCalendar';
+        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.Period'] = 'fproject\calendar\Period';
+        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.WorkShift'] = 'fproject\calendar\WorkShift';
+        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.WeekDay'] = 'fproject\calendar\WeekDay';
+
+        $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/complexTypedObjectAmf3Request.bin');
+        // send the mock object request to be deserialized
+        $this->_request->initialize($myRequest);
+        // Make sure the encoding type is properly set.
+        $this->assertEquals(0x03, $this->_request->getObjectEncoding());
+        // Make sure that no headers where recieved
+        $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
+        // Make sure that the message body was set after deserialization
+        $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
+        /** @var Zend_Amf_Value_MessageBody[] $bodies */
+        $bodies = $this->_request->getAmfBodies();
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
+        $message = $bodies[0]->getData();
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        // Make sure that our endpoint is properly set.
+        $this->assertEquals('save', $message->operation);
+        $this->assertEquals('SampleService', $message->source);
+        $data = $message->body;
+        $this->assertTrue(is_array($data), 'Deserialized body must be an array');
+        /** @var fproject\calendar\WorkCalendar $data */
+        $data = $data[0];
+        $this->assertInstanceOf('fproject\calendar\WorkCalendar', $data, "must be instance of fproject\\calendar\\WorkCalendar");
+        $this->assertInstanceOf('fproject\calendar\WorkShift', $data->defaultWorkShifts[0], "must be instance of fproject\\calendar\\WorkShift");
+        $this->assertInstanceOf('fproject\calendar\WeekDay', $data->weekDays[0], "must be instance of fproject\\calendar\\WeekDay");
+        $this->assertInstanceOf('fproject\calendar\WorkShift', $data->weekDays[2]->workShifts[0], "must be instance of fproject\\calendar\\WorkShift");
     }
 
     /**
@@ -266,8 +306,10 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
+        /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
         $message = $bodies[0]->getData();
         $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_CommandMessage);
         // Make sure that our endpoint is properly set.
