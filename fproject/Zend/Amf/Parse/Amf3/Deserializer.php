@@ -365,7 +365,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
      */
     public function readObjectVector($len, $fixed)
     {
-        $elementClass = $this->readString();
+        /* $elementClass = */$this->readString();
 
         if ($fixed)
         {
