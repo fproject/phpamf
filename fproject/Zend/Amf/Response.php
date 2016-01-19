@@ -43,8 +43,7 @@ class Zend_Amf_Response
     protected $_objectEncoding = 0;
 
     /**
-     * Array of Zend_Amf_Value_MessageBody objects
-     * @var array
+     * @var Zend_Amf_Value_MessageBody[] $_bodies Array of Zend_Amf_Value_MessageBody objects
      */
     protected $_bodies = [];
 
