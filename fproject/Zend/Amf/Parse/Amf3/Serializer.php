@@ -444,8 +444,6 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
                 break;
         }
 
-        $writeTraits = true;
-
         //check to see, if we have a corresponding definition
         if(array_key_exists($className, $this->_referenceDefinitions)) {
             $traitsInfo    = $this->_referenceDefinitions[$className]['id'];
@@ -480,6 +478,8 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
             $traitsInfo = Zend_Amf_Constants::AMF3_OBJECT_ENCODING;
             $traitsInfo |= $encoding << 2;
             $traitsInfo |= (count($propertyNames) << 4);
+
+            $writeTraits = true;
         }
 
         $this->writeInteger($traitsInfo);
