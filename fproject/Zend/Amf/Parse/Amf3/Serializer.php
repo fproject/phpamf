@@ -74,7 +74,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      * @param  mixed $data
      * @param  int $markerType
      * @param  mixed $dataByVal
-     * @return void
+     * @throws Zend_Amf_Exception
      */
     public function writeTypeMarker(&$data, $markerType = null, $dataByVal = false)
     {
@@ -177,7 +177,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
     /**
      * Write an AMF3 integer
      *
-     * @param int|float $data
+     * @param float|int $int
      * @return Zend_Amf_Parse_Amf3_Serializer
      */
     public function writeInteger($int)
@@ -253,8 +253,9 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
     /**
      * Send ByteArray to output stream
      *
-     * @param  string|Zend_Amf_Value_ByteArray  $data
+     * @param  string|Zend_Amf_Value_ByteArray $data
      * @return Zend_Amf_Parse_Amf3_Serializer
+     * @throws Zend_Amf_Exception
      */
     public function writeByteArray(&$data)
     {
@@ -279,8 +280,9 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
     /**
      * Send xml to output stream
      *
-     * @param  DOMDocument|SimpleXMLElement  $xml
+     * @param  DOMDocument|SimpleXMLElement $xml
      * @return Zend_Amf_Parse_Amf3_Serializer
+     * @throws Zend_Amf_Exception
      */
     public function writeXml($xml)
     {
@@ -309,6 +311,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      *
      * @param  DateTime $date
      * @return Zend_Amf_Parse_Amf3_Serializer
+     * @throws Zend_Amf_Exception
      */
     public function writeDate($date)
     {
@@ -406,8 +409,9 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
     /**
      * Write object to ouput stream
      *
-     * @param  mixed $data
+     * @param mixed $object
      * @return Zend_Amf_Parse_Amf3_Serializer
+     * @throws Zend_Amf_Exception
      */
     public function writeObject($object)
     {
