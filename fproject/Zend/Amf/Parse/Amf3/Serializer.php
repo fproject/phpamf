@@ -419,8 +419,6 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
             return $this;
         }
 
-        $className = '';
-
         //Check to see if the object is a typed object and we need to change
         switch (true) {
              // the return class mapped name back to actionscript class name.
