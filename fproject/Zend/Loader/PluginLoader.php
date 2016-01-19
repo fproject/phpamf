@@ -104,7 +104,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      * @param array $prefixToPaths
      * @param string $staticRegistryName OPTIONAL
      */
-    public function __construct(Array $prefixToPaths = array(), $staticRegistryName = null)
+    public function __construct(array $prefixToPaths = array(), $staticRegistryName = null)
     {
         if (is_string($staticRegistryName) && !empty($staticRegistryName)) {
             $this->_useStaticRegistry = $staticRegistryName;
@@ -149,6 +149,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      * @param string $prefix
      * @param string $path
      * @return Zend_Loader_PluginLoader
+     * @throws Zend_Loader_PluginLoader_Exception
      */
     public function addPrefixPath($prefix, $path)
     {
@@ -247,6 +248,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      * @param string $prefix
      * @param string $path OPTIONAL
      * @return Zend_Loader_PluginLoader
+     * @throws Zend_Loader_PluginLoader_Exception
      */
     public function removePrefixPath($prefix, $path = null)
     {

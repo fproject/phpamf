@@ -108,12 +108,6 @@ class Zend_Amf_Server implements Zend_Server_Interface
     protected $_session = false;
 
     /**
-     * Namespace allows all AMF calls to not clobber other PHP session variables
-     * @var Zend_Session_NameSpace default session namespace zend_amf
-     */
-    //protected $_sesionNamespace = 'zend_amf';
-
-    /**
      * Set the default session.name if php_
      * @var string
      */
