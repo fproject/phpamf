@@ -392,12 +392,10 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
         }
 
         $hash = spl_object_hash($object);
-        $ref = array_key_exists($hash, $this->_referenceObjects) 
-             ? $this->_referenceObjects[$hash] 
-             : false;
+        $ref = array_key_exists($hash, $this->_referenceObjects)  ? $this->_referenceObjects[$hash] : false;
 
         // quickly handle object references
-        if ($ref !== false){
+        if ($ref !== false) {
             $ref <<= 1;
             $this->writeInteger($ref);
             return true;
@@ -415,7 +413,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      */
     public function writeObject($object)
     {
-        if($this->writeObjectReference($object)){
+        if($this->writeObjectReference($object)) {
             return $this;
         }
 
@@ -449,7 +447,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
         $writeTraits = true;
 
         //check to see, if we have a corresponding definition
-        if(array_key_exists($className, $this->_referenceDefinitions)){
+        if(array_key_exists($className, $this->_referenceDefinitions)) {
             $traitsInfo    = $this->_referenceDefinitions[$className]['id'];
             $encoding      = $this->_referenceDefinitions[$className]['encoding'];
             $propertyNames = $this->_referenceDefinitions[$className]['propertyNames'];
@@ -460,7 +458,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
         } else {
             $propertyNames = [];
 
-            if($className == ''){
+            if($className == '') {
                 //if there is no className, we interpret the class as dynamic without any sealed members
                 $encoding = Zend_Amf_Constants::ET_DYNAMIC;
             } else {
