@@ -210,14 +210,14 @@ class Zend_Amf_Server implements Zend_Server_Interface
     }
 
     /**
-     * @param namespace of all incoming sessions defaults to Zend_Amf
+     * @param string $namespace
      * @return Zend_Amf_Server
+     * @internal param of $namespace all incoming sessions defaults to Zend_Amf
      */
     public function setSession($namespace = 'Zend_Amf')
     {
         require_once 'Zend/Session.php';
         $this->_session = true;
-        //$this->_sesionNamespace = new Zend_Session_Namespace($namespace);
         return $this;
     }
 
@@ -297,7 +297,8 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * the result
      *
      * @param  string $method Is the method to execute
-     * @param  mixed $param values for the method
+     * @param null|array $params argument values for the method
+     * @param null|array $source
      * @return mixed $response the result of executing the method
      * @throws Zend_Amf_Server_Exception
      */
@@ -385,6 +386,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * @see    Zend_Amf_Value_Messaging_CommandMessage
      * @param  Zend_Amf_Value_Messaging_CommandMessage $message
      * @return Zend_Amf_Value_Messaging_AcknowledgeMessage
+     * @throws Zend_Amf_Server_Exception
      */
     protected function _loadCommandMessage(Zend_Amf_Value_Messaging_CommandMessage $message)
     {
@@ -651,6 +653,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      *
      * @param  null|Zend_Amf_Request $request Optional
      * @return Zend_Amf_Response
+     * @throws Zend_Amf_Server_Exception
      */
     public function handle($request = null)
     {
@@ -688,6 +691,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      *
      * @param  string|Zend_Amf_Request $request
      * @return Zend_Amf_Server
+     * @throws Zend_Amf_Server_Exception
      */
     public function setRequest($request)
     {
@@ -725,6 +729,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      *
      * @param  string|Zend_Amf_Server_Response $response
      * @return Zend_Amf_Server
+     * @throws Zend_Amf_Server_Exception
      */
     public function setResponse($response)
     {
@@ -865,7 +870,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * The dispatch table consists of a an array of method name =>
      * Zend_Server_Reflection_Function_Abstract pairs
      *
-     * @return void
+     * @throws Zend_Amf_Server_Exception
      */
     protected function _buildDispatchTable()
     {
