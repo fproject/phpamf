@@ -99,15 +99,16 @@ final class Zend_Amf_Parse_TypeLoader
     {
         $class    = self::getMappedClassName($className);
         if(!$class) {
-            $class = str_replace('.', '\\', $className);
+            $class = str_replace('.', '_', $className);
         }
         elseif(isset(self::$failureCache[$className])) {
             return self::$failureCache[$className];
         }
 
-        if (!class_exists($class, false)) {
+        if (!class_exists($class, true)) {
             return "stdClass";
         }
+
         return $class;
     }
 
@@ -204,6 +205,7 @@ final class Zend_Amf_Parse_TypeLoader
      *
      * @param resource $resource
      * @return mixed
+     * @throws Zend_Amf_Exception
      */
     public static function handleResource($resource)
     {
