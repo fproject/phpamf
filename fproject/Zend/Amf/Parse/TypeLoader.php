@@ -105,7 +105,7 @@ final class Zend_Amf_Parse_TypeLoader
             return self::$failureCache[$className];
         }
 
-        if (!class_exists($class, true)) {
+        if (!class_exists($class)) {
             return "stdClass";
         }
 
