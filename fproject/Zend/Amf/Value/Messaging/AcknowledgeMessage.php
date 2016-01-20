@@ -40,7 +40,7 @@ class Zend_Amf_Value_Messaging_AcknowledgeMessage extends Zend_Amf_Value_Messagi
     /**
      * Create a new Acknowledge Message
      *
-     * @param unknown_type $message
+     * @param mixed $message
      */
     public function __construct($message)
     {
@@ -52,7 +52,7 @@ class Zend_Amf_Value_Messaging_AcknowledgeMessage extends Zend_Amf_Value_Messagi
         $this->headers     = new STDClass();
         $this->body        = null;
 
-        // correleate the two messages
+        // correlate the two messages
         if ($message && isset($message->messageId)) {
             $this->correlationId = $message->messageId;
         }
