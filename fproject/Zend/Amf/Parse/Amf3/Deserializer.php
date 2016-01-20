@@ -111,7 +111,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
             case Zend_Amf_Constants::AMF3_VECTOR_NUMBER:
             case Zend_Amf_Constants::AMF3_VECTOR_OBJECT:
                 return $this->readVector($typeMarker);
-            case Zend_Amf_Constants::AMF3_DICTIONARY:
+            //case Zend_Amf_Constants::AMF3_DICTIONARY:
             default:
                 $this->throwZendException('Unsupported type marker: {0}',[$typeMarker]);
         }
@@ -313,9 +313,11 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
     }
 
     /**
-     * Read amf Vector.<int> to PHP array
+     * Read AS3 Vector.<int> to PHP array
      * @param int $len
      * @param bool $fixed
+     * @param $eltSize
+     * @param $numberFormat
      * @return array
      * @throws Zend_Amf_Exception
      */
@@ -336,7 +338,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
         for ($i = 0; $i < $len; $i++)
         {
             $bytes = $this->_stream->readBytes($eltSize);
-            if (!Zend_Amf_Util_BinaryStream::isBigEndian())
+            if (!$this->_stream->isBigEndian())
                 $bytes = strrev($bytes);
             $array = unpack($numberFormat, $bytes);
 
@@ -558,21 +560,6 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
         $length = $xmlReference >> 1;
         $string = $this->_stream->readBytes($length);
         return Zend_Xml_Security::scan($string);
-    }
-
-    /**
-     * @param $message
-     * @param array $params
-     * @throws Zend_Amf_Exception
-     */
-    private function throwZendException($message, $params=[])
-    {
-        require_once 'Zend/Amf/Exception.php';
-        for($i=0; $i<count($params); $i++)
-        {
-            $message = str_replace('{'.$i.'}',$params[$i], $message);
-        }
-        throw new Zend_Amf_Exception($message);
     }
 
     private function getReferenceObject($refMarker)

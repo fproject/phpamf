@@ -73,14 +73,17 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      *
      * @param  mixed $data
      * @param  int $markerType
-     * @param  mixed $dataByVal
+     * @param  mixed $extraData The additional data.
+     * In the case $data is NULL, this will param be used as 'byval' value for $data.
+     * In the case $markerType is a AS3 Vector type (AMF3_VECTOR_INT, AMF3_VECTOR_UINT, AMF3_VECTOR_NUMBER or AMF3_VECTOR_OBJECT),
+     * the $extraData will contain AS3 reflection information for writing AS3 Vector.
      * @throws Zend_Amf_Exception
      */
-    public function writeTypeMarker(&$data, $markerType = null, $dataByVal = false)
+    public function writeTypeMarker(&$data, $markerType = null, $extraData = false)
     {
         // Workaround for PHP5 with E_STRICT enabled complaining about "Only
         // variables should be passed by reference"
-        if ((null === $data) && ($dataByVal !== false)) {
+        if ((null === $data) && ($extraData !== false)) {
             $data = &$dataByVal;
         }
         if (null !== $markerType) {
@@ -118,6 +121,12 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
                 case Zend_Amf_Constants::AMF3_XMLSTRING;
                     $this->writeXml($data);
                     break;
+                case Zend_Amf_Constants::AMF3_VECTOR_INT:
+                case Zend_Amf_Constants::AMF3_VECTOR_UINT:
+                case Zend_Amf_Constants::AMF3_VECTOR_NUMBER:
+                case Zend_Amf_Constants::AMF3_VECTOR_OBJECT:
+                    return $this->writeVector($data, $markerType, $extraData);
+                //case Zend_Amf_Constants::AMF3_DICTIONARY:
                 default:
                     require_once 'Zend/Amf/Exception.php';
                     throw new Zend_Amf_Exception('Unknown Type Marker: ' . $markerType);
@@ -376,6 +385,95 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
     }
 
     /**
+     * Write a PHP array to the amf output stream as AS3 vector
+     *
+     * @param array $array
+     * @param $markerType
+     * @param $vectorInfo
+     * @return Zend_Amf_Parse_Amf3_Serializer
+     */
+    public function writeVector(&$array, $markerType, $vectorInfo)
+    {
+        // Arrays aren't reference here but still counted
+        $this->_referenceObjects[] = $array;
+
+        $len = count($array);
+
+        $ref = $len * 2 + 1;
+        $this->writeInteger($ref);
+
+        $this->_stream->writeByte($vectorInfo['fixed']);
+
+        switch ($markerType)
+        {
+            case Zend_Amf_Constants::AMF3_VECTOR_INT:
+                $numberFormat = "i";
+                break;
+            case Zend_Amf_Constants::AMF3_VECTOR_UINT:
+                $numberFormat = "I";
+                break;
+            case Zend_Amf_Constants::AMF3_VECTOR_NUMBER:
+                $numberFormat = "d";
+                break;
+            case Zend_Amf_Constants::AMF3_VECTOR_OBJECT:
+                return $this->writeObjectVector($array, $len, $vectorInfo['elementType']);
+            default:
+                // Unknown vector type tag {type}
+                $this->throwZendException('Undefined vector type: {0}',[$markerType]);
+        }
+
+        $this->writeNumericVector($array, $len, $numberFormat);
+
+        return $this;
+    }
+
+    /**
+     * Write AS3 Vector.<int> from PHP array
+     * @param array $array
+     * @param int $len
+     * @param $numberFormat
+     */
+    public function writeNumericVector($array, $len, $numberFormat)
+    {
+        for ($i = 0; $i < $len; $i++) {
+            $bytes = pack($numberFormat, $array[$i]);
+            if (!$this->_stream->isBigEndian()) {
+                $bytes = strrev($bytes);
+            }
+            $this->_stream->writeBytes($bytes);
+        }
+    }
+
+    /**
+     * Write AS3 Vector.<int> from PHP array
+     * @param array $array
+     * @param int $len
+     * @param string $elementType
+     */
+    public function writeObjectVector($array, $len, $elementType)
+    {
+        if ($elementType == "String" || $elementType == "Boolean")
+        {
+            $this->_stream->writeByte(0x01);
+            if($elementType == "String")
+                $markerType = Zend_Amf_Constants::AMF3_STRING;
+            else
+                $markerType = null;
+        }
+        else
+        {
+            $this->writeString($elementType);
+            $markerType = Zend_Amf_Constants::AMF3_OBJECT;
+        }
+
+        for ($i = 0; $i < $len; $i++) {
+            if($elementType == "Boolean")
+                $markerType = boolval($array[$i]) ? Zend_Amf_Constants::AMF3_BOOLEAN_TRUE : Zend_Amf_Constants::AMF3_BOOLEAN_FALSE;
+            $this->writeTypeMarker($array[$i], $markerType);
+        }
+    }
+
+    /**
      * Check if the given object is in the reference table, write the reference if it exists,
      * otherwise add the object to the reference table
      *
@@ -445,35 +543,52 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
         }
 
         //check to see, if we have a corresponding definition
-        if(array_key_exists($className, $this->_referenceDefinitions)) {
+        if(array_key_exists($className, $this->_referenceDefinitions))
+        {
             $traitsInfo    = $this->_referenceDefinitions[$className]['id'];
             $encoding      = $this->_referenceDefinitions[$className]['encoding'];
             $propertyNames = $this->_referenceDefinitions[$className]['propertyNames'];
 
+            if(array_key_exists('reflectProperties',$this->_referenceDefinitions[$className]))
+                $reflectProperties = $this->_referenceDefinitions[$className]['reflectProperties'];
+
             $traitsInfo = ($traitsInfo << 2) | 0x01;
 
             $writeTraits = false;
-        } else {
+        }
+        else
+        {
             $propertyNames = [];
+            $reflectProperties = null;
 
-            if($className == '') {
+            if($className == '')
+            {
                 //if there is no className, we interpret the class as dynamic without any sealed members
                 $encoding = Zend_Amf_Constants::ET_DYNAMIC;
-            } else {
+            }
+            else
+            {
                 $encoding = Zend_Amf_Constants::ET_PROPLIST;
-
                 foreach($object as $key => $value) {
                     if( $key[0] != "_") {
                         $propertyNames[] = $key;
                     }
+                    if(is_array($value) && is_null($reflectProperties))
+                    {
+                        $reflector = new \fproject\amf\reflect\AmfReflector($object);
+                        $reflectProperties = $reflector->annotations;
+                    }
                 }
             }
 
-            $this->_referenceDefinitions[$className] = array(
-                        'id'            => count($this->_referenceDefinitions),
-                        'encoding'      => $encoding,
-                        'propertyNames' => $propertyNames,
-                    );
+            $this->_referenceDefinitions[$className] = [
+                        'id'               => count($this->_referenceDefinitions),
+                        'encoding'         => $encoding,
+                        'propertyNames'    => $propertyNames,
+                    ];
+
+            if(!empty($reflectProperties))
+                $this->_referenceDefinitions[$className]['reflectProperties'] = $reflectProperties;
 
             $traitsInfo = Zend_Amf_Constants::AMF3_OBJECT_ENCODING;
             $traitsInfo |= $encoding << 2;
@@ -486,17 +601,36 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
 
         if($writeTraits){
             $this->writeString($className);
-            foreach ($propertyNames as $value) {
-                $this->writeString($value);
+            foreach ($propertyNames as $key) {
+                $this->writeString($key);
             }
         }
 
-        try {
+        try
+        {
             switch($encoding) {
                 case Zend_Amf_Constants::ET_PROPLIST:
                     //Write the sealed values to the output stream.
-                    foreach ($propertyNames as $key) {
-                        $this->writeTypeMarker($object->$key);
+                    foreach ($propertyNames as $key)
+                    {
+                        $markerType = null;
+                        $extraData = false;
+                        if(!empty($reflectProperties) && !is_null($object->$key))
+                        {
+                            if(array_key_exists($key, $reflectProperties))
+                            {
+                                if($reflectProperties[$key]['isVector'])
+                                {
+                                    $markerType = $reflectProperties[$key]['vectorElementType'];
+                                    $extraData = [
+                                        'elementType' => $reflectProperties[$key]['typeName'],
+                                        'fixed' => $reflectProperties[$key]['isFixedVector'],
+                                    ];
+                                }
+                            }
+                        }
+
+                        $this->writeTypeMarker($object->$key, $markerType, $extraData);
                     }
                     break;
                 case Zend_Amf_Constants::ET_DYNAMIC:
@@ -524,7 +658,9 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
                     require_once 'Zend/Amf/Exception.php';
                     throw new Zend_Amf_Exception('Unknown Object Encoding type: ' . $encoding);
             }
-        } catch (Exception $e) {
+        }
+        catch (Exception $e)
+        {
             require_once 'Zend/Amf/Exception.php';
             throw new Zend_Amf_Exception('Unable to writeObject output: ' . $e->getMessage(), 0, $e);
         }

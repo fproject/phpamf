@@ -49,7 +49,7 @@ class Zend_Amf_Util_BinaryStream
      * Check if system is using BigEndian encoding
      * @return boolean
      */
-    public static function isBigEndian()
+    public function isBigEndian()
     {
         return self::$_bigEndian;
     }
