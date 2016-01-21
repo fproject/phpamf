@@ -111,7 +111,7 @@ class Zend_Auth
      * Authenticates against the supplied adapter
      *
      * @param  Zend_Auth_Adapter_Interface $adapter
-     * @return Zend_Auth_Result
+     * @return \fproject\amf\auth\AuthResult
      */
     public function authenticate(Zend_Auth_Adapter_Interface $adapter)
     {

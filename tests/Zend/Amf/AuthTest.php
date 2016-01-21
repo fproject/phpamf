@@ -31,7 +31,6 @@ require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Zend/Amf/Auth/Abstract.php';
 require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
 require_once 'Zend/Session.php';
-require_once 'Zend/Auth/Result.php';
 require_once 'Zend/Acl.php';
 require_once 'Zend/Acl/Role.php';
 
@@ -286,7 +285,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
 class WrongPassword extends Zend_Amf_Auth_Abstract
 {
     public function authenticate() {
-        return new Zend_Auth_Result(Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID,
+        return new \fproject\amf\auth\AuthResult(\fproject\amf\auth\AuthResult::FAILURE_CREDENTIAL_INVALID,
                 null,
                 array('Wrong Password')
                 );
@@ -305,7 +304,7 @@ class RightPassword extends Zend_Amf_Auth_Abstract
         $id = new stdClass();
         $id->role = $this->_role;
         $id->name = $this->_name;
-        return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $id);
+        return new \fproject\amf\auth\AuthResult(\fproject\amf\auth\AuthResult::SUCCESS, $id);
     }
 }
 

@@ -31,11 +31,7 @@ require_once 'Zend/Auth/Adapter/Interface.php';
  */
 require_once 'Zend/Db/Adapter/Abstract.php';
 
-/**
- * @see Zend_Auth_Result
- */
-require_once 'Zend/Auth/Result.php';
-
+use fproject\amf\auth\AuthResult;
 
 /**
  * @category   Zend
@@ -359,7 +355,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
      * table and attempt to find a record matching the provided identity.
      *
      * @throws \fproject\amf\AmfException if answering the authentication query is impossible
-     * @return Zend_Auth_Result
+     * @return AuthResult
      */
     public function authenticate()
     {
@@ -367,7 +363,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
         $dbSelect = $this->_authenticateCreateSelect();
         $resultIdentities = $this->_authenticateQuerySelect($dbSelect);
 
-        if ( ($authResult = $this->_authenticateValidateResultSet($resultIdentities)) instanceof Zend_Auth_Result) {
+        if ( ($authResult = $this->_authenticateValidateResultSet($resultIdentities)) instanceof AuthResult) {
             return $authResult;
         }
 
@@ -415,7 +411,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
         }
 
         $this->_authenticateResultInfo = array(
-            'code'     => Zend_Auth_Result::FAILURE,
+            'code'     => AuthResult::FAILURE,
             'identity' => $this->_identity,
             'messages' => array()
             );
@@ -490,17 +486,17 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
      * certain that only one record was returned in the resultset
      *
      * @param array $resultIdentities
-     * @return true|Zend_Auth_Result
+     * @return true|AuthResult
      */
     protected function _authenticateValidateResultSet(array $resultIdentities)
     {
 
         if (count($resultIdentities) < 1) {
-            $this->_authenticateResultInfo['code'] = Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND;
+            $this->_authenticateResultInfo['code'] = AuthResult::FAILURE_IDENTITY_NOT_FOUND;
             $this->_authenticateResultInfo['messages'][] = 'A record with the supplied identity could not be found.';
             return $this->_authenticateCreateAuthResult();
         } elseif (count($resultIdentities) > 1 && false === $this->getAmbiguityIdentity()) {
-            $this->_authenticateResultInfo['code'] = Zend_Auth_Result::FAILURE_IDENTITY_AMBIGUOUS;
+            $this->_authenticateResultInfo['code'] = AuthResult::FAILURE_IDENTITY_AMBIGUOUS;
             $this->_authenticateResultInfo['messages'][] = 'More than one record matches the supplied identity.';
             return $this->_authenticateCreateAuthResult();
         }
@@ -514,14 +510,14 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
      * identity provided to this adapter.
      *
      * @param array $resultIdentity
-     * @return Zend_Auth_Result
+     * @return AuthResult
      */
     protected function _authenticateValidateResult($resultIdentity)
     {
         $zendAuthCredentialMatchColumn = $this->_zendDb->foldCase('zend_auth_credential_match');
 
         if ($resultIdentity[$zendAuthCredentialMatchColumn] != '1') {
-            $this->_authenticateResultInfo['code'] = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
+            $this->_authenticateResultInfo['code'] = AuthResult::FAILURE_CREDENTIAL_INVALID;
             $this->_authenticateResultInfo['messages'][] = 'Supplied credential is invalid.';
             return $this->_authenticateCreateAuthResult();
         }
@@ -529,20 +525,20 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
         unset($resultIdentity[$zendAuthCredentialMatchColumn]);
         $this->_resultRow = $resultIdentity;
 
-        $this->_authenticateResultInfo['code'] = Zend_Auth_Result::SUCCESS;
+        $this->_authenticateResultInfo['code'] = AuthResult::SUCCESS;
         $this->_authenticateResultInfo['messages'][] = 'Authentication successful.';
         return $this->_authenticateCreateAuthResult();
     }
 
     /**
-     * _authenticateCreateAuthResult() - Creates a Zend_Auth_Result object from
+     * _authenticateCreateAuthResult() - Creates a AuthResult object from
      * the information that has been collected during the authenticate() attempt.
      *
-     * @return Zend_Auth_Result
+     * @return AuthResult
      */
     protected function _authenticateCreateAuthResult()
     {
-        return new Zend_Auth_Result(
+        return new AuthResult(
             $this->_authenticateResultInfo['code'],
             $this->_authenticateResultInfo['identity'],
             $this->_authenticateResultInfo['messages']

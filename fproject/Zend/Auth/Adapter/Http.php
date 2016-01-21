@@ -26,6 +26,7 @@
  */
 require_once 'Zend/Auth/Adapter/Interface.php';
 
+use fproject\amf\auth\AuthResult;
 
 /**
  * HTTP Authentication Adapter
@@ -335,7 +336,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
      * Authenticate
      *
      * @throws \fproject\amf\AmfException
-     * @return Zend_Auth_Result
+     * @return AuthResult
      */
     public function authenticate()
     {
@@ -363,8 +364,8 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         // answer with only the selected auth scheme.
         if (!in_array($clientScheme, $this->_supportedSchemes)) {
             $this->_response->setHttpResponseCode(400);
-            return new Zend_Auth_Result(
-                Zend_Auth_Result::FAILURE_UNCATEGORIZED,
+            return new AuthResult(
+                AuthResult::FAILURE_UNCATEGORIZED,
                 array(),
                 array('Client requested an incorrect or unsupported authentication scheme')
             );
@@ -396,7 +397,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
      * Sets a 401 or 407 Unauthorized response code, and creates the
      * appropriate Authenticate header(s) to prompt for credentials.
      *
-     * @return Zend_Auth_Result Always returns a non-identity Auth result
+     * @return AuthResult Always returns a non-identity Auth result
      */
     protected function _challengeClient()
     {
@@ -417,8 +418,8 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         if (in_array('digest', $this->_acceptSchemes)) {
             $this->_response->setHeader($headerName, $this->_digestHeader());
         }
-        return new Zend_Auth_Result(
-            Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID,
+        return new AuthResult(
+            AuthResult::FAILURE_CREDENTIAL_INVALID,
             array(),
             array('Invalid or absent credentials; challenging client')
         );
@@ -462,7 +463,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
      *
      * @param  string $header Client's Authorization header
      * @throws \fproject\amf\AmfException
-     * @return Zend_Auth_Result
+     * @return AuthResult
      */
     protected function _basicAuth($header)
     {
@@ -496,7 +497,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         $password = $this->_basicResolver->resolve($creds[0], $this->_realm);
         if ($password && $this->_secureStringCompare($password, $creds[1])) {
             $identity = array('username'=>$creds[0], 'realm'=>$this->_realm);
-            return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $identity);
+            return new AuthResult(AuthResult::SUCCESS, $identity);
         } else {
             return $this->_challengeClient();
         }
@@ -507,7 +508,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
      *
      * @param  string $header Client's Authorization header
      * @throws \fproject\amf\AmfException
-     * @return Zend_Auth_Result Valid auth result only on successful auth
+     * @return AuthResult Valid auth result only on successful auth
      */
     protected function _digestAuth($header)
     {
@@ -521,8 +522,8 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         $data = $this->_parseDigestAuth($header);
         if ($data === false) {
             $this->_response->setHttpResponseCode(400);
-            return new Zend_Auth_Result(
-                Zend_Auth_Result::FAILURE_UNCATEGORIZED,
+            return new AuthResult(
+                AuthResult::FAILURE_UNCATEGORIZED,
                 array(),
                 array('Invalid Authorization header format')
             );
@@ -586,7 +587,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         // a 401 code and exit to prevent access to the protected resource.
         if ($this->_secureStringCompare($digest, $data['response'])) {
             $identity = array('username'=>$data['username'], 'realm'=>$data['realm']);
-            return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $identity);
+            return new AuthResult(AuthResult::SUCCESS, $identity);
         } else {
             return $this->_challengeClient();
         }

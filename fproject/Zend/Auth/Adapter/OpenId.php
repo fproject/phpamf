@@ -32,6 +32,7 @@ require_once 'Zend/Auth/Adapter/Interface.php';
  */
 require_once 'Zend/OpenId/Consumer.php';
 
+use fproject\amf\auth\AuthResult;
 
 /**
  * A Zend_Auth Authentication Adapter allowing the use of OpenID protocol as an
@@ -228,7 +229,7 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
      * Defined by Zend_Auth_Adapter_Interface.
      *
      * @throws \fproject\amf\AmfException If answering the authentication query is impossible
-     * @return Zend_Auth_Result
+     * @return AuthResult
      */
     public function authenticate() {
         $id = $this->_id;
@@ -242,8 +243,8 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
                         $this->_root,
                         $this->_extensions,
                         $this->_response)) {
-                    return new Zend_Auth_Result(
-                        Zend_Auth_Result::FAILURE,
+                    return new AuthResult(
+                        AuthResult::FAILURE,
                         $id,
                         array("Authentication failed", $consumer->getError()));
                 }
@@ -253,8 +254,8 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
                         $this->_root,
                         $this->_extensions,
                         $this->_response)) {
-                    return new Zend_Auth_Result(
-                        Zend_Auth_Result::FAILURE,
+                    return new AuthResult(
+                        AuthResult::FAILURE,
                         $id,
                         array("Authentication failed", $consumer->getError()));
                 }
@@ -268,13 +269,13 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
                     $params,
                     $id,
                     $this->_extensions)) {
-                return new Zend_Auth_Result(
-                    Zend_Auth_Result::SUCCESS,
+                return new AuthResult(
+                    AuthResult::SUCCESS,
                     $id,
                     array("Authentication successful"));
             } else {
-                return new Zend_Auth_Result(
-                    Zend_Auth_Result::FAILURE,
+                return new AuthResult(
+                    AuthResult::FAILURE,
                     $id,
                     array("Authentication failed", $consumer->getError()));
             }

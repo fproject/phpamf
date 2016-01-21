@@ -25,6 +25,8 @@
  */
 require_once 'Zend/Auth/Adapter/Interface.php';
 
+use fproject\amf\auth\AuthResult;
+
 /**
  * @category   Zend
  * @package    Zend_Auth
@@ -240,7 +242,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
      * Authenticate the user
      *
      * @throws \fproject\amf\AmfException
-     * @return Zend_Auth_Result
+     * @return AuthResult
      */
     public function authenticate()
     {
@@ -257,22 +259,22 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
         $password = $this->_password;
 
         if (!$username) {
-            $code = Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND;
+            $code = AuthResult::FAILURE_IDENTITY_NOT_FOUND;
             $messages[0] = 'A username is required';
-            return new Zend_Auth_Result($code, '', $messages);
+            return new AuthResult($code, '', $messages);
         }
         if (!$password) {
             /* A password is required because some servers will
              * treat an empty password as an anonymous bind.
              */
-            $code = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
+            $code = AuthResult::FAILURE_CREDENTIAL_INVALID;
             $messages[0] = 'A password is required';
-            return new Zend_Auth_Result($code, '', $messages);
+            return new AuthResult($code, '', $messages);
         }
 
         $ldap = $this->getLdap();
 
-        $code = Zend_Auth_Result::FAILURE;
+        $code = AuthResult::FAILURE;
         $messages[0] = "Authority not found: $username";
         $failedAuthorities = [];
 
@@ -334,7 +336,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
                         // rebinding with authenticated user
                         $ldap->bind($dn, $password);
                     }
-                    return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $canonicalName, $messages);
+                    return new AuthResult(AuthResult::SUCCESS, $canonicalName, $messages);
                 } else {
                     $messages[0] = 'Account is not a member of the specified group';
                     $messages[1] = $groupResult;
@@ -357,11 +359,11 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
                      */
                     continue;
                 } else if ($err == Zend_Ldap_Exception::LDAP_NO_SUCH_OBJECT) {
-                    $code = Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND;
+                    $code = AuthResult::FAILURE_IDENTITY_NOT_FOUND;
                     $messages[0] = "Account not found: $username";
                     $failedAuthorities[$dname] = $zle->getMessage();
                 } else if ($err == Zend_Ldap_Exception::LDAP_INVALID_CREDENTIALS) {
-                    $code = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
+                    $code = AuthResult::FAILURE_CREDENTIAL_INVALID;
                     $messages[0] = 'Invalid credentials';
                     $failedAuthorities[$dname] = $zle->getMessage();
                 } else {
@@ -381,7 +383,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
         $msg = isset($messages[1]) ? $messages[1] : $messages[0];
         $messages[] = "$username authentication failed: $msg";
 
-        return new Zend_Auth_Result($code, $username, $messages);
+        return new AuthResult($code, $username, $messages);
     }
 
     /**

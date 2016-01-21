@@ -25,11 +25,10 @@ require_once 'Zend/Amf/Auth/Abstract.php';
 /** @see Zend_Acl */
 require_once 'Zend/Acl.php';
 
-/** @see Zend_Auth_Result */
-require_once 'Zend/Auth/Result.php';
-
 /** @see Zend_Xml_Security */
 require_once 'Zend/Xml/Security.php';
+
+use fproject\amf\auth\AuthResult;
 
 /**
  * This class implements authentication against XML file with roles for Flex Builder.
@@ -99,7 +98,7 @@ Roles file format:
      * Perform authentication
      *
      * @throws \fproject\amf\AmfException
-     * @return Zend_Auth_Result
+     * @return AuthResult
      * @see Zend_Auth_Adapter_Interface#authenticate()
      */
     public function authenticate()
@@ -110,7 +109,7 @@ Roles file format:
         }
 
         if(!isset($this->_users[$this->_username])) {
-            return new Zend_Auth_Result(Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND,
+            return new AuthResult(AuthResult::FAILURE_IDENTITY_NOT_FOUND,
                 null,
                 array('Username not found')
                 );
@@ -118,7 +117,7 @@ Roles file format:
 
         $user = $this->_users[$this->_username];
         if($user["password"] != $this->_password) {
-            return new Zend_Auth_Result(Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID,
+            return new AuthResult(AuthResult::FAILURE_CREDENTIAL_INVALID,
                 null,
                 array('Authentication failed')
                 );
@@ -127,6 +126,6 @@ Roles file format:
         $id = new stdClass();
         $id->role = $user["role"];
         $id->name = $this->_username;
-        return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $id);
+        return new AuthResult(AuthResult::SUCCESS, $id);
     }
 }

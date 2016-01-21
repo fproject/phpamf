@@ -454,7 +454,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      *
      * @param string $userId
      * @param string $password
-     * @return bool|Zend_Auth_Result
+     * @return bool|\fproject\amf\auth\AuthResult
      * @throws \fproject\amf\AmfException
      *
      */
@@ -512,7 +512,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
                     $headers[Zend_Amf_Constants::CREDENTIALS_HEADER]->userid,
                     $headers[Zend_Amf_Constants::CREDENTIALS_HEADER]->password
                 );
-                if ($authResult === true || $authResult->getCode() == Zend_Auth_Result::SUCCESS) {
+                if ($authResult === true || $authResult->getCode() == \fproject\amf\auth\AuthResult::SUCCESS) {
                     // use RequestPersistentHeader to clear credentials
                     $response->addAmfHeader(
                         new Zend_Amf_Value_MessageHeader(

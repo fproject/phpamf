@@ -22,12 +22,6 @@
 
 
 /**
- * @see Zend_Auth_Result
- */
-require_once 'Zend/Auth/Result.php';
-
-
-/**
  * @category   Zend
  * @package    Zend_Auth
  * @subpackage Zend_Auth_Adapter
@@ -40,7 +34,7 @@ interface Zend_Auth_Adapter_Interface
      * Performs an authentication attempt
      *
      * @throws \fproject\amf\AmfException If authentication cannot be performed
-     * @return Zend_Auth_Result
+     * @return \fproject\amf\auth\AuthResult
      */
     public function authenticate();
 }

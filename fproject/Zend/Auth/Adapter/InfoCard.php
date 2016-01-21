@@ -26,14 +26,11 @@
 require_once 'Zend/Auth/Adapter/Interface.php';
 
 /**
- * @see Zend_Auth_Result
- */
-require_once 'Zend/Auth/Result.php';
-
-/**
  * @see Zend_InfoCard
  */
 require_once 'Zend/InfoCard.php';
+
+use fproject\amf\auth\AuthResult;
 
 /**
  * A Zend_Auth Authentication Adapter allowing the use of Information Cards as an
@@ -205,14 +202,14 @@ class Zend_Auth_Adapter_InfoCard implements Zend_Auth_Adapter_Interface
     /**
      * Authenticates the XML token
      *
-     * @return Zend_Auth_Result The result of the authentication
+     * @return AuthResult The result of the authentication
      */
     public function authenticate()
     {
         try {
             $claims = $this->_infoCard->process($this->getXmlToken());
         } catch(Exception $e) {
-            return new Zend_Auth_Result(Zend_Auth_Result::FAILURE , null, array('Exception Thrown',
+            return new AuthResult(AuthResult::FAILURE , null, array('Exception Thrown',
                                                                                 $e->getMessage(),
                                                                                 $e->getTraceAsString(),
                                                                                 serialize($e)));
@@ -221,8 +218,8 @@ class Zend_Auth_Adapter_InfoCard implements Zend_Auth_Adapter_Interface
         if(!$claims->isValid()) {
             switch($claims->getCode()) {
                 case Zend_infoCard_Claims::RESULT_PROCESSING_FAILURE:
-                    return new Zend_Auth_Result(
-                        Zend_Auth_Result::FAILURE,
+                    return new AuthResult(
+                        AuthResult::FAILURE,
                         $claims,
                         array(
                             'Processing Failure',
@@ -231,8 +228,8 @@ class Zend_Auth_Adapter_InfoCard implements Zend_Auth_Adapter_Interface
                     );
                     break;
                 case Zend_InfoCard_Claims::RESULT_VALIDATION_FAILURE:
-                    return new Zend_Auth_Result(
-                        Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID,
+                    return new AuthResult(
+                        AuthResult::FAILURE_CREDENTIAL_INVALID,
                         $claims,
                         array(
                             'Validation Failure',
@@ -241,8 +238,8 @@ class Zend_Auth_Adapter_InfoCard implements Zend_Auth_Adapter_Interface
                     );
                     break;
                 default:
-                    return new Zend_Auth_Result(
-                        Zend_Auth_Result::FAILURE,
+                    return new AuthResult(
+                        AuthResult::FAILURE,
                         $claims,
                         array(
                             'Unknown Failure',
@@ -253,8 +250,8 @@ class Zend_Auth_Adapter_InfoCard implements Zend_Auth_Adapter_Interface
             }
         }
 
-        return new Zend_Auth_Result(
-            Zend_Auth_Result::SUCCESS,
+        return new AuthResult(
+            AuthResult::SUCCESS,
             $claims
         );
     }
