@@ -230,7 +230,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * @param string|object $object Object or class being accessed
      * @param string $function Function or method being accessed
      * @return bool
-     * @throws Zend_Acl_Exception
+     * @throws \fproject\amf\AmfException
      * @throws Zend_Amf_Server_Exception
      */
     protected function _checkAcl($object, $function)
