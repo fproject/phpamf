@@ -55,7 +55,7 @@ class Zend_Server_Reflection
      * method name (used for the signature key). Primarily to avoid collisions,
      * also for XmlRpc namespacing
      * @return Zend_Server_Reflection_Class
-     * @throws Zend_Server_Reflection_Exception
+     * @throws \fproject\amf\AmfException
      */
     public static function reflectClass($class, $argv = false, $namespace = '')
     {
@@ -64,13 +64,11 @@ class Zend_Server_Reflection
         } elseif (class_exists($class)) {
             $reflection = new ReflectionClass($class);
         } else {
-            require_once 'Zend/Server/Reflection/Exception.php';
-            throw new Zend_Server_Reflection_Exception('Invalid class or object passed to attachClass()');
+            throw new \fproject\amf\AmfException('Invalid class or object passed to attachClass()');
         }
 
         if ($argv && !is_array($argv)) {
-            require_once 'Zend/Server/Reflection/Exception.php';
-            throw new Zend_Server_Reflection_Exception('Invalid argv argument passed to reflectClass');
+            throw new \fproject\amf\AmfException('Invalid argv argument passed to reflectClass');
         }
 
         return new Zend_Server_Reflection_Class($reflection, $namespace, $argv);
@@ -91,19 +89,17 @@ class Zend_Server_Reflection
      * function name (used for the signature key). Primarily to avoid
      * collisions, also for XmlRpc namespacing
      * @return Zend_Server_Reflection_Function
-     * @throws Zend_Server_Reflection_Exception
+     * @throws \fproject\amf\AmfException
      */
     public static function reflectFunction($function, $argv = false, $namespace = '')
     {
         if (!is_string($function) || !function_exists($function)) {
-            require_once 'Zend/Server/Reflection/Exception.php';
-            throw new Zend_Server_Reflection_Exception('Invalid function "' . $function . '" passed to reflectFunction');
+            throw new \fproject\amf\AmfException('Invalid function "' . $function . '" passed to reflectFunction');
         }
 
 
         if ($argv && !is_array($argv)) {
-            require_once 'Zend/Server/Reflection/Exception.php';
-            throw new Zend_Server_Reflection_Exception('Invalid argv argument passed to reflectClass');
+            throw new \fproject\amf\AmfException('Invalid argv argument passed to reflectClass');
         }
 
         return new Zend_Server_Reflection_Function(new ReflectionFunction($function), $namespace, $argv);

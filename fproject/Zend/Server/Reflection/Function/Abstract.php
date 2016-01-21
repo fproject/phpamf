@@ -115,8 +115,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
         // testing here.
         if ((!$r instanceof ReflectionFunction)
             && (!$r instanceof ReflectionMethod)) {
-            require_once 'Zend/Server/Reflection/Exception.php';
-            throw new Zend_Server_Reflection_Exception('Invalid reflection class');
+            throw new \fproject\amf\AmfException('Invalid reflection class');
         }
         $this->_reflection = $r;
 
@@ -346,8 +345,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
         }
 
         if (count($paramTypesTmp) != $paramCount) {
-            require_once 'Zend/Server/Reflection/Exception.php';
-            throw new Zend_Server_Reflection_Exception(
+            throw new \fproject\amf\AmfException(
                'Variable number of arguments is not supported for services (except optional parameters). '
              . 'Number of function arguments in ' . $function->getDeclaringClass()->getName() . '::'
              . $function->getName() . '() must correspond to actual number of arguments described in the '
@@ -373,6 +371,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
      * @param string $method
      * @param array $args
      * @return mixed
+     * @throws \fproject\amf\AmfException
      */
     public function __call($method, $args)
     {
@@ -380,8 +379,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
             return call_user_func_array(array($this->_reflection, $method), $args);
         }
 
-        require_once 'Zend/Server/Reflection/Exception.php';
-        throw new Zend_Server_Reflection_Exception('Invalid reflection method ("' .$method. '")');
+        throw new \fproject\amf\AmfException('Invalid reflection method ("' .$method. '")');
     }
 
     /**
@@ -420,7 +418,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
      * Set method's namespace
      *
      * @param string $namespace
-     * @return void
+     * @throws \fproject\amf\AmfException
      */
     public function setNamespace($namespace)
     {
@@ -430,8 +428,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
         }
 
         if (!is_string($namespace) || !preg_match('/[a-z0-9_\.]+/i', $namespace)) {
-            require_once 'Zend/Server/Reflection/Exception.php';
-            throw new Zend_Server_Reflection_Exception('Invalid namespace');
+            throw new \fproject\amf\AmfException('Invalid namespace');
         }
 
         $this->_namespace = $namespace;
@@ -451,13 +448,12 @@ abstract class Zend_Server_Reflection_Function_Abstract
      * Set the description
      *
      * @param string $string
-     * @return void
+     * @throws \fproject\amf\AmfException
      */
     public function setDescription($string)
     {
         if (!is_string($string)) {
-            require_once 'Zend/Server/Reflection/Exception.php';
-            throw new Zend_Server_Reflection_Exception('Invalid description');
+            throw new \fproject\amf\AmfException('Invalid description');
         }
 
         $this->_description = $string;

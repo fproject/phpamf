@@ -752,7 +752,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * @param  mixed $argv Optional arguments to pass to a method
      * @return Zend_Amf_Server
      * @throws \fproject\amf\AmfException on invalid input
-     * @throws Zend_Server_Reflection_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function setClass($class, $namespace = '', $argv = null)
     {

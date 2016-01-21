@@ -70,13 +70,12 @@ class Zend_Server_Reflection_ReturnValue
      * Set parameter type
      *
      * @param string|null $type
-     * @return void
+     * @throws \fproject\amf\AmfException
      */
     public function setType($type)
     {
         if (!is_string($type) && (null !== $type)) {
-            require_once 'Zend/Server/Reflection/Exception.php';
-            throw new Zend_Server_Reflection_Exception('Invalid parameter type');
+            throw new \fproject\amf\AmfException('Invalid parameter type');
         }
 
         $this->_type = $type;
@@ -96,13 +95,12 @@ class Zend_Server_Reflection_ReturnValue
      * Set parameter description
      *
      * @param string|null $description
-     * @return void
+     * @throws \fproject\amf\AmfException
      */
     public function setDescription($description)
     {
         if (!is_string($description) && (null !== $description)) {
-            require_once 'Zend/Server/Reflection/Exception.php';
-            throw new Zend_Server_Reflection_Exception('Invalid parameter description');
+            throw new \fproject\amf\AmfException('Invalid parameter description');
         }
 
         $this->_description = $description;
