@@ -19,15 +19,13 @@
 
 namespace fproject\amf\parse;
 
-use Zend_Amf_Exception;
-
 class AbstractParser
 {
     /**
      * Throw Parser Exception
      * @param $message
      * @param array $params
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      */
     protected function throwZendException($message, $params=[])
     {
@@ -35,6 +33,6 @@ class AbstractParser
         {
             $message = str_replace('{'.$i.'}',$params[$i], $message);
         }
-        throw new Zend_Amf_Exception($message);
+        throw new \fproject\amf\AmfException($message);
     }
 }

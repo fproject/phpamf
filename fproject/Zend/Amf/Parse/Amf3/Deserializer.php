@@ -72,7 +72,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
      *
      * @param  integer $typeMarker
      * @return mixed Whatever the corresponding PHP data type is
-     * @throws Zend_Amf_Exception for unidentified marker type
+     * @throws \fproject\amf\AmfException for unidentified marker type
      */
     public function readTypeMarker($typeMarker = null)
     {
@@ -212,7 +212,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
      *
      * - date = 0x08 integer-data [ number-data ]
      *
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      * @return DateTime date-time object
      *
      * 2014/05/24: Bui Sy Nguyen <nguyenbs@projectkit.net> modified to use
@@ -275,7 +275,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
      * Read an amf Vector to PHP array
      *
      * @return array
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function readVector($type)
     {
@@ -319,7 +319,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
      * @param $eltSize
      * @param $numberFormat
      * @return array
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function readNumericVector($len, $fixed, $eltSize, $numberFormat)
     {
@@ -363,7 +363,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
      * @param int $len
      * @param bool $fixed
      * @return array
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function readObjectVector($len, $fixed)
     {
@@ -397,7 +397,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
     /**
      * Read amf Dictionary to PHP array
      * @return array
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function readDictionary()
     {
@@ -487,7 +487,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
     /**
      * @param $className
      * @return array
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      */
     protected function createObjectInstance($className)
     {

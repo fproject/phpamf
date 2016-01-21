@@ -205,35 +205,31 @@ final class Zend_Amf_Parse_TypeLoader
      *
      * @param resource $resource
      * @return mixed
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      */
     public static function handleResource($resource)
     {
         if(!self::$_resourceLoader) {
-            require_once 'Zend/Amf/Exception.php';
-            throw new Zend_Amf_Exception('Unable to handle resources - resource plugin loader not set');
+            throw new \fproject\amf\AmfException('Unable to handle resources - resource plugin loader not set');
         }
         try {
             while(is_resource($resource)) {
                 $resclass = self::getResourceParser($resource);
                 if(!$resclass) {
-                    require_once 'Zend/Amf/Exception.php';
-                    throw new Zend_Amf_Exception('Can not serialize resource type: '. get_resource_type($resource));
+                    throw new \fproject\amf\AmfException('Can not serialize resource type: '. get_resource_type($resource));
                 }
                 $parser = new $resclass();
                 if(is_callable(array($parser, 'parse'))) {
                     $resource = $parser->parse($resource);
                 } else {
-                    require_once 'Zend/Amf/Exception.php';
-                    throw new Zend_Amf_Exception("Could not call parse() method on class $resclass");
+                    throw new \fproject\amf\AmfException("Could not call parse() method on class $resclass");
                 }
             }
             return $resource;
-        } catch(Zend_Amf_Exception $e) {
-            throw new Zend_Amf_Exception($e->getMessage(), $e->getCode(), $e);
+        } catch(\fproject\amf\AmfException $e) {
+            throw new \fproject\amf\AmfException($e->getMessage(), $e->getCode(), $e);
         } catch(Exception $e) {
-            require_once 'Zend/Amf/Exception.php';
-            throw new Zend_Amf_Exception('Can not serialize resource type: '. get_resource_type($resource), 0, $e);
+            throw new \fproject\amf\AmfException('Can not serialize resource type: '. get_resource_type($resource), 0, $e);
         }
     }
 }

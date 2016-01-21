@@ -72,13 +72,12 @@ class Zend_Amf_Util_BinaryStream
      * little Endian encoding.
      *
      * @param  string $stream use '' if creating a new stream or pass a string if reading.
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function __construct($stream)
     {
         if (!is_string($stream)) {
-            require_once 'Zend/Amf/Exception.php';
-            throw new Zend_Amf_Exception('Inputdata is not of type String');
+            throw new \fproject\amf\AmfException('Inputdata is not of type String');
         }
 
         $this->_stream       = $stream;
@@ -115,13 +114,12 @@ class Zend_Amf_Util_BinaryStream
      * @todo   Should check that there are enough bytes left in the stream we are about to read.
      * @param  int $length
      * @return string
-     * @throws Zend_Amf_Exception for buffer underrun
+     * @throws \fproject\amf\AmfException for buffer underrun
      */
     public function readBytes($length)
     {
         if (($length + $this->_needle) > $this->_streamLength) {
-            require_once 'Zend/Amf/Exception.php';
-            throw new Zend_Amf_Exception('Buffer underrun at needle position: ' . $this->_needle . ' while requesting length: ' . $length);
+            throw new \fproject\amf\AmfException('Buffer underrun at needle position: ' . $this->_needle . ' while requesting length: ' . $length);
         }
         $bytes = $this->_mbStringFunctionsOverloaded ? mb_substr($this->_stream, $this->_needle, $length, '8bit') : substr($this->_stream, $this->_needle, $length);
         $this->_needle+= $length;
@@ -146,13 +144,12 @@ class Zend_Amf_Util_BinaryStream
      * Reads a signed byte
      *
      * @return int Value is in the range of -128 to 127.
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function readByte()
     {
         if (($this->_needle + 1) > $this->_streamLength) {
-            require_once 'Zend/Amf/Exception.php';
-            throw new Zend_Amf_Exception(
+            throw new \fproject\amf\AmfException(
                 'Buffer underrun at needle position: '
                 . $this->_needle
                 . ' while requesting length: '

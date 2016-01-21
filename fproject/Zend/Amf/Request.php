@@ -100,7 +100,7 @@ class Zend_Amf_Request
      *
      * @param Zend_Amf_Parse_InputStream $stream
      * @return Zend_Amf_Request
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function readMessage(Zend_Amf_Parse_InputStream $stream)
     {
@@ -109,8 +109,7 @@ class Zend_Amf_Request
             && ($clientVersion != Zend_Amf_Constants::AMF3_OBJECT_ENCODING)
             && ($clientVersion != Zend_Amf_Constants::FMS_OBJECT_ENCODING)
         ) {
-            require_once 'Zend/Amf/Exception.php';
-            throw new Zend_Amf_Exception('Unknown Player Version ' . $clientVersion);
+            throw new \fproject\amf\AmfException('Unknown Player Version ' . $clientVersion);
         }
 
         $this->_bodies  = [];
@@ -140,7 +139,7 @@ class Zend_Amf_Request
      * - LENGTH Int
      * - DATA Object
      * @return Zend_Amf_Value_MessageHeader
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function readHeader()
     {
@@ -151,8 +150,7 @@ class Zend_Amf_Request
         try {
             $data = $this->_deserializer->readTypeMarker();
         } catch (Exception $e) {
-            require_once 'Zend/Amf/Exception.php';
-            throw new Zend_Amf_Exception('Unable to parse ' . $name . ' header data: ' . $e->getMessage() . ' '. $e->getLine(), 0, $e);
+            throw new \fproject\amf\AmfException('Unable to parse ' . $name . ' header data: ' . $e->getMessage() . ' '. $e->getLine(), 0, $e);
         }
 
         $header = new Zend_Amf_Value_MessageHeader($name, $mustRead, $data, $length);
@@ -162,7 +160,7 @@ class Zend_Amf_Request
     /**
      * Deserialize a message body from the input stream
      * @return Zend_Amf_Value_MessageBody
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function readBody()
     {
@@ -173,8 +171,7 @@ class Zend_Amf_Request
         try {
             $data = $this->_deserializer->readTypeMarker();
         } catch (Exception $e) {
-            require_once 'Zend/Amf/Exception.php';
-            throw new Zend_Amf_Exception('Unable to parse ' . $targetURI . ' body data ' . $e->getMessage(), 0, $e);
+            throw new \fproject\amf\AmfException('Unable to parse ' . $targetURI . ' body data ' . $e->getMessage(), 0, $e);
         }
 
         // Check for AMF3 objectEncoding

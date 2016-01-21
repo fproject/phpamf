@@ -63,7 +63,7 @@ class Zend_Amf_Parse_Amf0_Deserializer extends Zend_Amf_Parse_Deserializer
      *
      * @param  integer $typeMarker
      * @return mixed whatever the data type is of the marker in php
-     * @throws Zend_Amf_Exception for invalid type
+     * @throws \fproject\amf\AmfException for invalid type
      */
     public function readTypeMarker($typeMarker = null)
     {
@@ -133,8 +133,7 @@ class Zend_Amf_Parse_Amf0_Deserializer extends Zend_Amf_Parse_Deserializer
                 return $this->readAmf3TypeMarker();
 
             default:
-                require_once 'Zend/Amf/Exception.php';
-                throw new Zend_Amf_Exception('Unsupported marker type: ' . $typeMarker);
+                throw new \fproject\amf\AmfException('Unsupported marker type: ' . $typeMarker);
         }
     }
 
@@ -177,14 +176,13 @@ class Zend_Amf_Parse_Amf0_Deserializer extends Zend_Amf_Parse_Deserializer
      * Called when marker type is 7.
      *
      * @return object
-     * @throws Zend_Amf_Exception for invalid reference keys
+     * @throws \fproject\amf\AmfException for invalid reference keys
      */
     public function readReference()
     {
         $key = $this->_stream->readInt();
         if (!array_key_exists($key, $this->_reference)) {
-            require_once 'Zend/Amf/Exception.php';
-            throw new Zend_Amf_Exception('Invalid reference key: '. $key);
+            throw new \fproject\amf\AmfException('Invalid reference key: '. $key);
         }
         return $this->_reference[$key];
     }
@@ -268,7 +266,7 @@ class Zend_Amf_Parse_Amf0_Deserializer extends Zend_Amf_Parse_Deserializer
      *
      * @todo   implement Typed Class mapping
      * @return object|array
-     * @throws Zend_Amf_Exception if unable to load type
+     * @throws \fproject\amf\AmfException if unable to load type
      */
     public function readTypedObject()
     {

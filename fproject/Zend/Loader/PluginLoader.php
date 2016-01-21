@@ -360,9 +360,9 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      * @param  string $name
      * @param  bool $throwExceptions Whether or not to throw exceptions if the
      * class is not resolved
-     * @return string|false Class name of loaded class; false if $throwExceptions
+     * @return false|string Class name of loaded class; false if $throwExceptions
      * if false and no class found
-     * @throws Zend_Loader_Exception if class not found
+     * @throws \fproject\amf\AmfException
      */
     public function load($name, $throwExceptions = true)
     {

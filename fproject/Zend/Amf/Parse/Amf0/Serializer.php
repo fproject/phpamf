@@ -59,7 +59,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Zend_Amf_Parse_Serializer
      * @param  mixed $markerType
      * @param  mixed $dataByVal
      * @return Zend_Amf_Parse_Amf0_Serializer
-     * @throws Zend_Amf_Exception for unrecognized types or data
+     * @throws \fproject\amf\AmfException for unrecognized types or data
      */
     public function writeTypeMarker(&$data, $markerType = null, $dataByVal = false)
     {
@@ -112,8 +112,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Zend_Amf_Parse_Serializer
                         $this->writeAmf3TypeMarker($data);
                         break;
                     default:
-                        require_once 'Zend/Amf/Exception.php';
-                        throw new Zend_Amf_Exception("Unknown Type Marker: " . $markerType);
+                        throw new \fproject\amf\AmfException("Unknown Type Marker: " . $markerType);
                 }
             }
         } else {
@@ -175,8 +174,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Zend_Amf_Parse_Serializer
                     }
                     break;
                 default:
-                    require_once 'Zend/Amf/Exception.php';
-                    throw new Zend_Amf_Exception('Unsupported data type: ' . gettype($data));
+                    throw new \fproject\amf\AmfException('Unsupported data type: ' . gettype($data));
             }
 
             $this->writeTypeMarker($data, $markerType);
@@ -270,7 +268,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Zend_Amf_Parse_Serializer
      * Convert the DateTime into an AMF Date
      *
      * @param  DateTime $data
-     * @throws Zend_Amf_Exception
+     * @throws \fproject\amf\AmfException
      * @return Zend_Amf_Parse_Amf0_Serializer
      */
     public function writeDate($data)
@@ -278,8 +276,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Zend_Amf_Parse_Serializer
         if ($data instanceof DateTime) {
             $dateString = $data->format('U');
         } else {
-            require_once 'Zend/Amf/Exception.php';
-            throw new Zend_Amf_Exception('Invalid date specified; must be a DateTime object');
+            throw new \fproject\amf\AmfException('Invalid date specified; must be a DateTime object');
         }
         $dateString *= 1000;
 
