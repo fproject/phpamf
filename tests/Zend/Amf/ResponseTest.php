@@ -20,10 +20,6 @@
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Amf_ResponseTest::main');
-}
-
 require_once 'Zend/Amf/Response.php';
 require_once 'Zend/Amf/Request.php';
 require_once 'Zend/Amf/Value/MessageBody.php';
@@ -53,17 +49,6 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
      * @var Zend_Amf_Response
      */
     protected $_response;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite  = new PHPUnit_Framework_TestSuite("Zend_Amf_ResponseTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
 
     /**
      * Setup environment
@@ -127,47 +112,6 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
     {
         // Create php object to serialize
         $data = array("g", "f", "e","d","c","b","a");
-
-        // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
-        $acknowledgeMessage->correlationId = 'D3695635-7308-35A2-8451-09F7CAAB868A';
-        $acknowledgeMessage->clientId = '54A7E9A2-9C2A-9849-5A3D-000070318519';
-        $acknowledgeMessage->messageId = '2E68D735-A68E-D208-9ACC-00006FBCDE26';
-        $acknowledgeMessage->destination = null;
-        $acknowledgeMessage->timeToLive = 0;
-        $acknowledgeMessage->timestamp = '124570774300';
-        $acknowledgeMessage->body = $data;
-
-        $newBody = new Zend_Amf_Value_MessageBody($this->responseURI, null, $acknowledgeMessage);
-
-        // serialize the data to an AMF output stream
-        $this->_response->setObjectEncoding(0x03);
-        $this->_response->addAmfBody($newBody);
-        $this->_response->finalize();
-        $testResponse = $this->_response->getResponse();
-
-        // Load the expected response.
-        $mockResponse = file_get_contents(dirname(__FILE__) .'/Response/mock/arrayAmf3Response.bin');
-
-        // Check that the response matches the expected serialized value
-        $this->assertEquals($mockResponse, $testResponse);
-    }
-
-    /**
-     * PHP array to Amf Vector of WorkCalendar
-     *
-     */
-    public function testTypedObjectArraySerializedToAmf3Vector()
-    {
-        // Create php object to serialize
-        $data = new WorkCalendar();
-        $shift1 = new \fproject\calendar\WorkShift();
-        $shift1->start = "08:00";
-        $shift1->end = "13:00";
-        $shift2 = new \fproject\calendar\WorkShift();
-        $shift2->start = "14:00";
-        $shift2->end = "18:00";
-        $data->defaultWorkShifts = [$shift1, $shift2];
 
         // Create an acknowlege message for a response to a RemotingMessage
         $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
