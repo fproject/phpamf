@@ -1043,6 +1043,9 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, count($headers));
     }
 
+    public $header1;
+    public $header2;
+
     public function testResponseShouldAggregateMessageHeaders()
     {
         $this->header1 = new Zend_Amf_Value_MessageHeader('foo', false, 'bar');
