@@ -45,6 +45,9 @@ require_once 'Zend/Amf/Parse/TypeLoader.php';
 
 /** @see Zend_Auth */
 require_once 'Zend/Auth.php';
+
+use fproject\amf\auth\AuthAbstract;
+
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
  * Zend Framework
@@ -116,7 +119,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
     /**
      * Authentication handler object
      *
-     * @var Zend_Amf_Auth_Abstract
+     * @var AuthAbstract
      */
     protected $_auth;
     /**
@@ -139,10 +142,10 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * If the authentication adapter implements a "getAcl()" method, populate 
      * the ACL of this instance with it (if none exists already).
      *
-     * @param  Zend_Amf_Auth_Abstract $auth
+     * @param  AuthAbstract $auth
      * @return Zend_Amf_Server
      */
-    public function setAuth(Zend_Amf_Auth_Abstract $auth)
+    public function setAuth(AuthAbstract $auth)
     {
         $this->_auth = $auth;
         if ((null === $this->getAcl()) && method_exists($auth, 'getAcl')) {
@@ -153,7 +156,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
    /**
      * Get authentication adapter
      *
-     * @return Zend_Amf_Auth_Abstract
+     * @return AuthAbstract
      */
     public function getAuth()
     {

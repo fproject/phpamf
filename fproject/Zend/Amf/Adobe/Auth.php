@@ -19,9 +19,6 @@
  * @version    $Id$
  */
 
-/** @see Zend_Amf_Auth_Abstract */
-require_once 'Zend/Amf/Auth/Abstract.php';
-
 /** @see Zend_Acl */
 require_once 'Zend/Acl.php';
 
@@ -38,7 +35,7 @@ use fproject\amf\auth\AuthResult;
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Adobe_Auth extends Zend_Amf_Auth_Abstract
+class Zend_Amf_Adobe_Auth extends \fproject\amf\auth\AuthAbstract
 {
 
     /**

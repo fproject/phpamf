@@ -28,7 +28,6 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 require_once 'Zend/Amf/Server.php';
 require_once 'Zend/Amf/Request.php';
 require_once 'Zend/Amf/Parse/TypeLoader.php';
-require_once 'Zend/Amf/Auth/Abstract.php';
 require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
 require_once 'Zend/Session.php';
 require_once 'Zend/Acl.php';
@@ -282,7 +281,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     }
 }
 
-class WrongPassword extends Zend_Amf_Auth_Abstract
+class WrongPassword extends \fproject\amf\auth\AuthAbstract
 {
     public function authenticate() {
         return new \fproject\amf\auth\AuthResult(\fproject\amf\auth\AuthResult::FAILURE_CREDENTIAL_INVALID,
@@ -292,7 +291,7 @@ class WrongPassword extends Zend_Amf_Auth_Abstract
     }
 }
 
-class RightPassword extends Zend_Amf_Auth_Abstract
+class RightPassword extends \fproject\amf\auth\AuthAbstract
 {
     public function __construct($name, $role)
     {
