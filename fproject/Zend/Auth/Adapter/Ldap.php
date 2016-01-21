@@ -239,7 +239,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
     /**
      * Authenticate the user
      *
-     * @throws Zend_Auth_Adapter_Exception
+     * @throws \fproject\amf\AmfException
      * @return Zend_Auth_Result
      */
     public function authenticate()
@@ -282,11 +282,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
         foreach ($this->_options as $name => $options) {
 
             if (!is_array($options)) {
-                /**
-                 * @see Zend_Auth_Adapter_Exception
-                 */
-                require_once 'Zend/Auth/Adapter/Exception.php';
-                throw new Zend_Auth_Adapter_Exception('Adapter options array not an array');
+                throw new \fproject\amf\AmfException('Adapter options array not an array');
             }
             $adapterOptions = $this->_prepareOptions($ldap, $options);
             $dname = '';

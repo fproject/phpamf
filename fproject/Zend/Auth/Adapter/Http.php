@@ -162,17 +162,13 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
      *    'use_opaque' => <bool> Whether to send the opaque value in the header
      *    'alogrithm' => <string> See $_supportedAlgos. Default: MD5
      *    'proxy_auth' => <bool> Whether to do authentication as a Proxy
-     * @throws Zend_Auth_Adapter_Exception
+     * @throws \fproject\amf\AmfException
      * @return void
      */
     public function __construct(array $config)
     {
         if (!extension_loaded('hash')) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception(__CLASS__  . ' requires the \'hash\' extension');
+            throw new \fproject\amf\AmfException(__CLASS__  . ' requires the \'hash\' extension');
         }
 
         $this->_request  = null;
@@ -181,21 +177,13 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
 
 
         if (empty($config['accept_schemes'])) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception('Config key \'accept_schemes\' is required');
+            throw new \fproject\amf\AmfException('Config key \'accept_schemes\' is required');
         }
 
         $schemes = explode(' ', $config['accept_schemes']);
         $this->_acceptSchemes = array_intersect($schemes, $this->_supportedSchemes);
         if (empty($this->_acceptSchemes)) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception('No supported schemes given in \'accept_schemes\'. Valid values: '
+            throw new \fproject\amf\AmfException('No supported schemes given in \'accept_schemes\'. Valid values: '
                                                 . implode(', ', $this->_supportedSchemes));
         }
 
@@ -205,11 +193,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
             !ctype_print($config['realm']) ||
             strpos($config['realm'], ':') !== false ||
             strpos($config['realm'], '"') !== false) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception('Config key \'realm\' is required, and must contain only printable '
+            throw new \fproject\amf\AmfException('Config key \'realm\' is required, and must contain only printable '
                                                 . 'characters, excluding quotation marks and colons');
         } else {
             $this->_realm = $config['realm'];
@@ -219,11 +203,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
             if (empty($config['digest_domains']) ||
                 !ctype_print($config['digest_domains']) ||
                 strpos($config['digest_domains'], '"') !== false) {
-                /**
-                 * @see Zend_Auth_Adapter_Exception
-                 */
-                require_once 'Zend/Auth/Adapter/Exception.php';
-                throw new Zend_Auth_Adapter_Exception('Config key \'digest_domains\' is required, and must contain '
+                throw new \fproject\amf\AmfException('Config key \'digest_domains\' is required, and must contain '
                                                     . 'only printable characters, excluding quotation marks');
             } else {
                 $this->_domains = $config['digest_domains'];
@@ -231,11 +211,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
 
             if (empty($config['nonce_timeout']) ||
                 !is_numeric($config['nonce_timeout'])) {
-                /**
-                 * @see Zend_Auth_Adapter_Exception
-                 */
-                require_once 'Zend/Auth/Adapter/Exception.php';
-                throw new Zend_Auth_Adapter_Exception('Config key \'nonce_timeout\' is required, and must be an '
+                throw new \fproject\amf\AmfException('Config key \'nonce_timeout\' is required, and must be an '
                                                     . 'integer');
             } else {
                 $this->_nonceTimeout = (int) $config['nonce_timeout'];
@@ -358,18 +334,14 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
     /**
      * Authenticate
      *
-     * @throws Zend_Auth_Adapter_Exception
+     * @throws \fproject\amf\AmfException
      * @return Zend_Auth_Result
      */
     public function authenticate()
     {
         if (empty($this->_request) ||
             empty($this->_response)) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception('Request and Response objects must be set before calling '
+            throw new \fproject\amf\AmfException('Request and Response objects must be set before calling '
                                                 . 'authenticate()');
         }
 
@@ -412,11 +384,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
                 $result = $this->_digestAuth($authHeader);
             break;
             default:
-                /**
-                 * @see Zend_Auth_Adapter_Exception
-                 */
-                require_once 'Zend/Auth/Adapter/Exception.php';
-                throw new Zend_Auth_Adapter_Exception('Unsupported authentication scheme');
+                throw new \fproject\amf\AmfException('Unsupported authentication scheme');
         }
 
         return $result;
@@ -493,24 +461,16 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
      * Basic Authentication
      *
      * @param  string $header Client's Authorization header
-     * @throws Zend_Auth_Adapter_Exception
+     * @throws \fproject\amf\AmfException
      * @return Zend_Auth_Result
      */
     protected function _basicAuth($header)
     {
         if (empty($header)) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception('The value of the client Authorization header is required');
+            throw new \fproject\amf\AmfException('The value of the client Authorization header is required');
         }
         if (empty($this->_basicResolver)) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception('A basicResolver object must be set before doing Basic '
+            throw new \fproject\amf\AmfException('A basicResolver object must be set before doing Basic '
                                                 . 'authentication');
         }
 
@@ -518,11 +478,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         $auth = substr($header, strlen('Basic '));
         $auth = base64_decode($auth);
         if (!$auth) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception('Unable to base64_decode Authorization header value');
+            throw new \fproject\amf\AmfException('Unable to base64_decode Authorization header value');
         }
 
         // See ZF-1253. Validate the credentials the same way the digest
@@ -550,24 +506,16 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
      * Digest Authentication
      *
      * @param  string $header Client's Authorization header
-     * @throws Zend_Auth_Adapter_Exception
+     * @throws \fproject\amf\AmfException
      * @return Zend_Auth_Result Valid auth result only on successful auth
      */
     protected function _digestAuth($header)
     {
         if (empty($header)) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception('The value of the client Authorization header is required');
+            throw new \fproject\amf\AmfException('The value of the client Authorization header is required');
         }
         if (empty($this->_digestResolver)) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception('A digestResolver object must be set before doing Digest authentication');
+            throw new \fproject\amf\AmfException('A digestResolver object must be set before doing Digest authentication');
         }
 
         $data = $this->_parseDigestAuth($header);
@@ -622,11 +570,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
                 // Should be REQUEST_METHOD . ':' . uri . ':' . hash(entity-body),
                 // but this isn't supported yet, so fall through to default case
             default:
-                /**
-                 * @see Zend_Auth_Adapter_Exception
-                 */
-                require_once 'Zend/Auth/Adapter/Exception.php';
-                throw new Zend_Auth_Adapter_Exception('Client requested an unsupported qop option');
+                throw new \fproject\amf\AmfException('Client requested an unsupported qop option');
         }
         // Using hash() should make parameterizing the hash algorithm
         // easier

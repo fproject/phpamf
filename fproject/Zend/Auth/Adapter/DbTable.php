@@ -160,7 +160,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
      * _setDbAdapter() - set the database adapter to be used for quering
      *
      * @param Zend_Db_Adapter_Abstract
-     * @throws Zend_Auth_Adapter_Exception
+     * @throws \fproject\amf\AmfException
      * @return Zend_Auth_Adapter_DbTable
      */
     protected function _setDbAdapter(Zend_Db_Adapter_Abstract $zendDb = null)
@@ -174,8 +174,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
             require_once 'Zend/Db/Table/Abstract.php';
             $this->_zendDb = Zend_Db_Table_Abstract::getDefaultAdapter();
             if (null === $this->_zendDb) {
-                require_once 'Zend/Auth/Adapter/Exception.php';
-                throw new Zend_Auth_Adapter_Exception('No database adapter present');
+                throw new \fproject\amf\AmfException('No database adapter present');
             }
         }
 
@@ -359,7 +358,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
      * been configured with all necessary information to successfully connect to a database
      * table and attempt to find a record matching the provided identity.
      *
-     * @throws Zend_Auth_Adapter_Exception if answering the authentication query is impossible
+     * @throws \fproject\amf\AmfException if answering the authentication query is impossible
      * @return Zend_Auth_Result
      */
     public function authenticate()
@@ -392,7 +391,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
      * making sure that this adapter was indeed setup properly with all
      * required pieces of information.
      *
-     * @throws Zend_Auth_Adapter_Exception - in the event that setup was not done properly
+     * @throws \fproject\amf\AmfException - in the event that setup was not done properly
      * @return true
      */
     protected function _authenticateSetup()
@@ -412,11 +411,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
         }
 
         if (null !== $exception) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception($exception);
+            throw new \fproject\amf\AmfException($exception);
         }
 
         $this->_authenticateResultInfo = array(
@@ -466,7 +461,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
      * performs a query against the database with that object.
      *
      * @param Zend_Db_Select $dbSelect
-     * @throws Zend_Auth_Adapter_Exception - when an invalid select
+     * @throws \fproject\amf\AmfException - when an invalid select
      *                                       object is encountered
      * @return array
      */
@@ -483,11 +478,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
                 unset($origDbFetchMode);
             }
         } catch (Exception $e) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception('The supplied parameters to Zend_Auth_Adapter_DbTable failed to '
+            throw new \fproject\amf\AmfException('The supplied parameters to Zend_Auth_Adapter_DbTable failed to '
                                                 . 'produce a valid sql statement, please check table and column names '
                                                 . 'for validity.', 0, $e);
         }

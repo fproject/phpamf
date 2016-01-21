@@ -98,7 +98,7 @@ Roles file format:
     /**
      * Perform authentication
      *
-     * @throws Zend_Auth_Adapter_Exception
+     * @throws \fproject\amf\AmfException
      * @return Zend_Auth_Result
      * @see Zend_Auth_Adapter_Interface#authenticate()
      */
@@ -106,11 +106,7 @@ Roles file format:
     {
         if (empty($this->_username) ||
             empty($this->_password)) {
-            /**
-             * @see Zend_Auth_Adapter_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Exception.php';
-            throw new Zend_Auth_Adapter_Exception('Username/password should be set');
+            throw new \fproject\amf\AmfException('Username/password should be set');
         }
 
         if(!isset($this->_users[$this->_username])) {
