@@ -49,7 +49,7 @@ class Zend_Auth_Adapter_Http_Resolver_File implements Zend_Auth_Adapter_Http_Res
      * Constructor
      *
      * @param  string $path Complete filename where the credentials are stored
-     * @return void
+     * @throws \fproject\amf\AmfException
      */
     public function __construct($path = '')
     {
@@ -62,17 +62,13 @@ class Zend_Auth_Adapter_Http_Resolver_File implements Zend_Auth_Adapter_Http_Res
      * Set the path to the credentials file
      *
      * @param  string $path
-     * @throws Zend_Auth_Adapter_Http_Resolver_Exception
+     * @throws \fproject\amf\AmfException
      * @return Zend_Auth_Adapter_Http_Resolver_File Provides a fluent interface
      */
     public function setFile($path)
     {
         if (empty($path) || !is_readable($path)) {
-            /**
-             * @see Zend_Auth_Adapter_Http_Resolver_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Http/Resolver/Exception.php';
-            throw new Zend_Auth_Adapter_Http_Resolver_Exception('Path not readable: ' . $path);
+            throw new \fproject\amf\AmfException('Path not readable: ' . $path);
         }
         $this->_file = $path;
 
@@ -106,49 +102,29 @@ class Zend_Auth_Adapter_Http_Resolver_File implements Zend_Auth_Adapter_Http_Res
      *
      * @param  string $username Username
      * @param  string $realm    Authentication Realm
-     * @throws Zend_Auth_Adapter_Http_Resolver_Exception
+     * @throws \fproject\amf\AmfException
      * @return string|false User's shared secret, if the user is found in the
      *         realm, false otherwise.
      */
     public function resolve($username, $realm)
     {
         if (empty($username)) {
-            /**
-             * @see Zend_Auth_Adapter_Http_Resolver_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Http/Resolver/Exception.php';
-            throw new Zend_Auth_Adapter_Http_Resolver_Exception('Username is required');
+            throw new \fproject\amf\AmfException('Username is required');
         } else if (!ctype_print($username) || strpos($username, ':') !== false) {
-            /**
-             * @see Zend_Auth_Adapter_Http_Resolver_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Http/Resolver/Exception.php';
-            throw new Zend_Auth_Adapter_Http_Resolver_Exception('Username must consist only of printable characters, '
+            throw new \fproject\amf\AmfException('Username must consist only of printable characters, '
                                                               . 'excluding the colon');
         }
         if (empty($realm)) {
-            /**
-             * @see Zend_Auth_Adapter_Http_Resolver_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Http/Resolver/Exception.php';
-            throw new Zend_Auth_Adapter_Http_Resolver_Exception('Realm is required');
+            throw new \fproject\amf\AmfException('Realm is required');
         } else if (!ctype_print($realm) || strpos($realm, ':') !== false) {
-            /**
-             * @see Zend_Auth_Adapter_Http_Resolver_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Http/Resolver/Exception.php';
-            throw new Zend_Auth_Adapter_Http_Resolver_Exception('Realm must consist only of printable characters, '
+            throw new \fproject\amf\AmfException('Realm must consist only of printable characters, '
                                                               . 'excluding the colon.');
         }
 
         // Open file, read through looking for matching credentials
         $fp = @fopen($this->_file, 'r');
         if (!$fp) {
-            /**
-             * @see Zend_Auth_Adapter_Http_Resolver_Exception
-             */
-            require_once 'Zend/Auth/Adapter/Http/Resolver/Exception.php';
-            throw new Zend_Auth_Adapter_Http_Resolver_Exception('Unable to open password file: ' . $this->_file);
+            throw new \fproject\amf\AmfException('Unable to open password file: ' . $this->_file);
         }
 
         // No real validation is done on the contents of the password file. The
