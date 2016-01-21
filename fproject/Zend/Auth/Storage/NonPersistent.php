@@ -46,7 +46,7 @@ class Zend_Auth_Storage_NonPersistent implements AuthStorageInterface
     /**
      * Returns true if and only if storage is empty
      *
-     * @throws Zend_Auth_Storage_Exception If it is impossible to determine whether storage is empty
+     * @throws \fproject\amf\AmfException If it is impossible to determine whether storage is empty
      * @return boolean
      */
     public function isEmpty()
@@ -58,7 +58,7 @@ class Zend_Auth_Storage_NonPersistent implements AuthStorageInterface
      * Returns the contents of storage
      * Behavior is undefined when storage is empty.
      *
-     * @throws Zend_Auth_Storage_Exception If reading contents from storage is impossible
+     * @throws \fproject\amf\AmfException If reading contents from storage is impossible
      * @return mixed
      */
     public function read()
@@ -70,7 +70,7 @@ class Zend_Auth_Storage_NonPersistent implements AuthStorageInterface
      * Writes $contents to storage
      *
      * @param  mixed $contents
-     * @throws Zend_Auth_Storage_Exception If writing $contents to storage is impossible
+     * @throws \fproject\amf\AmfException If writing $contents to storage is impossible
      * @return void
      */
     public function write($contents)
@@ -81,7 +81,7 @@ class Zend_Auth_Storage_NonPersistent implements AuthStorageInterface
     /**
      * Clears contents from storage
      *
-     * @throws Zend_Auth_Storage_Exception If clearing contents from storage is impossible
+     * @throws \fproject\amf\AmfException If clearing contents from storage is impossible
      * @return void
      */
     public function clear()
