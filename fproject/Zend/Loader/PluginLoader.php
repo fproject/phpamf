@@ -149,13 +149,12 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      * @param string $prefix
      * @param string $path
      * @return Zend_Loader_PluginLoader
-     * @throws Zend_Loader_PluginLoader_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function addPrefixPath($prefix, $path)
     {
         if (!is_string($prefix) || !is_string($path)) {
-            require_once 'Zend/Loader/PluginLoader/Exception.php';
-            throw new Zend_Loader_PluginLoader_Exception('Zend_Loader_PluginLoader::addPrefixPath() method only takes strings for prefix and path.');
+            throw new \fproject\amf\AmfException('Zend_Loader_PluginLoader::addPrefixPath() method only takes strings for prefix and path.');
         }
 
         $prefix = $this->_formatPrefix($prefix);
@@ -248,7 +247,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      * @param string $prefix
      * @param string $path OPTIONAL
      * @return Zend_Loader_PluginLoader
-     * @throws Zend_Loader_PluginLoader_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function removePrefixPath($prefix, $path = null)
     {
@@ -260,15 +259,13 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
         }
 
         if (!isset($registry[$prefix])) {
-            require_once 'Zend/Loader/PluginLoader/Exception.php';
-            throw new Zend_Loader_PluginLoader_Exception('Prefix ' . $prefix . ' was not found in the PluginLoader.');
+            throw new \fproject\amf\AmfException('Prefix ' . $prefix . ' was not found in the PluginLoader.');
         }
 
         if ($path != null) {
             $pos = array_search($path, $registry[$prefix]);
             if (false === $pos) {
-                require_once 'Zend/Loader/PluginLoader/Exception.php';
-                throw new Zend_Loader_PluginLoader_Exception('Prefix ' . $prefix . ' / Path ' . $path . ' was not found in the PluginLoader.');
+                throw new \fproject\amf\AmfException('Prefix ' . $prefix . ' / Path ' . $path . ' was not found in the PluginLoader.');
             }
             unset($registry[$prefix][$pos]);
         } else {
@@ -422,8 +419,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
             foreach ($registry as $prefix => $paths) {
                 $message .= "\n$prefix: " . implode(PATH_SEPARATOR, $paths);
             }
-            require_once 'Zend/Loader/PluginLoader/Exception.php';
-            throw new Zend_Loader_PluginLoader_Exception($message);
+            throw new \fproject\amf\AmfException($message);
        }
 
         if ($this->_useStaticRegistry) {
@@ -442,7 +438,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      *
      * @param  string $file
      * @return void
-     * @throws Zend_Loader_PluginLoader_Exception if file is not writeable or path does not exist
+     * @throws \fproject\amf\AmfException if file is not writeable or path does not exist
      */
     public static function setIncludeFileCache($file)
     {
@@ -459,16 +455,13 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
         }
 
         if (!file_exists($file) && !file_exists(dirname($file))) {
-            require_once 'Zend/Loader/PluginLoader/Exception.php';
-            throw new Zend_Loader_PluginLoader_Exception('Specified file does not exist and/or directory does not exist (' . $file . ')');
+            throw new \fproject\amf\AmfException('Specified file does not exist and/or directory does not exist (' . $file . ')');
         }
         if (file_exists($file) && !is_writable($file)) {
-            require_once 'Zend/Loader/PluginLoader/Exception.php';
-            throw new Zend_Loader_PluginLoader_Exception('Specified file is not writeable (' . $file . ')');
+            throw new \fproject\amf\AmfException('Specified file is not writeable (' . $file . ')');
         }
         if (!file_exists($file) && file_exists(dirname($file)) && !is_writable(dirname($file))) {
-            require_once 'Zend/Loader/PluginLoader/Exception.php';
-            throw new Zend_Loader_PluginLoader_Exception('Specified file is not writeable (' . $file . ')');
+            throw new \fproject\amf\AmfException('Specified file is not writeable (' . $file . ')');
         }
 
         self::$_includeFileCache = $file;

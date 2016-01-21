@@ -139,12 +139,12 @@ class Zend_Loader_Autoloader
      *
      * @param  string|array $callback PHP callback
      * @return $this
-     * @throws Zend_Loader_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function setDefaultAutoloader($callback)
     {
         if (!is_callable($callback)) {
-            throw new Zend_Loader_Exception('Invalid callback specified for default autoloader');
+            throw new \fproject\amf\AmfException('Invalid callback specified for default autoloader');
         }
 
         $this->_defaultAutoloader = $callback;
@@ -203,14 +203,14 @@ class Zend_Loader_Autoloader
      *
      * @param  string|array $namespace
      * @return Zend_Loader_Autoloader
-     * @throws Zend_Loader_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function registerNamespace($namespace)
     {
         if (is_string($namespace)) {
             $namespace = (array) $namespace;
         } elseif (!is_array($namespace)) {
-            throw new Zend_Loader_Exception('Invalid namespace provided');
+            throw new \fproject\amf\AmfException('Invalid namespace provided');
         }
 
         foreach ($namespace as $ns) {
@@ -226,14 +226,14 @@ class Zend_Loader_Autoloader
      *
      * @param  string|array $namespace
      * @return Zend_Loader_Autoloader
-     * @throws Zend_Loader_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function unregisterNamespace($namespace)
     {
         if (is_string($namespace)) {
             $namespace = (array) $namespace;
         } elseif (!is_array($namespace)) {
-            throw new Zend_Loader_Exception('Invalid namespace provided');
+            throw new \fproject\amf\AmfException('Invalid namespace provided');
         }
 
         foreach ($namespace as $ns) {
@@ -259,7 +259,7 @@ class Zend_Loader_Autoloader
         $path = $spec;
         if (is_array($spec)) {
             if (!isset($spec['path'])) {
-                throw new Zend_Loader_Exception('No path specified for ZF');
+                throw new \fproject\amf\AmfException('No path specified for ZF');
             }
             $path = $spec['path'];
             if (isset($spec['version'])) {
@@ -506,7 +506,7 @@ class Zend_Loader_Autoloader
      * @param  string $path
      * @param  string $version
      * @return mixed
-     * @throws Zend_Loader_Exception
+     * @throws \fproject\amf\AmfException
      */
     protected function _getVersionPath($path, $version)
     {
@@ -518,7 +518,7 @@ class Zend_Loader_Autoloader
 
         $availableVersions = $this->_getAvailableVersions($path, $version);
         if (empty($availableVersions)) {
-            throw new Zend_Loader_Exception('No valid ZF installations discovered');
+            throw new \fproject\amf\AmfException('No valid ZF installations discovered');
         }
 
         $matchedVersion = array_pop($availableVersions);
@@ -530,7 +530,7 @@ class Zend_Loader_Autoloader
      *
      * @param  string $version
      * @return string "latest", "major", "minor", or "specific"
-     * @throws Zend_Loader_Exception if version string contains too many dots
+     * @throws \fproject\amf\AmfException if version string contains too many dots
      */
     protected function _getVersionType($version)
     {
@@ -547,7 +547,7 @@ class Zend_Loader_Autoloader
             return 'minor';
         }
         if (3 < $count) {
-            throw new Zend_Loader_Exception('Invalid version string provided');
+            throw new \fproject\amf\AmfException('Invalid version string provided');
         }
         return 'specific';
     }
@@ -558,12 +558,12 @@ class Zend_Loader_Autoloader
      * @param  string $path
      * @param  string $version
      * @return array
-     * @throws Zend_Loader_Exception
+     * @throws \fproject\amf\AmfException
      */
     protected function _getAvailableVersions($path, $version)
     {
         if (!is_dir($path)) {
-            throw new Zend_Loader_Exception('Invalid ZF path provided');
+            throw new \fproject\amf\AmfException('Invalid ZF path provided');
         }
 
         $path       = rtrim($path, '/');
