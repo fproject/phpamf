@@ -21,11 +21,7 @@
  */
 
 
-/**
- * @see Zend_Auth_Storage_Interface
- */
-require_once 'Zend/Auth/Storage/Interface.php';
-
+use fproject\amf\auth\AuthStorageInterface;
 
 /**
  * Non-Persistent Auth Storage
@@ -40,7 +36,7 @@ require_once 'Zend/Auth/Storage/Interface.php';
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Auth_Storage_NonPersistent implements Zend_Auth_Storage_Interface
+class Zend_Auth_Storage_NonPersistent implements AuthStorageInterface
 {
     /**
      * Holds the actual auth data

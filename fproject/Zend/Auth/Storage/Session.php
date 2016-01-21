@@ -20,18 +20,12 @@
  * @version    $Id$
  */
 
-
-/**
- * @see Zend_Auth_Storage_Interface
- */
-require_once 'Zend/Auth/Storage/Interface.php';
-
-
 /**
  * @see Zend_Session
  */
 require_once 'Zend/Session.php';
 
+use fproject\amf\auth\AuthStorageInterface;
 
 /**
  * @category   Zend
@@ -40,7 +34,7 @@ require_once 'Zend/Session.php';
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Auth_Storage_Session implements Zend_Auth_Storage_Interface
+class Zend_Auth_Storage_Session implements AuthStorageInterface
 {
     /**
      * Default session namespace
@@ -78,7 +72,6 @@ class Zend_Auth_Storage_Session implements Zend_Auth_Storage_Interface
      *
      * @param  mixed $namespace
      * @param  mixed $member
-     * @return void
      */
     public function __construct($namespace = self::NAMESPACE_DEFAULT, $member = self::MEMBER_DEFAULT)
     {
@@ -108,7 +101,7 @@ class Zend_Auth_Storage_Session implements Zend_Auth_Storage_Interface
     }
 
     /**
-     * Defined by Zend_Auth_Storage_Interface
+     * Defined by AuthStorageInterface
      *
      * @return boolean
      */
@@ -118,7 +111,7 @@ class Zend_Auth_Storage_Session implements Zend_Auth_Storage_Interface
     }
 
     /**
-     * Defined by Zend_Auth_Storage_Interface
+     * Defined by AuthStorageInterface
      *
      * @return mixed
      */
@@ -128,7 +121,7 @@ class Zend_Auth_Storage_Session implements Zend_Auth_Storage_Interface
     }
 
     /**
-     * Defined by Zend_Auth_Storage_Interface
+     * Defined by AuthStorageInterface
      *
      * @param  mixed $contents
      * @return void
@@ -139,7 +132,7 @@ class Zend_Auth_Storage_Session implements Zend_Auth_Storage_Interface
     }
 
     /**
-     * Defined by Zend_Auth_Storage_Interface
+     * Defined by AuthStorageInterface
      *
      * @return void
      */

@@ -19,6 +19,7 @@
  * @version    $Id$
  */
 
+use fproject\amf\auth\AuthStorageInterface;
 
 /**
  * @category   Zend
@@ -38,7 +39,7 @@ class Zend_Auth
     /**
      * Persistent storage handler
      *
-     * @var Zend_Auth_Storage_Interface
+     * @var AuthStorageInterface
      */
     protected $_storage = null;
 
@@ -79,7 +80,7 @@ class Zend_Auth
      *
      * Session storage is used by default unless a different storage adapter has been set.
      *
-     * @return Zend_Auth_Storage_Interface
+     * @return AuthStorageInterface
      */
     public function getStorage()
     {
@@ -97,10 +98,10 @@ class Zend_Auth
     /**
      * Sets the persistent storage handler
      *
-     * @param  Zend_Auth_Storage_Interface $storage
+     * @param  AuthStorageInterface $storage
      * @return Zend_Auth Provides a fluent interface
      */
-    public function setStorage(Zend_Auth_Storage_Interface $storage)
+    public function setStorage(AuthStorageInterface $storage)
     {
         $this->_storage = $storage;
         return $this;
