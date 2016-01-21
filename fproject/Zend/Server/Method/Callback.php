@@ -161,13 +161,12 @@ class Zend_Server_Method_Callback
      *
      * @param  string $type
      * @return Zend_Server_Method_Callback
-     * @throws Zend_Server_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function setType($type)
     {
         if (!in_array($type, $this->_types)) {
-            require_once 'Zend/Server/Exception.php';
-            throw new Zend_Server_Exception('Invalid method callback type  passed to ' . __CLASS__ . '::' . __METHOD__);
+            throw new \fproject\amf\AmfException('Invalid method callback type  passed to ' . __CLASS__ . '::' . __METHOD__);
         }
         $this->_type = $type;
         return $this;

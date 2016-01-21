@@ -125,8 +125,7 @@ class Zend_Server_Method_Definition
             require_once 'Zend/Server/Method/Callback.php';
             $callback = new Zend_Server_Method_Callback($callback);
         } elseif (!$callback instanceof Zend_Server_Method_Callback) {
-            require_once 'Zend/Server/Exception.php';
-            throw new Zend_Server_Exception('Invalid method callback provided');
+            throw new \fproject\amf\AmfException('Invalid method callback provided');
         }
         $this->_callback = $callback;
         return $this;
@@ -154,8 +153,7 @@ class Zend_Server_Method_Definition
             require_once 'Zend/Server/Method/Prototype.php';
             $prototype = new Zend_Server_Method_Prototype($prototype);
         } elseif (!$prototype instanceof Zend_Server_Method_Prototype) {
-            require_once 'Zend/Server/Exception.php';
-            throw new Zend_Server_Exception('Invalid method prototype provided');
+            throw new \fproject\amf\AmfException('Invalid method prototype provided');
         }
         $this->_prototypes[] = $prototype;
         return $this;
@@ -225,12 +223,12 @@ class Zend_Server_Method_Definition
      *
      * @param  object $object
      * @return Zend_Server_Method_Definition
+     * @throws \fproject\amf\AmfException
      */
     public function setObject($object)
     {
         if (!is_object($object) && (null !== $object)) {
-            require_once 'Zend/Server/Exception.php';
-            throw new Zend_Server_Exception('Invalid object passed to ' . __CLASS__ . '::' . __METHOD__);
+            throw new \fproject\amf\AmfException('Invalid object passed to ' . __CLASS__ . '::' . __METHOD__);
         }
         $this->_object = $object;
         return $this;
