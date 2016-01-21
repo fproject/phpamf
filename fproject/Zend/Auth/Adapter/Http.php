@@ -21,11 +21,6 @@
  */
 
 
-/**
- * @see Zend_Auth_Adapter_Interface
- */
-require_once 'Zend/Auth/Adapter/Interface.php';
-
 use fproject\amf\auth\AuthResult;
 
 /**
@@ -42,7 +37,7 @@ use fproject\amf\auth\AuthResult;
  * @todo       Track nonces, nonce-count, opaque for replay protection and stale support
  * @todo       Support Authentication-Info header
  */
-class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
+class Zend_Auth_Adapter_Http implements \fproject\amf\auth\AuthAdapterInterface
 {
     /**
      * Reference to the HTTP Request object

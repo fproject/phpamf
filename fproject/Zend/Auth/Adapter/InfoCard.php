@@ -21,11 +21,6 @@
  */
 
 /**
- * @see Zend_Auth_Adapter_Interface
- */
-require_once 'Zend/Auth/Adapter/Interface.php';
-
-/**
  * @see Zend_InfoCard
  */
 require_once 'Zend/InfoCard.php';
@@ -42,7 +37,7 @@ use fproject\amf\auth\AuthResult;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Auth_Adapter_InfoCard implements Zend_Auth_Adapter_Interface
+class Zend_Auth_Adapter_InfoCard implements \fproject\amf\auth\AuthAdapterInterface
 {
     /**
      * The XML Token being authenticated

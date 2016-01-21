@@ -22,12 +22,6 @@
 
 
 /**
- * @see Zend_Auth_Adapter_Interface
- */
-require_once 'Zend/Auth/Adapter/Interface.php';
-
-
-/**
  * @see Zend_OpenId_Consumer
  */
 require_once 'Zend/OpenId/Consumer.php';
@@ -44,7 +38,7 @@ use fproject\amf\auth\AuthResult;
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
+class Zend_Auth_Adapter_OpenId implements \fproject\amf\auth\AuthAdapterInterface
 {
     /**
      * The identity value being authenticated
@@ -226,7 +220,7 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
 
     /**
      * Authenticates the given OpenId identity.
-     * Defined by Zend_Auth_Adapter_Interface.
+     * Defined by \fproject\amf\auth\AuthAdapterInterface.
      *
      * @throws \fproject\amf\AmfException If answering the authentication query is impossible
      * @return AuthResult

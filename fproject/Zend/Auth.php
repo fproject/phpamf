@@ -20,7 +20,7 @@
  */
 
 use fproject\amf\auth\AuthStorageInterface;
-
+use fproject\amf\auth\AuthAdapterInterface;
 /**
  * @category   Zend
  * @package    Zend_Auth
@@ -110,15 +110,15 @@ class Zend_Auth
     /**
      * Authenticates against the supplied adapter
      *
-     * @param  Zend_Auth_Adapter_Interface $adapter
+     * @param  AuthAdapterInterface $adapter
      * @return \fproject\amf\auth\AuthResult
      */
-    public function authenticate(Zend_Auth_Adapter_Interface $adapter)
+    public function authenticate(AuthAdapterInterface $adapter)
     {
         $result = $adapter->authenticate();
 
         /**
-         * ZF-7546 - prevent multiple succesive calls from storing inconsistent results
+         * ZF-7546 - prevent multiple successive calls from storing inconsistent results
          * Ensure storage has clean state
          */
         if ($this->hasIdentity()) {

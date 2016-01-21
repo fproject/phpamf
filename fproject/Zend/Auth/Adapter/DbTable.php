@@ -20,12 +20,6 @@
  * @version    $Id$
  */
 
-
-/**
- * @see Zend_Auth_Adapter_Interface
- */
-require_once 'Zend/Auth/Adapter/Interface.php';
-
 /**
  * @see Zend_Db_Adapter_Abstract
  */
@@ -40,7 +34,7 @@ use fproject\amf\auth\AuthResult;
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
+class Zend_Auth_Adapter_DbTable implements \fproject\amf\auth\AuthAdapterInterface
 {
 
     /**
@@ -349,7 +343,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
     }
 
     /**
-     * authenticate() - defined by Zend_Auth_Adapter_Interface.  This method is called to
+     * authenticate() - defined by \fproject\amf\auth\AuthAdapterInterface.  This method is called to
      * attempt an authentication.  Previous to this call, this adapter would have already
      * been configured with all necessary information to successfully connect to a database
      * table and attempt to find a record matching the provided identity.

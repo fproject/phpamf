@@ -99,7 +99,7 @@ Roles file format:
      *
      * @throws \fproject\amf\AmfException
      * @return AuthResult
-     * @see Zend_Auth_Adapter_Interface#authenticate()
+     * @see AuthAdapterInterface#authenticate()
      */
     public function authenticate()
     {
