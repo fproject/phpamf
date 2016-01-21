@@ -231,7 +231,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * @param string $function Function or method being accessed
      * @return bool
      * @throws \fproject\amf\AmfException
-     * @throws Zend_Amf_Server_Exception
+     * @throws \fproject\amf\AmfException
      */
     protected function _checkAcl($object, $function)
     {
@@ -260,15 +260,13 @@ class Zend_Amf_Server implements Zend_Server_Interface
             if($this->_acl->hasRole(Zend_Amf_Constants::GUEST_ROLE)) {
                 $role = Zend_Amf_Constants::GUEST_ROLE;
             } else {
-                require_once 'Zend/Amf/Server/Exception.php';
-                throw new Zend_Amf_Server_Exception("Unauthenticated access not allowed");
+                throw new \fproject\amf\AmfException("Unauthenticated access not allowed");
             }
         }
         if($this->_acl->isAllowed($role, $class, $function)) {
             return true;
         } else {
-            require_once 'Zend/Amf/Server/Exception.php';
-            throw new Zend_Amf_Server_Exception("Access not allowed");
+            throw new \fproject\amf\AmfException("Access not allowed");
         }
     }
 
@@ -294,7 +292,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * @param null|array $params argument values for the method
      * @param null|array $source
      * @return mixed $response the result of executing the method
-     * @throws Zend_Amf_Server_Exception
+     * @throws \fproject\amf\AmfException
      */
     protected function _dispatch($method, $params = null, $source = null)
     {
@@ -310,24 +308,20 @@ class Zend_Amf_Server implements Zend_Server_Interface
             if ($source) {
                 $className = str_replace('.', '_', $source);
                 if(class_exists($className, false) && !isset($this->_classAllowed[$className])) {
-                    require_once 'Zend/Amf/Server/Exception.php';
-                    throw new Zend_Amf_Server_Exception('Can not call "' . $className . '" - use setClass()');
+                    throw new \fproject\amf\AmfException('Can not call "' . $className . '" - use setClass()');
                 }
                 try {
                     $this->getLoader()->load($className);
                 } catch (Exception $e) {
-                    require_once 'Zend/Amf/Server/Exception.php';
-                    throw new Zend_Amf_Server_Exception('Class "' . $className . '" does not exist: '.$e->getMessage(), 0, $e);
+                    throw new \fproject\amf\AmfException('Class "' . $className . '" does not exist: '.$e->getMessage(), 0, $e);
                 }
                 // Add the new loaded class to the server.
-                    require_once 'Zend/Amf/Server/Exception.php';
                 $this->setClass($className, $source);
             }
 
             if (!isset($this->_table[$qualifiedName])) {
                 // Source is null or doesn't contain specified method
-                require_once 'Zend/Amf/Server/Exception.php';
-                throw new Zend_Amf_Server_Exception('Method "' . $method . '" does not exist');
+                throw new \fproject\amf\AmfException('Method "' . $method . '" does not exist');
             }
         }
 
@@ -358,15 +352,13 @@ class Zend_Amf_Server implements Zend_Server_Interface
                 try {
                     $object = $info->getDeclaringClass()->newInstance();
                 } catch (Exception $e) {
-                    require_once 'Zend/Amf/Server/Exception.php';
-                    throw new Zend_Amf_Server_Exception('Error instantiating class ' . $class . ' to invoke method ' . $info->getName() . ': '.$e->getMessage(), 621, $e);
+                    throw new \fproject\amf\AmfException('Error instantiating class ' . $class . ' to invoke method ' . $info->getName() . ': '.$e->getMessage(), 621, $e);
                 }
                 $this->_checkAcl($object, $info->getName());
                 $return = $info->invokeArgs($object, $params);
             }
         } else {
-            require_once 'Zend/Amf/Server/Exception.php';
-            throw new Zend_Amf_Server_Exception('Method missing implementation ' . get_class($info));
+            throw new \fproject\amf\AmfException('Method missing implementation ' . get_class($info));
         }
 
         return $return;
@@ -380,7 +372,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * @see    Zend_Amf_Value_Messaging_CommandMessage
      * @param  Zend_Amf_Value_Messaging_CommandMessage $message
      * @return Zend_Amf_Value_Messaging_AcknowledgeMessage
-     * @throws Zend_Amf_Server_Exception
+     * @throws \fproject\amf\AmfException
      */
     protected function _loadCommandMessage(Zend_Amf_Value_Messaging_CommandMessage $message)
     {
@@ -395,16 +387,14 @@ class Zend_Amf_Server implements Zend_Server_Interface
                 $userid = $data[0];
                 $password = isset($data[1])?$data[1]:"";
                 /*if(empty($userid)) {
-                    require_once 'Zend/Amf/Server/Exception.php';
-                    throw new Zend_Amf_Server_Exception('Login failed: username not supplied');
+                    throw new \fproject\amf\AmfException('Login failed: username not supplied');
                 }*/
 
                 $authResult = $this->_handleAuth($userid, $password);
 
                 //No need to check the result: if authentication is failed, an error is already thrown!
                 /*if(!$this->_handleAuth($userid, $password)) {
-                    require_once 'Zend/Amf/Server/Exception.php';
-                    throw new Zend_Amf_Server_Exception('Authentication failed');
+                    throw new \fproject\amf\AmfException('Authentication failed');
                 }*/
 
                 $return = new Zend_Amf_Value_Messaging_AcknowledgeMessage($message);
@@ -420,8 +410,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
                 $return = new Zend_Amf_Value_Messaging_AcknowledgeMessage($message);
                 break;
             default :
-                require_once 'Zend/Amf/Server/Exception.php';
-                throw new Zend_Amf_Server_Exception('CommandMessage::' . $message->operation . ' not implemented');
+                throw new \fproject\amf\AmfException('CommandMessage::' . $message->operation . ' not implemented');
                 break;
         }
         return $return;
@@ -466,7 +455,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * @param string $userId
      * @param string $password
      * @return bool|Zend_Auth_Result
-     * @throws Zend_Amf_Server_Exception
+     * @throws \fproject\amf\AmfException
      *
      */
     protected function _handleAuth( $userId,  $password)
@@ -484,8 +473,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
             return $result;
         } else {
             // authentication failed, good bye
-            require_once 'Zend/Amf/Server/Exception.php';
-            throw new Zend_Amf_Server_Exception(
+            throw new \fproject\amf\AmfException(
                 "Authentication failed: " . join("\n",
                     $result->getMessages()), $result->getCode());
         }
@@ -499,7 +487,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * @todo   DescribeService support
      * @param  Zend_Amf_Request $request
      * @return Zend_Amf_Response
-     * @throws Zend_Amf_server_Exception|Exception
+     * @throws \fproject\amf\AmfException|Exception
      */
     protected function _handle(Zend_Amf_Request $request)
     {
@@ -647,7 +635,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      *
      * @param  null|Zend_Amf_Request $request Optional
      * @return Zend_Amf_Response
-     * @throws Zend_Amf_Server_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function handle($request = null)
     {
@@ -672,8 +660,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
             $response = $this->getResponse();
         } catch (Exception $e) {
             // Handle any errors in the serialization and service  calls.
-            require_once 'Zend/Amf/Server/Exception.php';
-            throw new Zend_Amf_Server_Exception('Handle error: ' . $e->getMessage() . ' ' . $e->getLine(), 0, $e);
+            throw new \fproject\amf\AmfException('Handle error: ' . $e->getMessage() . ' ' . $e->getLine(), 0, $e);
         }
 
         // Return the Amf serialized output string
@@ -685,19 +672,17 @@ class Zend_Amf_Server implements Zend_Server_Interface
      *
      * @param  string|Zend_Amf_Request $request
      * @return Zend_Amf_Server
-     * @throws Zend_Amf_Server_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function setRequest($request)
     {
         if (is_string($request) && class_exists($request)) {
             $request = new $request();
             if (!$request instanceof Zend_Amf_Request) {
-                require_once 'Zend/Amf/Server/Exception.php';
-                throw new Zend_Amf_Server_Exception('Invalid request class');
+                throw new \fproject\amf\AmfException('Invalid request class');
             }
         } elseif (!$request instanceof Zend_Amf_Request) {
-            require_once 'Zend/Amf/Server/Exception.php';
-            throw new Zend_Amf_Server_Exception('Invalid request object');
+            throw new \fproject\amf\AmfException('Invalid request object');
         }
         $this->_request = $request;
         return $this;
@@ -723,19 +708,17 @@ class Zend_Amf_Server implements Zend_Server_Interface
      *
      * @param  string|Zend_Amf_Server_Response $response
      * @return Zend_Amf_Server
-     * @throws Zend_Amf_Server_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function setResponse($response)
     {
         if (is_string($response) && class_exists($response)) {
             $response = new $response();
             if (!$response instanceof Zend_Amf_Response) {
-                require_once 'Zend/Amf/Server/Exception.php';
-                throw new Zend_Amf_Server_Exception('Invalid response class');
+                throw new \fproject\amf\AmfException('Invalid response class');
             }
         } elseif (!$response instanceof Zend_Amf_Response) {
-            require_once 'Zend/Amf/Server/Exception.php';
-            throw new Zend_Amf_Server_Exception('Invalid response object');
+            throw new \fproject\amf\AmfException('Invalid response object');
         }
         $this->_response = $response;
         return $this;
@@ -768,17 +751,15 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * @param  string $namespace Optional
      * @param  mixed $argv Optional arguments to pass to a method
      * @return Zend_Amf_Server
-     * @throws Zend_Amf_Server_Exception on invalid input
+     * @throws \fproject\amf\AmfException on invalid input
      * @throws Zend_Server_Reflection_Exception
      */
     public function setClass($class, $namespace = '', $argv = null)
     {
         if (is_string($class) && !class_exists($class)){
-            require_once 'Zend/Amf/Server/Exception.php';
-            throw new Zend_Amf_Server_Exception('Invalid method or class');
+            throw new \fproject\amf\AmfException('Invalid method or class');
         } elseif (!is_string($class) && !is_object($class)) {
-            require_once 'Zend/Amf/Server/Exception.php';
-            throw new Zend_Amf_Server_Exception('Invalid method or class; must be a classname or object');
+            throw new \fproject\amf\AmfException('Invalid method or class; must be a classname or object');
         }
 
         if (2 < func_num_args()) {
@@ -809,13 +790,12 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * @param  string|array $function Valid callback
      * @param  string $namespace Optional namespace prefix
      * @return Zend_Amf_Server
-     * @throws Zend_Amf_Server_Exception
+     * @throws \fproject\amf\AmfException
      */
     public function addFunction($function, $namespace = '')
     {
         if (!is_string($function) && !is_array($function)) {
-            require_once 'Zend/Amf/Server/Exception.php';
-            throw new Zend_Amf_Server_Exception('Unable to attach function');
+            throw new \fproject\amf\AmfException('Unable to attach function');
         }
 
         $argv = null;
@@ -826,8 +806,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
         $function = (array) $function;
         foreach ($function as $func) {
             if (!is_string($func) || !function_exists($func)) {
-                require_once 'Zend/Amf/Server/Exception.php';
-                throw new Zend_Amf_Server_Exception('Unable to attach function');
+                throw new \fproject\amf\AmfException('Unable to attach function');
             }
             $this->_methods[] = Zend_Server_Reflection::reflectFunction($func, $argv, $namespace);
         }
@@ -864,7 +843,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      * The dispatch table consists of a an array of method name =>
      * Zend_Server_Reflection_Function_Abstract pairs
      *
-     * @throws Zend_Amf_Server_Exception
+     * @throws \fproject\amf\AmfException
      */
     protected function _buildDispatchTable()
     {
@@ -876,8 +855,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
                 $name = empty($ns) ? $name : $ns . '.' . $name;
 
                 if (isset($table[$name])) {
-                    require_once 'Zend/Amf/Server/Exception.php';
-                    throw new Zend_Amf_Server_Exception('Duplicate method registered: ' . $name);
+                    throw new \fproject\amf\AmfException('Duplicate method registered: ' . $name);
                 }
                 $table[$name] = $dispatchable;
                 continue;
@@ -890,8 +868,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
                     $name = empty($ns) ? $name : $ns . '.' . $name;
 
                     if (isset($table[$name])) {
-                        require_once 'Zend/Amf/Server/Exception.php';
-                        throw new Zend_Amf_Server_Exception('Duplicate method registered: ' . $name);
+                        throw new \fproject\amf\AmfException('Duplicate method registered: ' . $name);
                     }
                     $table[$name] = $method;
                     continue;

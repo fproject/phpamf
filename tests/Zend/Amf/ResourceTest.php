@@ -87,14 +87,14 @@ class Zend_Amf_ResourceTest extends PHPUnit_Framework_TestCase
     /**
      * Defining new unknown resource type
      *
-     * @expectException Zend_Amf_Server_Exception
+     * @expectException \fproject\amf\AmfException
      *
      */
     public function testCtxNoResource()
     {
         try {
             $this->_callService("returnCtx");
-        } catch(Zend_Amf_Server_Exception $e) {
+        } catch(\fproject\amf\AmfException $e) {
             $this->assertContains("serialize resource type", $e->getMessage());
             return;
         }
@@ -134,7 +134,7 @@ class Zend_Amf_ResourceTest extends PHPUnit_Framework_TestCase
         Zend_Amf_Parse_TypeLoader::setResourceLoader(new Zend_Amf_TestResourceLoader("3"));
         try {
             $resp = $this->_callService("returnCtx");
-        } catch(Zend_Amf_Server_Exception $e) {
+        } catch(\fproject\amf\AmfException $e) {
             $this->assertContains("Could not call parse()", $e->getMessage());
             return;
         }

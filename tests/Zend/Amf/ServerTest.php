@@ -103,7 +103,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Zend_Amf_Server_Exception
+     * @expectedException \fproject\amf\AmfException
      */
     public function testSetClassShouldRaiseExceptionOnInvalidClassname()
     {
@@ -111,7 +111,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Zend_Amf_Server_Exception
+     * @expectedException \fproject\amf\AmfException
      */
     public function testSetClassShouldRaiseExceptionOnInvalidClasstype()
     {
@@ -119,7 +119,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Zend_Amf_Server_Exception
+     * @expectedException \fproject\amf\AmfException
      */
     public function testSetClassShouldRaiseExceptionOnDuplicateMethodName()
     {
@@ -184,7 +184,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Zend_Amf_Server_Exception
+     * @expectedException \fproject\amf\AmfException
      */
     public function testAddFunctionShouldRaiseExceptionForInvalidFunctionName()
     {
@@ -192,7 +192,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Zend_Amf_Server_Exception
+     * @expectedException \fproject\amf\AmfException
      */
     public function testAddFunctionShouldRaiseExceptionOnDuplicateMethodName()
     {
@@ -733,7 +733,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Zend_Amf_Server_Exception
+     * @expectedException \fproject\amf\AmfException
      */
     public function testSetRequestShouldRaiseExceptionOnInvalidStringClassName()
     {
@@ -756,7 +756,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Zend_Amf_Server_Exception
+     * @expectedException \fproject\amf\AmfException
      */
     public function testSetResponseShouldRaiseExceptionOnInvalidStringClassName()
     {
