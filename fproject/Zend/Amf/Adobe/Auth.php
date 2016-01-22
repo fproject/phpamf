@@ -19,9 +19,6 @@
  * @version    $Id$
  */
 
-/** @see Zend_Acl */
-require_once 'Zend/Acl.php';
-
 /** @see Zend_Xml_Security */
 require_once 'Zend/Xml/Security.php';
 
@@ -41,7 +38,7 @@ class Zend_Amf_Adobe_Auth extends \fproject\amf\auth\AuthAbstract
     /**
      * ACL for authorization
      *
-     * @var Zend_Acl
+     * @var \fproject\amf\acl\Acl
      */
     protected $_acl;
 
@@ -59,7 +56,7 @@ class Zend_Amf_Adobe_Auth extends \fproject\amf\auth\AuthAbstract
      */
     public function __construct($rolefile)
     {
-        $this->_acl = new Zend_Acl();
+        $this->_acl = new \fproject\amf\acl\Acl();
         $xml = Zend_Xml_Security::scanFile($rolefile);
 /*
 Roles file format:
@@ -73,7 +70,7 @@ Roles file format:
 </roles>
 */
         foreach($xml->role as $role) {
-            $this->_acl->addRole(new Zend_Acl_Role((string)$role["id"]));
+            $this->_acl->addRole(new \fproject\amf\acl\Role((string)$role["id"]));
             foreach($role->user as $user) {
                 $this->_users[(string)$user["name"]] = array("password" => (string)$user["password"],
                                                              "role" => (string)$role["id"]);
@@ -84,7 +81,7 @@ Roles file format:
     /**
      * Get ACL with roles from XML file
      *
-     * @return Zend_Acl
+     * @return \fproject\amf\acl\Acl
      */
     public function getAcl()
     {

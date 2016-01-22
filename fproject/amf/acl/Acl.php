@@ -1,62 +1,27 @@
 <?php
-/**
- * Zend Framework
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Acl
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
- */
+///////////////////////////////////////////////////////////////////////////////
+//
+// © Copyright f-project.net 2010-present.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+///////////////////////////////////////////////////////////////////////////////
 
+namespace fproject\amf\acl;
 
-/**
- * @see Zend_Acl_Resource_Interface
- */
-require_once 'Zend/Acl/Resource/Interface.php';
+use fproject\amf\AmfException;
 
-
-/**
- * @see Zend_Acl_Role_Registry
- */
-require_once 'Zend/Acl/Role/Registry.php';
-
-
-/**
- * @see Zend_Acl_Assert_Interface
- */
-require_once 'Zend/Acl/Assert/Interface.php';
-
-
-/**
- * @see Zend_Acl_Role
- */
-require_once 'Zend/Acl/Role.php';
-
-
-/**
- * @see Zend_Acl_Resource
- */
-require_once 'Zend/Acl/Resource.php';
-
-
-/**
- * @category   Zend
- * @package    Zend_Acl
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- */
-class Zend_Acl
+class Acl
 {
     /**
      * Rule type: allow
@@ -81,7 +46,7 @@ class Zend_Acl
     /**
      * Role registry
      *
-     * @var Zend_Acl_Role_Registry
+     * @var RoleRegistry
      */
     protected $_roleRegistry = null;
 
@@ -93,12 +58,12 @@ class Zend_Acl
     protected $_resources = [];
 
     /**
-     * @var Zend_Acl_Role_Interface
+     * @var RoleInterface
      */
     protected $_isAllowedRole     = null;
 
     /**
-     * @var Zend_Acl_Resource_Interface
+     * @var ResourceInterface
      */
     protected $_isAllowedResource = null;
 
@@ -140,19 +105,20 @@ class Zend_Acl
      * will have the least priority, and the last parent added will have the
      * highest priority.
      *
-     * @param  Zend_Acl_Role_Interface|string       $role
-     * @param  Zend_Acl_Role_Interface|string|array $parents
-     * @uses   Zend_Acl_Role_Registry::add()
-     * @return Zend_Acl Provides a fluent interface
+     * @param  RoleInterface|string $role
+     * @param  RoleInterface|string|array $parents
+     * @return Acl Provides a fluent interface
+     * @throws AmfException
+     * @uses   RoleRegistry::add()
      */
     public function addRole($role, $parents = null)
     {
         if (is_string($role)) {
-            $role = new Zend_Acl_Role($role);
+            $role = new Role($role);
         }
 
-        if (!$role instanceof Zend_Acl_Role_Interface) {
-            throw new \fproject\amf\AmfException('addRole() expects $role to be of type Zend_Acl_Role_Interface');
+        if (!$role instanceof RoleInterface) {
+            throw new AmfException('addRole() expects $role to be of type RoleInterface');
         }
 
 
@@ -166,9 +132,9 @@ class Zend_Acl
      *
      * The $role parameter can either be a Role or Role identifier.
      *
-     * @param  Zend_Acl_Role_Interface|string $role
-     * @uses   Zend_Acl_Role_Registry::get()
-     * @return Zend_Acl_Role_Interface
+     * @param  RoleInterface|string $role
+     * @uses   RoleRegistry::get()
+     * @return RoleInterface
      */
     public function getRole($role)
     {
@@ -180,8 +146,8 @@ class Zend_Acl
      *
      * The $role parameter can either be a Role or a Role identifier.
      *
-     * @param  Zend_Acl_Role_Interface|string $role
-     * @uses   Zend_Acl_Role_Registry::has()
+     * @param  RoleInterface|string $role
+     * @uses   RoleRegistry::has()
      * @return boolean
      */
     public function hasRole($role)
@@ -198,10 +164,10 @@ class Zend_Acl
      * through the entire inheritance DAG to determine whether $role
      * inherits from $inherit through its ancestor Roles.
      *
-     * @param  Zend_Acl_Role_Interface|string $role
-     * @param  Zend_Acl_Role_Interface|string $inherit
+     * @param  RoleInterface|string $role
+     * @param  RoleInterface|string $inherit
      * @param  boolean                        $onlyParents
-     * @uses   Zend_Acl_Role_Registry::inherits()
+     * @uses   RoleRegistry::inherits()
      * @return boolean
      */
     public function inheritsRole($role, $inherit, $onlyParents = false)
@@ -214,15 +180,15 @@ class Zend_Acl
      *
      * The $role parameter can either be a Role or a Role identifier.
      *
-     * @param  Zend_Acl_Role_Interface|string $role
-     * @uses   Zend_Acl_Role_Registry::remove()
-     * @return Zend_Acl Provides a fluent interface
+     * @param  RoleInterface|string $role
+     * @uses   RoleRegistry::remove()
+     * @return Acl Provides a fluent interface
      */
     public function removeRole($role)
     {
         $this->_getRoleRegistry()->remove($role);
 
-        if ($role instanceof Zend_Acl_Role_Interface) {
+        if ($role instanceof RoleInterface) {
             $roleId = $role->getRoleId();
         } else {
             $roleId = $role;
@@ -249,8 +215,8 @@ class Zend_Acl
     /**
      * Removes all Roles from the registry
      *
-     * @uses   Zend_Acl_Role_Registry::removeAll()
-     * @return Zend_Acl Provides a fluent interface
+     * @uses   RoleRegistry::removeAll()
+     * @return Acl Provides a fluent interface
      */
     public function removeRoleAll()
     {
@@ -274,39 +240,40 @@ class Zend_Acl
      * The $parent parameter may be a reference to, or the string identifier for,
      * the existing Resource from which the newly added Resource will inherit.
      *
-     * @param  Zend_Acl_Resource_Interface|string $resource
-     * @param  Zend_Acl_Resource_Interface|string $parent
-     * @throws \fproject\amf\AmfException
-     * @return Zend_Acl Provides a fluent interface
+     * @param  ResourceInterface|string $resource
+     * @param  ResourceInterface|string $parent
+     * @throws AmfException
+     * @return Acl Provides a fluent interface
      */
     public function addResource($resource, $parent = null)
     {
         if (is_string($resource)) {
-            $resource = new Zend_Acl_Resource($resource);
+            $resource = new Resource($resource);
         }
 
-        if (!$resource instanceof Zend_Acl_Resource_Interface) {
-            throw new \fproject\amf\AmfException('addResource() expects $resource to be of type Zend_Acl_Resource_Interface');
+        if (!$resource instanceof ResourceInterface) {
+            throw new AmfException('addResource() expects $resource to be of type ResourceInterface');
         }
 
         $resourceId = $resource->getResourceId();
 
         if ($this->has($resourceId)) {
-            throw new \fproject\amf\AmfException("Resource id '$resourceId' already exists in the ACL");
+            throw new AmfException("Resource id '$resourceId' already exists in the ACL");
         }
 
         $resourceParent = null;
 
         if (null !== $parent) {
             try {
-                if ($parent instanceof Zend_Acl_Resource_Interface) {
+                if ($parent instanceof ResourceInterface) {
                     $resourceParentId = $parent->getResourceId();
                 } else {
                     $resourceParentId = $parent;
                 }
                 $resourceParent = $this->get($resourceParentId);
-            } catch (\fproject\amf\AmfException $e) {
-                throw new \fproject\amf\AmfException("Parent Resource id '$resourceParentId' does not exist", 0, $e);
+            } catch (AmfException $e) {
+                /** @var $resourceParentId */
+                throw new AmfException("Parent Resource id '$resourceParentId' does not exist", 0, $e);
             }
             $this->_resources[$resourceParentId]['children'][$resourceId] = $resource;
         }
@@ -325,20 +292,20 @@ class Zend_Acl
      *
      * The $resource parameter can either be a Resource or a Resource identifier.
      *
-     * @param  Zend_Acl_Resource_Interface|string $resource
-     * @throws \fproject\amf\AmfException
-     * @return Zend_Acl_Resource_Interface
+     * @param  ResourceInterface|string $resource
+     * @throws AmfException
+     * @return ResourceInterface
      */
     public function get($resource)
     {
-        if ($resource instanceof Zend_Acl_Resource_Interface) {
+        if ($resource instanceof ResourceInterface) {
             $resourceId = $resource->getResourceId();
         } else {
             $resourceId = (string) $resource;
         }
 
         if (!$this->has($resource)) {
-            throw new \fproject\amf\AmfException("Resource '$resourceId' not found");
+            throw new AmfException("Resource '$resourceId' not found");
         }
 
         return $this->_resources[$resourceId]['instance'];
@@ -349,12 +316,12 @@ class Zend_Acl
      *
      * The $resource parameter can either be a Resource or a Resource identifier.
      *
-     * @param  Zend_Acl_Resource_Interface|string $resource
+     * @param  ResourceInterface|string $resource
      * @return boolean
      */
     public function has($resource)
     {
-        if ($resource instanceof Zend_Acl_Resource_Interface) {
+        if ($resource instanceof ResourceInterface) {
             $resourceId = $resource->getResourceId();
         } else {
             $resourceId = (string) $resource;
@@ -372,19 +339,19 @@ class Zend_Acl
      * through the entire inheritance tree to determine whether $resource
      * inherits from $inherit through its ancestor Resources.
      *
-     * @param  Zend_Acl_Resource_Interface|string $resource
-     * @param  Zend_Acl_Resource_Interface|string $inherit
-     * @param  boolean                            $onlyParent
-     * @throws Zend_Acl_Resource_Registry_Exception
-     * @return boolean
+     * @param  ResourceInterface|string $resource
+     * @param  ResourceInterface|string $inherit
+     * @param  boolean $onlyParent
+     * @return bool
+     * @throws AmfException
      */
     public function inherits($resource, $inherit, $onlyParent = false)
     {
         try {
             $resourceId     = $this->get($resource)->getResourceId();
             $inheritId = $this->get($inherit)->getResourceId();
-        } catch (\fproject\amf\AmfException $e) {
-            throw new \fproject\amf\AmfException($e->getMessage(), $e->getCode(), $e);
+        } catch (AmfException $e) {
+            throw new AmfException($e->getMessage(), $e->getCode(), $e);
         }
 
         if (null !== $this->_resources[$resourceId]['parent']) {
@@ -413,19 +380,20 @@ class Zend_Acl
      *
      * The $resource parameter can either be a Resource or a Resource identifier.
      *
-     * @param  Zend_Acl_Resource_Interface|string $resource
-     * @throws \fproject\amf\AmfException
-     * @return Zend_Acl Provides a fluent interface
+     * @param  ResourceInterface|string $resource
+     * @throws AmfException
+     * @return Acl Provides a fluent interface
      */
     public function remove($resource)
     {
         try {
             $resourceId = $this->get($resource)->getResourceId();
-        } catch (\fproject\amf\AmfException $e) {
-            throw new \fproject\amf\AmfException($e->getMessage(), $e->getCode(), $e);
+        } catch (AmfException $e) {
+            throw new AmfException($e->getMessage(), $e->getCode(), $e);
         }
 
         $resourcesRemoved = array($resourceId);
+        /** @var ResourceInterface $resourceParent */
         if (null !== ($resourceParent = $this->_resources[$resourceId]['parent'])) {
             unset($this->_resources[$resourceParent->getResourceId()]['children'][$resourceId]);
         }
@@ -450,7 +418,7 @@ class Zend_Acl
     /**
      * Removes all Resources
      *
-     * @return Zend_Acl Provides a fluent interface
+     * @return Acl Provides a fluent interface
      */
     public function removeAll()
     {
@@ -470,14 +438,14 @@ class Zend_Acl
     /**
      * Adds an "allow" rule to the ACL
      *
-     * @param  Zend_Acl_Role_Interface|string|array     $roles
-     * @param  Zend_Acl_Resource_Interface|string|array $resources
-     * @param  string|array                             $privileges
-     * @param  Zend_Acl_Assert_Interface                $assert
-     * @uses   Zend_Acl::setRule()
-     * @return Zend_Acl Provides a fluent interface
+     * @param  RoleInterface|string|array     $roles
+     * @param  ResourceInterface|string|array $resources
+     * @param  string|array                   $privileges
+     * @param  AssertInterface                $assert
+     * @uses   Acl::setRule()
+     * @return Acl Provides a fluent interface
      */
-    public function allow($roles = null, $resources = null, $privileges = null, Zend_Acl_Assert_Interface $assert = null)
+    public function allow($roles = null, $resources = null, $privileges = null, AssertInterface $assert = null)
     {
         return $this->setRule(self::OP_ADD, self::TYPE_ALLOW, $roles, $resources, $privileges, $assert);
     }
@@ -485,14 +453,14 @@ class Zend_Acl
     /**
      * Adds a "deny" rule to the ACL
      *
-     * @param  Zend_Acl_Role_Interface|string|array     $roles
-     * @param  Zend_Acl_Resource_Interface|string|array $resources
+     * @param  RoleInterface|string|array     $roles
+     * @param  ResourceInterface|string|array $resources
      * @param  string|array                             $privileges
-     * @param  Zend_Acl_Assert_Interface                $assert
-     * @uses   Zend_Acl::setRule()
-     * @return Zend_Acl Provides a fluent interface
+     * @param  AssertInterface                $assert
+     * @uses   Acl::setRule()
+     * @return Acl Provides a fluent interface
      */
-    public function deny($roles = null, $resources = null, $privileges = null, Zend_Acl_Assert_Interface $assert = null)
+    public function deny($roles = null, $resources = null, $privileges = null, AssertInterface $assert = null)
     {
         return $this->setRule(self::OP_ADD, self::TYPE_DENY, $roles, $resources, $privileges, $assert);
     }
@@ -500,11 +468,11 @@ class Zend_Acl
     /**
      * Removes "allow" permissions from the ACL
      *
-     * @param  Zend_Acl_Role_Interface|string|array     $roles
-     * @param  Zend_Acl_Resource_Interface|string|array $resources
+     * @param  RoleInterface|string|array     $roles
+     * @param  ResourceInterface|string|array $resources
      * @param  string|array                             $privileges
-     * @uses   Zend_Acl::setRule()
-     * @return Zend_Acl Provides a fluent interface
+     * @uses   Acl::setRule()
+     * @return Acl Provides a fluent interface
      */
     public function removeAllow($roles = null, $resources = null, $privileges = null)
     {
@@ -514,11 +482,11 @@ class Zend_Acl
     /**
      * Removes "deny" restrictions from the ACL
      *
-     * @param  Zend_Acl_Role_Interface|string|array     $roles
-     * @param  Zend_Acl_Resource_Interface|string|array $resources
+     * @param  RoleInterface|string|array     $roles
+     * @param  ResourceInterface|string|array $resources
      * @param  string|array                             $privileges
-     * @uses   Zend_Acl::setRule()
-     * @return Zend_Acl Provides a fluent interface
+     * @uses   Acl::setRule()
+     * @return Acl Provides a fluent interface
      */
     public function removeDeny($roles = null, $resources = null, $privileges = null)
     {
@@ -568,23 +536,23 @@ class Zend_Acl
      *
      * @param  string                                   $operation
      * @param  string                                   $type
-     * @param  Zend_Acl_Role_Interface|string|array     $roles
-     * @param  Zend_Acl_Resource_Interface|string|array $resources
+     * @param  RoleInterface|string|array     $roles
+     * @param  ResourceInterface|string|array $resources
      * @param  string|array                             $privileges
-     * @param  Zend_Acl_Assert_Interface                $assert
-     * @throws \fproject\amf\AmfException
-     * @uses   Zend_Acl_Role_Registry::get()
-     * @uses   Zend_Acl::get()
-     * @return Zend_Acl Provides a fluent interface
+     * @param  AssertInterface                $assert
+     * @throws AmfException
+     * @uses   RoleRegistry::get()
+     * @uses   Acl::get()
+     * @return Acl Provides a fluent interface
      */
     public function setRule($operation, $type, $roles = null, $resources = null, $privileges = null,
-                            Zend_Acl_Assert_Interface $assert = null)
+                            AssertInterface $assert = null)
     {
         // ensure that the rule type is valid; normalize input to uppercase
         $type = strtoupper($type);
         if (self::TYPE_ALLOW !== $type && self::TYPE_DENY !== $type) {
 
-            throw new \fproject\amf\AmfException("Unsupported rule type; must be either '" . self::TYPE_ALLOW . "' or '"
+            throw new AmfException("Unsupported rule type; must be either '" . self::TYPE_ALLOW . "' or '"
                                        . self::TYPE_DENY . "'");
         }
 
@@ -720,6 +688,7 @@ class Zend_Acl
                 } else {
                     // this block will apply to all resources in a global rule
                     foreach ($roles as $role) {
+                        /** @var array $allResources */
                         /**
                          * since null (all resources) was passed to this setRule() call, we need
                          * clean up all the rules for the global allResources, as well as the indivually
@@ -763,7 +732,7 @@ class Zend_Acl
 
             default:
 
-                throw new \fproject\amf\AmfException("Unsupported operation; must be either '" . self::OP_ADD . "' or '"
+                throw new AmfException("Unsupported operation; must be either '" . self::OP_ADD . "' or '"
                                            . self::OP_REMOVE . "'");
         }
 
@@ -778,7 +747,7 @@ class Zend_Acl
      *
      * If either $role or $resource is null, then the query applies to all Roles or all Resources,
      * respectively. Both may be null to query whether the ACL has a "blacklist" rule
-     * (allow everything to all). By default, Zend_Acl creates a "whitelist" rule (deny
+     * (allow everything to all). By default, Acl creates a "whitelist" rule (deny
      * everything to all), and this method would return false unless this default has
      * been overridden (i.e., by executing $acl->allow()).
      *
@@ -791,11 +760,11 @@ class Zend_Acl
      * and its respective parents are checked similarly before the lower-priority parents of
      * the Role are checked.
      *
-     * @param  Zend_Acl_Role_Interface|string     $role
-     * @param  Zend_Acl_Resource_Interface|string $resource
+     * @param  RoleInterface|string     $role
+     * @param  ResourceInterface|string $resource
      * @param  string                             $privilege
-     * @uses   Zend_Acl::get()
-     * @uses   Zend_Acl_Role_Registry::get()
+     * @uses   Acl::get()
+     * @uses   RoleRegistry::get()
      * @return boolean
      */
     public function isAllowed($role = null, $resource = null, $privilege = null)
@@ -809,7 +778,7 @@ class Zend_Acl
             // keep track of originally called role
             $this->_isAllowedRole = $role;
             $role = $this->_getRoleRegistry()->get($role);
-            if (!$this->_isAllowedRole instanceof Zend_Acl_Role_Interface) {
+            if (!$this->_isAllowedRole instanceof RoleInterface) {
                 $this->_isAllowedRole = $role;
             }
         }
@@ -818,7 +787,7 @@ class Zend_Acl
             // keep track of originally called resource
             $this->_isAllowedResource = $resource;
             $resource = $this->get($resource);
-            if (!$this->_isAllowedResource instanceof Zend_Acl_Resource_Interface) {
+            if (!$this->_isAllowedResource instanceof ResourceInterface) {
                 $this->_isAllowedResource = $resource;
             }
         }
@@ -827,7 +796,7 @@ class Zend_Acl
             // query on all privileges
             do {
                 // depth-first search on $role if it is not 'allRoles' pseudo-parent
-                if (null !== $role && null !== ($result = $this->_roleDFSAllPrivileges($role, $resource, $privilege))) {
+                if (null !== $role && null !== ($result = $this->_roleDFSAllPrivileges($role, $resource))) {
                     return $result;
                 }
 
@@ -868,6 +837,8 @@ class Zend_Acl
 
             } while (true); // loop terminates at 'allResources' pseudo-parent
         }
+
+        return false;
     }
 
     /**
@@ -876,12 +847,12 @@ class Zend_Acl
      * If no Role registry has been created yet, a new default Role registry
      * is created and returned.
      *
-     * @return Zend_Acl_Role_Registry
+     * @return RoleRegistry
      */
     protected function _getRoleRegistry()
     {
         if (null === $this->_roleRegistry) {
-            $this->_roleRegistry = new Zend_Acl_Role_Registry();
+            $this->_roleRegistry = new RoleRegistry();
         }
         return $this->_roleRegistry;
     }
@@ -893,11 +864,11 @@ class Zend_Acl
      * This method returns true if a rule is found and allows access. If a rule exists and denies access,
      * then this method returns false. If no applicable rule is found, then this method returns null.
      *
-     * @param  Zend_Acl_Role_Interface     $role
-     * @param  Zend_Acl_Resource_Interface $resource
+     * @param  RoleInterface     $role
+     * @param  ResourceInterface $resource
      * @return boolean|null
      */
-    protected function _roleDFSAllPrivileges(Zend_Acl_Role_Interface $role, Zend_Acl_Resource_Interface $resource = null)
+    protected function _roleDFSAllPrivileges(RoleInterface $role, ResourceInterface $resource = null)
     {
         $dfs = array(
             'visited' => array(),
@@ -927,17 +898,17 @@ class Zend_Acl
      *
      * This method is used by the internal depth-first search algorithm and may modify the DFS data structure.
      *
-     * @param  Zend_Acl_Role_Interface     $role
-     * @param  Zend_Acl_Resource_Interface $resource
+     * @param  RoleInterface     $role
+     * @param  ResourceInterface $resource
      * @param  array                  $dfs
      * @return boolean|null
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
-    protected function _roleDFSVisitAllPrivileges(Zend_Acl_Role_Interface $role, Zend_Acl_Resource_Interface $resource = null,
+    protected function _roleDFSVisitAllPrivileges(RoleInterface $role, ResourceInterface $resource = null,
                                                  &$dfs = null)
     {
         if (null === $dfs) {
-            throw new \fproject\amf\AmfException('$dfs parameter may not be null');
+            throw new AmfException('$dfs parameter may not be null');
         }
 
         if (null !== ($rules = $this->_getRules($resource, $role))) {
@@ -966,17 +937,17 @@ class Zend_Acl
      * This method returns true if a rule is found and allows access. If a rule exists and denies access,
      * then this method returns false. If no applicable rule is found, then this method returns null.
      *
-     * @param  Zend_Acl_Role_Interface     $role
-     * @param  Zend_Acl_Resource_Interface $resource
+     * @param  RoleInterface     $role
+     * @param  ResourceInterface $resource
      * @param  string                      $privilege
      * @return boolean|null
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
-    protected function _roleDFSOnePrivilege(Zend_Acl_Role_Interface $role, Zend_Acl_Resource_Interface $resource = null,
+    protected function _roleDFSOnePrivilege(RoleInterface $role, ResourceInterface $resource = null,
                                             $privilege = null)
     {
         if (null === $privilege) {
-            throw new \fproject\amf\AmfException('$privilege parameter may not be null');
+            throw new AmfException('$privilege parameter may not be null');
         }
 
         $dfs = array(
@@ -1007,22 +978,22 @@ class Zend_Acl
      *
      * This method is used by the internal depth-first search algorithm and may modify the DFS data structure.
      *
-     * @param  Zend_Acl_Role_Interface     $role
-     * @param  Zend_Acl_Resource_Interface $resource
+     * @param  RoleInterface     $role
+     * @param  ResourceInterface $resource
      * @param  string                      $privilege
      * @param  array                       $dfs
      * @return boolean|null
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
-    protected function _roleDFSVisitOnePrivilege(Zend_Acl_Role_Interface $role, Zend_Acl_Resource_Interface $resource = null,
+    protected function _roleDFSVisitOnePrivilege(RoleInterface $role, ResourceInterface $resource = null,
                                                 $privilege = null, &$dfs = null)
     {
         if (null === $privilege) {
-            throw new \fproject\amf\AmfException('$privilege parameter may not be null');
+            throw new AmfException('$privilege parameter may not be null');
         }
 
         if (null === $dfs) {
-            throw new \fproject\amf\AmfException('$dfs parameter may not be null');
+            throw new AmfException('$dfs parameter may not be null');
         }
 
         if (null !== ($ruleTypeOnePrivilege = $this->_getRuleType($resource, $role, $privilege))) {
@@ -1055,12 +1026,12 @@ class Zend_Acl
      * If all three parameters are null, then the default ACL rule type is returned,
      * based on whether its assertion method passes.
      *
-     * @param  Zend_Acl_Resource_Interface $resource
-     * @param  Zend_Acl_Role_Interface     $role
+     * @param  ResourceInterface $resource
+     * @param  RoleInterface     $role
      * @param  string                      $privilege
      * @return string|null
      */
-    protected function _getRuleType(Zend_Acl_Resource_Interface $resource = null, Zend_Acl_Role_Interface $role = null,
+    protected function _getRuleType(ResourceInterface $resource = null, RoleInterface $role = null,
                                     $privilege = null)
     {
         // get the rules for the $resource and $role
@@ -1083,13 +1054,18 @@ class Zend_Acl
 
         // check assertion first
         if ($rule['assert']) {
+            /** @var AssertInterface $assertion */
             $assertion = $rule['assert'];
             $assertionValue = $assertion->assert(
                 $this,
-                ($this->_isAllowedRole instanceof Zend_Acl_Role_Interface) ? $this->_isAllowedRole : $role,
-                ($this->_isAllowedResource instanceof Zend_Acl_Resource_Interface) ? $this->_isAllowedResource : $resource,
+                ($this->_isAllowedRole instanceof RoleInterface) ? $this->_isAllowedRole : $role,
+                ($this->_isAllowedResource instanceof ResourceInterface) ? $this->_isAllowedResource : $resource,
                 $this->_isAllowedPrivilege
                 );
+        }
+        else
+        {
+            $assertionValue = false;
         }
 
         if (null === $rule['assert'] || $assertionValue) {
@@ -1111,12 +1087,12 @@ class Zend_Acl
      *
      * If the $create parameter is true, then a rule set is first created and then returned to the caller.
      *
-     * @param  Zend_Acl_Resource_Interface $resource
-     * @param  Zend_Acl_Role_Interface     $role
+     * @param  ResourceInterface $resource
+     * @param  RoleInterface     $role
      * @param  boolean                     $create
      * @return array|null
      */
-    protected function &_getRules(Zend_Acl_Resource_Interface $resource = null, Zend_Acl_Role_Interface $role = null,
+    protected function &_getRules(ResourceInterface $resource = null, RoleInterface $role = null,
                                   $create = false)
     {
         // create a reference to null

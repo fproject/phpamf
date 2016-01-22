@@ -30,8 +30,6 @@ require_once 'Zend/Amf/Request.php';
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
 require_once 'Zend/Session.php';
-require_once 'Zend/Acl.php';
-require_once 'Zend/Acl/Role.php';
 
 /**
  * @category   Zend
@@ -62,7 +60,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $this->_server = new Zend_Amf_Server();
         $this->_server->setProduction(false);
         Zend_Amf_Parse_TypeLoader::resetMap();
-        $this->_acl = new Zend_Acl();
+        $this->_acl = new \fproject\amf\acl\Acl();
     }
 
     protected function tearDown()
@@ -138,7 +136,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     {
         Zend_Session::$_unitTestEnabled = true;
         $this->_server->setAuth(new WrongPassword());
-        $this->_acl->addRole(new Zend_Acl_Role(Zend_Amf_Constants::GUEST_ROLE));
+        $this->_acl->addRole(new \fproject\amf\acl\Role(Zend_Amf_Constants::GUEST_ROLE));
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callService();
         $this->assertTrue($resp instanceof Zend_Amf_Value_Messaging_ErrorMessage);
@@ -149,7 +147,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     {
         Zend_Session::$_unitTestEnabled = true;
         $this->_server->setAuth(new WrongPassword());
-        $this->_acl->addRole(new Zend_Acl_Role(Zend_Amf_Constants::GUEST_ROLE));
+        $this->_acl->addRole(new \fproject\amf\acl\Role(Zend_Amf_Constants::GUEST_ROLE));
         $this->_acl->allow(Zend_Amf_Constants::GUEST_ROLE, null, null);
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callService();
@@ -180,7 +178,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     {
         Zend_Session::$_unitTestEnabled = true;
         $this->_server->setAuth(new RightPassword("testuser", "testrole"));
-        $this->_acl->addRole(new Zend_Acl_Role("testrole"));
+        $this->_acl->addRole(new \fproject\amf\acl\Role("testrole"));
         $this->_acl->allow("testrole", null, null);
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "");
@@ -192,7 +190,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     public function testNoAcl()
     {
         $this->_server->setAuth(new RightPassword("testuser", "testrole"));
-        $this->_acl->addRole(new Zend_Acl_Role("testrole"));
+        $this->_acl->addRole(new \fproject\amf\acl\Role("testrole"));
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "");
         $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
@@ -205,7 +203,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     public function testNoClassAcl()
     {
         $this->_server->setAuth(new RightPassword("testuser", "testrole"));
-        $this->_acl->addRole(new Zend_Acl_Role("testrole"));
+        $this->_acl->addRole(new \fproject\amf\acl\Role("testrole"));
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "", 'Zend_Amf_Auth_testclass_NoAcl');
         $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
@@ -217,8 +215,8 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     {
         Zend_Session::$_unitTestEnabled = true;
         $this->_server->setAuth(new RightPassword("testuser", "testrole"));
-        $this->_acl->addRole(new Zend_Acl_Role("testrole"));
-        $this->_acl->addRole(new Zend_Acl_Role("testrole2"));
+        $this->_acl->addRole(new \fproject\amf\acl\Role("testrole"));
+        $this->_acl->addRole(new \fproject\amf\acl\Role("testrole2"));
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "", 'Zend_Amf_Auth_testclass_Acl');
         $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
@@ -229,8 +227,8 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     public function testClassAclDenied()
     {
         $this->_server->setAuth(new RightPassword("testuser", "testrole2"));
-        $this->_acl->addRole(new Zend_Acl_Role("testrole"));
-        $this->_acl->addRole(new Zend_Acl_Role("testrole2"));
+        $this->_acl->addRole(new \fproject\amf\acl\Role("testrole"));
+        $this->_acl->addRole(new \fproject\amf\acl\Role("testrole2"));
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "", 'Zend_Amf_Auth_testclass_Acl');
         $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
@@ -244,8 +242,8 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     {
         Zend_Session::$_unitTestEnabled = true;
         $this->_server->setAuth(new RightPassword("testuser", "testrole2"));
-        $this->_acl->addRole(new Zend_Acl_Role("testrole"));
-        $this->_acl->addRole(new Zend_Acl_Role("testrole2"));
+        $this->_acl->addRole(new \fproject\amf\acl\Role("testrole"));
+        $this->_acl->addRole(new \fproject\amf\acl\Role("testrole2"));
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "", 'Zend_Amf_Auth_testclass_Acl', 'hello2');
         $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
@@ -256,7 +254,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     {
         Zend_Session::$_unitTestEnabled = true;
         $this->_server->setAuth(new RightPassword("testuser", "testrole"));
-        $this->_acl->addRole(new Zend_Acl_Role("testrole"));
+        $this->_acl->addRole(new \fproject\amf\acl\Role("testrole"));
         $this->_acl->allow("testrole", null, null);
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "");
@@ -322,7 +320,7 @@ class Zend_Amf_Auth_testclass_Acl {
         return "hello2!";
     }
 
-    function initAcl(Zend_Acl $acl) {
+    function initAcl(\fproject\amf\acl\Acl $acl) {
         $acl->allow("testrole", null, "hello");
         $acl->allow("testrole2", null, "hello2");
         return true;

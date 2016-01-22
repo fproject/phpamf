@@ -125,7 +125,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
     /**
      * ACL handler object
      *
-     * @var Zend_Acl
+     * @var \fproject\amf\acl\Acl
      */
     protected $_acl;
     /**
@@ -166,10 +166,10 @@ class Zend_Amf_Server implements Zend_Server_Interface
     /**
      * Set ACL adapter
      *
-     * @param  Zend_Acl $acl
+     * @param  \fproject\amf\acl\Acl $acl
      * @return Zend_Amf_Server
      */
-    public function setAcl(Zend_Acl $acl)
+    public function setAcl(\fproject\amf\acl\Acl $acl)
     {
         $this->_acl = $acl;
         return $this;
@@ -177,7 +177,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
    /**
      * Get ACL adapter
      *
-     * @return Zend_Acl
+     * @return \fproject\amf\acl\Acl
      */
     public function getAcl()
     {
@@ -244,8 +244,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
         if($object) {
             $class = is_object($object)?get_class($object):$object;
             if(!$this->_acl->has($class)) {
-                require_once 'Zend/Acl/Resource.php';
-                $this->_acl->addResource(new Zend_Acl_Resource($class));
+                $this->_acl->addResource(new \fproject\amf\acl\Resource($class));
             }
             $call = array($object, "initAcl");
             if(is_callable($call) && !call_user_func($call, $this->_acl)) {

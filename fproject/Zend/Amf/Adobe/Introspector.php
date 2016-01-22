@@ -115,10 +115,10 @@ class Zend_Amf_Adobe_Introspector
     /**
      * Authentication handler
      *
-     * @param  Zend_Acl $acl
-     * @return unknown_type
+     * @param  \fproject\amf\acl\Acl $acl
+     * @return bool
      */
-    public function initAcl(Zend_Acl $acl)
+    public function initAcl(\fproject\amf\acl\Acl $acl)
     {
         return false; // we do not need auth for this class
     }
