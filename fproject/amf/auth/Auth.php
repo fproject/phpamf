@@ -1,38 +1,30 @@
 <?php
-/**
- * Zend Framework
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Auth
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
- */
+///////////////////////////////////////////////////////////////////////////////
+//
+// © Copyright f-project.net 2010-present.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+///////////////////////////////////////////////////////////////////////////////
 
-use fproject\amf\auth\AuthStorageInterface;
-use fproject\amf\auth\AuthAdapterInterface;
-/**
- * @category   Zend
- * @package    Zend_Auth
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- */
-class Zend_Auth
+namespace fproject\amf\auth;
+
+class Auth
 {
     /**
      * Singleton instance
      *
-     * @var Zend_Auth
+     * @var Auth
      */
     protected static $_instance = null;
 
@@ -46,7 +38,6 @@ class Zend_Auth
     /**
      * Singleton pattern implementation makes "new" unavailable
      *
-     * @return void
      */
     protected function __construct()
     {}
@@ -60,11 +51,11 @@ class Zend_Auth
     {}
 
     /**
-     * Returns an instance of Zend_Auth
+     * Returns an instance of Auth
      *
      * Singleton pattern implementation
      *
-     * @return Zend_Auth Provides a fluent interface
+     * @return Auth Provides a fluent interface
      */
     public static function getInstance()
     {
@@ -85,11 +76,7 @@ class Zend_Auth
     public function getStorage()
     {
         if (null === $this->_storage) {
-            /**
-             * @see Zend_Auth_Storage_Session
-             */
-            require_once 'Zend/Auth/Storage/Session.php';
-            $this->setStorage(new Zend_Auth_Storage_Session());
+            $this->setStorage(new \fproject\amf\auth\AuthSessionStorage());
         }
 
         return $this->_storage;
@@ -99,7 +86,7 @@ class Zend_Auth
      * Sets the persistent storage handler
      *
      * @param  AuthStorageInterface $storage
-     * @return Zend_Auth Provides a fluent interface
+     * @return Auth Provides a fluent interface
      */
     public function setStorage(AuthStorageInterface $storage)
     {

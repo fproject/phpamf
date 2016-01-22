@@ -1,40 +1,27 @@
 <?php
-/**
- * Zend Framework
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Auth
- * @subpackage Storage
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
- */
+///////////////////////////////////////////////////////////////////////////////
+//
+// © Copyright f-project.net 2010-present.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+///////////////////////////////////////////////////////////////////////////////
 
-/**
- * @see Zend_Session
- */
-require_once 'Zend/Session.php';
+namespace fproject\amf\auth;
 
-use fproject\amf\auth\AuthStorageInterface;
+use fproject\amf\session\SessionNamespace;
 
-/**
- * @category   Zend
- * @package    Zend_Auth
- * @subpackage Storage
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- */
-class Zend_Auth_Storage_Session implements AuthStorageInterface
+class AuthSessionStorage implements AuthStorageInterface
 {
     /**
      * Default session namespace
@@ -49,7 +36,7 @@ class Zend_Auth_Storage_Session implements AuthStorageInterface
     /**
      * Object to proxy $_SESSION storage
      *
-     * @var Zend_Session_Namespace
+     * @var SessionNamespace
      */
     protected $_session;
 
@@ -77,7 +64,7 @@ class Zend_Auth_Storage_Session implements AuthStorageInterface
     {
         $this->_namespace = $namespace;
         $this->_member    = $member;
-        $this->_session   = new Zend_Session_Namespace($this->_namespace);
+        $this->_session   = new SessionNamespace($this->_namespace);
     }
 
     /**
