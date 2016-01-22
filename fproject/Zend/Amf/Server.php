@@ -19,9 +19,6 @@
  * @version    $Id$
  */
 
-/** @see Zend_Server_Interface */
-require_once 'Zend/Server/Interface.php';
-
 /** @see Zend_Server_Reflection */
 require_once 'Zend/Server/Reflection.php';
 
@@ -55,7 +52,7 @@ use fproject\amf\auth\AuthAbstract;
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Server implements Zend_Server_Interface
+class Zend_Amf_Server
 {
     /**
      * Array of dispatchables
