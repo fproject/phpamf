@@ -21,11 +21,9 @@ namespace fproject\amf\discovery;
 
 /**
  * The Service Router class is responsible for executing the remote service method and returning it's value.
- * based on the old 'Executive' of php 1.9. It looks for a service either explicitely defined in a
+ * based on the old 'Executive' of php 1.9. It looks for a service either explicitly defined in a
  * ClassFindInfo object, or in a service folder.
  *
- * @package Amfphp_Core_Common
- * @author Ariel Sommeria-klein
  */
 class ServiceRouter {
     /**

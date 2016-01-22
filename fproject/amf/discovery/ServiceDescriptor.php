@@ -19,11 +19,9 @@
 
 namespace fproject\amf\discovery;
 
-  /**
+/**
  * Contains all collected information about a service. This information will be used by the generator. 
  *
- * @author Ariel Sommeria-klein
- * @package Amfphp_Plugins_Discovery
  */
 class ServiceDescriptor {
     /**

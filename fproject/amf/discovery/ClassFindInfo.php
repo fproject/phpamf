@@ -23,8 +23,6 @@ namespace fproject\amf\discovery;
  * The information necessary for a service router to be able to load a class' file and instanciate it
  * could be extended later with namespaces when they become mainstream
  *
- * @package Amfphp_Core_Common
- * @author Ariel Sommeria-klein
  */
 class ClassFindInfo {
 

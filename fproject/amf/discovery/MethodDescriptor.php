@@ -22,8 +22,6 @@ namespace fproject\amf\discovery;
 /**
  * Contains all collected information about a service method.
  *
- * @author Ariel Sommeria-klein
- * @package Amfphp_Plugins_Discovery
  */
 class MethodDescriptor {
 
