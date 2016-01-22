@@ -43,9 +43,6 @@ require_once 'Zend/Loader/PluginLoader.php';
 /** @see Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 
-/** @see Zend_Auth */
-require_once 'Zend/Auth.php';
-
 use fproject\amf\auth\AuthAbstract;
 
 /**
@@ -213,7 +210,6 @@ class Zend_Amf_Server implements Zend_Server_Interface
      */
     public function setSession($namespace = 'Zend_Amf')
     {
-        require_once 'Zend/Session.php';
         $this->_session = true;
         return $this;
     }
@@ -255,7 +251,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
             $class = null;
         }
 
-        $auth = Zend_Auth::getInstance();
+        $auth = \fproject\amf\auth\Auth::getInstance();
         if($auth->hasIdentity()) {
             $role = $auth->getIdentity()->role;
         } else {
@@ -407,7 +403,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
                 break;
            case Zend_Amf_Value_Messaging_CommandMessage::LOGOUT_OPERATION :
                 if($this->_auth) {
-                    Zend_Auth::getInstance()->clearIdentity();
+                    \fproject\amf\auth\Auth::getInstance()->clearIdentity();
                 }
                 $return = new Zend_Amf_Value_Messaging_AcknowledgeMessage($message);
                 break;
@@ -466,7 +462,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
             return true;
         }
         $this->_auth->setCredentials($userId, $password);
-        $auth = Zend_Auth::getInstance();
+        $auth = \fproject\amf\auth\Auth::getInstance();
         $result = $auth->authenticate($this->_auth);
         if ($result->isValid()) {
             if (!$this->isSession()) {

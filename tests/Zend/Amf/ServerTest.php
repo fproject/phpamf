@@ -32,7 +32,6 @@ require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
 require_once 'Zend/Amf/Adobe/Auth.php';
 require_once 'ServiceA.php';
 require_once 'ServiceB.php';
-require_once 'Zend/Session.php';
 
 /**
  * @category   Zend
@@ -956,8 +955,8 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
      */
     public function testSessionAmf3()
     {
-        Zend_Session::$_unitTestEnabled = true;
-        Zend_Session::start();
+        \fproject\amf\session\Session::$_unitTestEnabled = true;
+        \fproject\amf\session\Session::start();
         $this->_server->setClass('Zend_Amf_testSession');
         $this->_server->setSession();
 
@@ -985,7 +984,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('AppendToGatewayUrl',$headerBody[0]->name);
 
         // Do not stop session since it still can be used by other tests
-        // Zend_Session::stop();
+        // \fproject\amf\session\Session::stop();
     }
 
     public function testAddDirectory()
