@@ -26,7 +26,7 @@ class AuthSessionStorage implements AuthStorageInterface
     /**
      * Default session namespace
      */
-    const NAMESPACE_DEFAULT = 'Zend_Auth';
+    const NAMESPACE_DEFAULT = 'fproject\amf\auth';
 
     /**
      * Default session object member name
