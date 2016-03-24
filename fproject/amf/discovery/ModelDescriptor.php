@@ -20,49 +20,39 @@
 namespace fproject\amf\discovery;
 
 /**
- * Contains all collected information about a service method.
+ * Contains all collected information about a service. This information will be used by the generator. 
  *
  */
-class MethodDescriptor {
+class ModelDescriptor {
+    /**
+     * Name
+     * @var string
+     */
+     public $name;
 
     /**
-     * name
+     *  Properties
+     * @var VariableDescriptor[] an array of VariableDescriptor
+     */
+    public $properties;
+    
+    /**
+     * class level comment
      * @var string 
-     */
-    public $name;
-
-    /**
-     * 
-     * @var VariableDescriptor[] array of ParameterDescriptor
-     */
-    public $parameters;
-
-    /**
-     *
-     * @var string method level comment
      */
     public $comment;
 
     /**
-     * return type
-     * @var string 
-     */
-    public $returnType;
-
-    /**
      * constructor
      * @param string $name
-     * @param array $parameters
+     * @param MethodDescriptor[] $methods
      * @param string $comment
-     * @param string $returnType 
      */
-    public function __construct($name, array $parameters, $comment, $returnType) {
+    public function __construct($name, array $methods, $comment) {
         $this->name = $name;
-        $this->parameters = $parameters;
+        $this->methods = $methods;
         $this->comment = $comment;
-        $this->returnType = $returnType;
     }
-
 }
 
 ?>

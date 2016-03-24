@@ -23,26 +23,33 @@ namespace fproject\amf\discovery;
  * Contains all collected information about a service method parameter
  *
  */
-class ParameterDescriptor {
+class VariableDescriptor {
 
     /**
-     * name
+     * Name
      * @var string
      */
     public $name;
 
     /**
      * This can be gathered in 2 manners: commentary tag analysis and type hinting analysis. For starters only the second method is used
+     *
      * @var String
      */
     public $type;
+
+    /**
+     * Comment
+     * @var string
+     */
+    public $comment;
 
     /**
      * constructor
      * @param String $name
      * @param String $type
      */
-    public function __construct($name, $type) {
+    public function __construct($name, $type=null) {
         $this->name = $name;
         $this->type = $type;
     }
