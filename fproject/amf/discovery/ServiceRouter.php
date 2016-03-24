@@ -18,6 +18,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace fproject\amf\discovery;
+use fproject\amf\AmfException;
 
 /**
  * The Service Router class is responsible for executing the remote service method and returning it's value.
@@ -71,10 +72,10 @@ class ServiceRouter {
      * this method is static so that it can be used also by the discovery service
      *  '__' are replaced by '/' to help the client generator support packages without messing with folders and the like
      *
-     * @param type $serviceName
+     * @param string $serviceName
      * @param array $serviceFolderPaths
      * @param array $serviceNames2ClassFindInfo
-     * @throws Zend_Exception
+     * @throws AmfException
      * @return Object service object
      */
     public static function getServiceObjectStatically($serviceName, array $serviceFolderPaths, array $serviceNames2ClassFindInfo){
@@ -110,7 +111,7 @@ class ServiceRouter {
         }
 
         if (!$serviceObject) {
-            throw new Zend_Exception("Service not found: $serviceName");
+            throw new AmfException("Service not found: $serviceName");
         }
         return $serviceObject;
         
@@ -124,53 +125,6 @@ class ServiceRouter {
     public function getServiceObject($serviceName) {
         return self::getServiceObjectStatically($serviceName, $this->serviceFolderPaths, $this->serviceNames2ClassFindInfo);
     }
-
-    /**
-     * loads and instanciates a service class matching $serviceName, then calls the function defined by $methodName using $parameters as parameters
-     * throws an exception if service not found.
-     * if the service exists but not the function, an exception is thrown by call_user_func_array. It is pretty explicit, so no further code was added
-     *
-     * @param string $serviceName
-     * @param string $methodName
-     * @param array $parameters
-     * @return mixed the result of the function call
-     *
-     */
-    public function executeServiceCall($serviceName, $methodName, array $parameters) {
-        $unfilteredServiceObject = $this->getServiceObject($serviceName);
-        $serviceObject = Amfphp_Core_FilterManager::getInstance()->callFilters(self::FILTER_SERVICE_OBJECT, $unfilteredServiceObject, $serviceName, $methodName, $parameters);
-
-        $isStaticMethod = false;
-        
-        if(method_exists($serviceObject, $methodName)){
-            //method exists, but isn't static
-        }else if (method_exists($serviceName, $methodName)) {
-            $isStaticMethod = true;
-        }else{
-            throw new Amfphp_Core_Exception("method $methodName not found on $serviceName object ");
-        }
-        
-        if(substr($methodName, 0, 1) == '_'){
-            throw new Exception("The method $methodName starts with a '_', and is therefore not accessible");
-        }
-        
-        if($this->checkArgumentCount){
-            $method = new ReflectionMethod($serviceObject, $methodName);
-            $numberOfRequiredParameters = $method->getNumberOfRequiredParameters();
-            $numberOfParameters = $method->getNumberOfParameters();
-            $numberOfProvidedParameters = count($parameters);
-            if ($numberOfProvidedParameters < $numberOfRequiredParameters || $numberOfProvidedParameters > $numberOfParameters) {
-                throw new Amfphp_Core_Exception("Invalid number of parameters for method $methodName in service $serviceName : $numberOfRequiredParameters  required, $numberOfParameters total, $numberOfProvidedParameters provided");
-            }      
-        }
-        if($isStaticMethod){
-            return call_user_func_array(array($serviceName, $methodName), $parameters);
-        }else{
-            return call_user_func_array(array($serviceObject, $methodName), $parameters);
-        }
-    }
-
-
 }
 
 ?>

@@ -133,8 +133,8 @@ class DiscoveryService {
     {
         //get rid of phpdoc formatting
         $comment = str_replace('/**', '', $comment);
-        $comment = str_replace('*', '', $comment);
         $comment = str_replace('*/', '', $comment);
+        $comment = str_replace('*', '', $comment);
         $exploded = explode('@', $comment);
         $ret = array();
         $params = array();
@@ -241,7 +241,7 @@ class DiscoveryService {
         $modelNames = $this->getClassNames(self::$modelFolderPaths, self::$classNames2ClassFindInfo);
         $models = array();
         foreach ($modelNames as $modelName) {
-            $modelObject = ServiceRouter::getServiceObjectStatically($modelName, self::$serviceFolderPaths, self::$classNames2ClassFindInfo);
+            $modelObject = ServiceRouter::getServiceObjectStatically($modelName, self::$modelFolderPaths, self::$classNames2ClassFindInfo);
             $reflectionObject = new ReflectionObject($modelObject);
             $rflProps = $reflectionObject->getProperties(ReflectionMethod::IS_PUBLIC);
             /** @var VariableDescriptor[] $props */
@@ -256,13 +256,12 @@ class DiscoveryService {
 
                 $prop = new VariableDescriptor($propName);
                 $prop->comment = $rflProp->getDocComment();
+                $prop->parseTypeFromComment();
 
                 $props[$propName] = $prop;
             }
 
-            $this->populatePropertyTypes($props);
-
-            $models[$modelName] = new ServiceDescriptor($modelName, $props, $reflectionObject->getDocComment());
+            $models[$modelName] = new ModelDescriptor($modelName, $props, $reflectionObject->getDocComment());
         }
         //note : filtering must be done at the end, as for example excluding a Vo class needed by another creates issues
         foreach ($models as $modelName => $serviceObj) {
@@ -276,16 +275,6 @@ class DiscoveryService {
 
         return $models;
     }
-
-
-    /**
-     * @param VariableDescriptor[] $properties
-     */
-    protected function populatePropertyTypes(&$properties)
-    {
-
-    }
-
 }
 
 ?>

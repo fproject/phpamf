@@ -54,6 +54,28 @@ class VariableDescriptor {
         $this->type = $type;
     }
 
+    public function parseTypeFromComment()
+    {
+        $comment = $this->comment;
+        //get rid of phpdoc formatting
+        $comment = str_replace('/**', '', $comment);
+        $comment = str_replace('*/', '', $comment);
+        $comment = str_replace('*', '', $comment);
+        $exploded = explode('@', $comment);
+
+        foreach ($exploded as $value) {
+            if (strtolower(substr($value, 0, 3)) == 'var') {
+                $words = explode(' ', $value);
+                $type = trim($words[1]);
+                break;
+            }
+        }
+
+        if(!empty($type))
+        {
+            $this->type = $type;
+        }
+    }
 }
 
 ?>

@@ -45,12 +45,12 @@ class ModelDescriptor {
     /**
      * constructor
      * @param string $name
-     * @param MethodDescriptor[] $methods
+     * @param VariableDescriptor[] $properties
      * @param string $comment
      */
-    public function __construct($name, array $methods, $comment) {
+    public function __construct($name, array $properties, $comment) {
         $this->name = $name;
-        $this->methods = $methods;
+        $this->properties = $properties;
         $this->comment = $comment;
     }
 }
