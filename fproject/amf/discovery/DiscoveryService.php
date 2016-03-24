@@ -189,6 +189,8 @@ class DiscoveryService {
             $rflMethods = $reflectionObject->getMethods(ReflectionMethod::IS_PUBLIC);
             $methods = array();
             foreach ($rflMethods as $rflMethod) {
+                if($rflMethod->isStatic())
+                    continue;
                 $methodName = $rflMethod->name;
 
                 if (substr($methodName, 0, 1) == '_') {
