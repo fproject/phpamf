@@ -722,7 +722,7 @@ class Zend_Amf_Server
     /**
      * get a reference to the Zend_Amf_response instance
      *
-     * @return Zend_Amf_Server_Response
+     * @return Zend_Amf_Response
      */
     public function getResponse()
     {

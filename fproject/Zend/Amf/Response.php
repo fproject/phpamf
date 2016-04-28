@@ -161,7 +161,7 @@ class Zend_Amf_Response
     /**
      * Return an array of AMF bodies to be serialized
      *
-     * @return array
+     * @return Zend_Amf_Value_MessageBody[]
      */
     public function getAmfBodies()
     {
