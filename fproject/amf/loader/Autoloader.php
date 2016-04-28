@@ -1,41 +1,33 @@
 <?php
-/**
- * Zend Framework
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Loader
- * @subpackage Autoloader
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id$
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- */
+///////////////////////////////////////////////////////////////////////////////
+//
+// © Copyright f-project.net 2010-present.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+///////////////////////////////////////////////////////////////////////////////
 
-/** Zend_Loader */
-require_once 'Zend/Loader.php';
+namespace fproject\amf\loader;
+use fproject\amf\AmfException;
 
 /**
- * Autoloader stack and namespace autoloader
+ * Class and namespace autoloader
  *
- * @uses       Zend_Loader_Autoloader
- * @package    Zend_Loader
- * @subpackage Autoloader
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Loader_Autoloader
+class Autoloader
 {
     /**
-     * @var Zend_Loader_Autoloader Singleton instance
+     * @var Autoloader $_instance Singleton instance
      */
     protected static $_instance;
 
@@ -47,7 +39,7 @@ class Zend_Loader_Autoloader
     /**
      * @var array Default autoloader callback
      */
-    protected $_defaultAutoloader = array('Zend_Loader', 'loadClass');
+    protected $_defaultAutoloader = array('fproject\amf\loader\Loader', 'loadClass');
 
     /**
      * @var bool Whether or not to act as a fallback autoloader
@@ -85,7 +77,7 @@ class Zend_Loader_Autoloader
     /**
      * Retrieve singleton instance
      *
-     * @return Zend_Loader_Autoloader
+     * @return Autoloader
      */
     public static function getInstance()
     {
@@ -116,7 +108,7 @@ class Zend_Loader_Autoloader
         $self = self::getInstance();
 
         foreach ($self->getClassAutoloaders($class) as $autoloader) {
-            if ($autoloader instanceof Zend_Loader_Autoloader_Interface) {
+            if ($autoloader instanceof AutoloaderInterface) {
                 if ($autoloader->autoload($class)) {
                     return true;
                 }
@@ -139,12 +131,12 @@ class Zend_Loader_Autoloader
      *
      * @param  string|array $callback PHP callback
      * @return $this
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
     public function setDefaultAutoloader($callback)
     {
         if (!is_callable($callback)) {
-            throw new \fproject\amf\AmfException('Invalid callback specified for default autoloader');
+            throw new AmfException('Invalid callback specified for default autoloader');
         }
 
         $this->_defaultAutoloader = $callback;
@@ -164,8 +156,8 @@ class Zend_Loader_Autoloader
     /**
      * Set several autoloader callbacks at once
      *
-     * @param  array $autoloaders Array of PHP callbacks (or Zend_Loader_Autoloader_Interface implementations) to act as autoloaders
-     * @return Zend_Loader_Autoloader
+     * @param  array $autoloaders Array of PHP callbacks (or AutoloaderInterface implementations) to act as autoloaders
+     * @return Autoloader
      */
     public function setAutoloaders(array $autoloaders)
     {
@@ -202,15 +194,15 @@ class Zend_Loader_Autoloader
      * Register a namespace to autoload
      *
      * @param  string|array $namespace
-     * @return Zend_Loader_Autoloader
-     * @throws \fproject\amf\AmfException
+     * @return Autoloader
+     * @throws AmfException
      */
     public function registerNamespace($namespace)
     {
         if (is_string($namespace)) {
             $namespace = (array) $namespace;
         } elseif (!is_array($namespace)) {
-            throw new \fproject\amf\AmfException('Invalid namespace provided');
+            throw new AmfException('Invalid namespace provided');
         }
 
         foreach ($namespace as $ns) {
@@ -225,15 +217,15 @@ class Zend_Loader_Autoloader
      * Unload a registered autoload namespace
      *
      * @param  string|array $namespace
-     * @return Zend_Loader_Autoloader
-     * @throws \fproject\amf\AmfException
+     * @return Autoloader
+     * @throws AmfException
      */
     public function unregisterNamespace($namespace)
     {
         if (is_string($namespace)) {
             $namespace = (array) $namespace;
         } elseif (!is_array($namespace)) {
-            throw new \fproject\amf\AmfException('Invalid namespace provided');
+            throw new AmfException('Invalid namespace provided');
         }
 
         foreach ($namespace as $ns) {
@@ -259,7 +251,7 @@ class Zend_Loader_Autoloader
         $path = $spec;
         if (is_array($spec)) {
             if (!isset($spec['path'])) {
-                throw new \fproject\amf\AmfException('No path specified for ZF');
+                throw new AmfException('No path specified for ZF');
             }
             $path = $spec['path'];
             if (isset($spec['version'])) {
@@ -284,7 +276,7 @@ class Zend_Loader_Autoloader
      * Get or set the value of the "suppress not found warnings" flag
      *
      * @param  null|bool $flag
-     * @return bool|Zend_Loader_Autoloader Returns boolean if no argument is passed, object instance otherwise
+     * @return bool|Autoloader Returns boolean if no argument is passed, object instance otherwise
      */
     public function suppressNotFoundWarnings($flag = null)
     {
@@ -299,7 +291,7 @@ class Zend_Loader_Autoloader
      * Indicate whether or not this autoloader should be a fallback autoloader
      *
      * @param  bool $flag
-     * @return Zend_Loader_Autoloader
+     * @return Autoloader
      */
     public function setFallbackAutoloader($flag)
     {
@@ -374,9 +366,9 @@ class Zend_Loader_Autoloader
     /**
      * Add an autoloader to the beginning of the stack
      *
-     * @param  object|array|string $callback PHP callback or Zend_Loader_Autoloader_Interface implementation
+     * @param  object|array|string $callback PHP callback or AutoloaderInterface implementation
      * @param  string|array $namespace Specific namespace(s) under which to register callback
-     * @return Zend_Loader_Autoloader
+     * @return Autoloader
      */
     public function unshiftAutoloader($callback, $namespace = '')
     {
@@ -397,9 +389,9 @@ class Zend_Loader_Autoloader
     /**
      * Append an autoloader to the autoloader stack
      *
-     * @param  object|array|string $callback PHP callback or Zend_Loader_Autoloader_Interface implementation
+     * @param  object|array|string $callback PHP callback or AutoloaderInterface implementation
      * @param  string|array $namespace Specific namespace(s) under which to register callback
-     * @return Zend_Loader_Autoloader
+     * @return Autoloader
      */
     public function pushAutoloader($callback, $namespace = '')
     {
@@ -420,9 +412,9 @@ class Zend_Loader_Autoloader
     /**
      * Remove an autoloader from the autoloader stack
      *
-     * @param  object|array|string $callback PHP callback or Zend_Loader_Autoloader_Interface implementation
+     * @param  object|array|string $callback PHP callback or AutoloaderInterface implementation
      * @param  null|string|array $namespace Specific namespace(s) from which to remove autoloader
-     * @return Zend_Loader_Autoloader
+     * @return Autoloader
      */
     public function removeAutoloader($callback, $namespace = null)
     {
@@ -481,7 +473,7 @@ class Zend_Loader_Autoloader
                 call_user_func($callback, $class);
             }
             return $class;
-        } catch (Zend_Exception $e) {
+        } catch (AmfException $e) {
             return false;
         }
     }
@@ -491,7 +483,7 @@ class Zend_Loader_Autoloader
      *
      * @param  array $autoloaders
      * @param  string $namespace
-     * @return Zend_Loader_Autoloader
+     * @return Autoloader
      */
     protected function _setNamespaceAutoloaders(array $autoloaders, $namespace = '')
     {
@@ -506,7 +498,7 @@ class Zend_Loader_Autoloader
      * @param  string $path
      * @param  string $version
      * @return mixed
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
     protected function _getVersionPath($path, $version)
     {
@@ -518,7 +510,7 @@ class Zend_Loader_Autoloader
 
         $availableVersions = $this->_getAvailableVersions($path, $version);
         if (empty($availableVersions)) {
-            throw new \fproject\amf\AmfException('No valid ZF installations discovered');
+            throw new AmfException('No valid ZF installations discovered');
         }
 
         $matchedVersion = array_pop($availableVersions);
@@ -530,7 +522,7 @@ class Zend_Loader_Autoloader
      *
      * @param  string $version
      * @return string "latest", "major", "minor", or "specific"
-     * @throws \fproject\amf\AmfException if version string contains too many dots
+     * @throws AmfException if version string contains too many dots
      */
     protected function _getVersionType($version)
     {
@@ -547,7 +539,7 @@ class Zend_Loader_Autoloader
             return 'minor';
         }
         if (3 < $count) {
-            throw new \fproject\amf\AmfException('Invalid version string provided');
+            throw new AmfException('Invalid version string provided');
         }
         return 'specific';
     }
@@ -558,12 +550,12 @@ class Zend_Loader_Autoloader
      * @param  string $path
      * @param  string $version
      * @return array
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
     protected function _getAvailableVersions($path, $version)
     {
         if (!is_dir($path)) {
-            throw new \fproject\amf\AmfException('Invalid ZF path provided');
+            throw new AmfException('Invalid ZF path provided');
         }
 
         $path       = rtrim($path, '/');
