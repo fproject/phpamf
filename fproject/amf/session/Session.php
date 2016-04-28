@@ -19,6 +19,8 @@
 
 namespace fproject\amf\session;
 
+use fproject\amf\loader\Loader;
+
 class Session extends SessionAbstract
 {
     /**
@@ -761,8 +763,7 @@ class Session extends SessionAbstract
     {
         foreach ($_SESSION['__ZF']['VALID'] as $validator_name => $valid_data) {
             if (!class_exists($validator_name)) {
-                require_once 'Zend/Loader.php';
-                \Zend_Loader::loadClass($validator_name);
+                Loader::loadClass($validator_name);
             }
             /** @var SessionValidatorInterface $validator */
             $validator = new $validator_name;

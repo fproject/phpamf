@@ -23,8 +23,7 @@
 /** Zend_Loader_PluginLoader_Interface */
 require_once 'Zend/Loader/PluginLoader/Interface.php';
 
-/** Zend_Loader */
-require_once 'Zend/Loader.php';
+use fproject\amf\loader\Loader;
 
 /**
  * Generic plugin class loader
@@ -397,7 +396,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
 
             foreach ($paths as $path) {
                 $loadFile = $path . $classFile;
-                if (Zend_Loader::isReadable($loadFile)) {
+                if (Loader::isReadable($loadFile)) {
                     include_once $loadFile;
                     if (class_exists($className, false)) {
                         if (null !== $incFile) {

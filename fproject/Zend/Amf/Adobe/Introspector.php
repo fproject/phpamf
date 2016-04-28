@@ -28,6 +28,8 @@ require_once 'Zend/Reflection/Class.php';
 /** @see Zend_Server_Reflection */
 require_once 'Zend/Server/Reflection.php';
 
+use fproject\amf\loader\Loader;
+
 /**
  * This class implements a service for generating AMF service descriptions as XML.
  *
@@ -92,8 +94,7 @@ class Zend_Amf_Adobe_Introspector
 
         // Introspect!
         if (!class_exists($serviceClass)) {
-            require_once 'Zend/Loader.php';
-            Zend_Loader::loadClass($serviceClass, $this->_getServicePath());
+            Loader::loadClass($serviceClass, $this->_getServicePath());
         }
 
         $serv = $this->_xml->createElement('service-description');
