@@ -34,13 +34,11 @@ require_once 'Zend/Amf/Value/MessageHeader.php';
 /** @see Zend_Amf_Value_Messaging_CommandMessage */
 require_once 'Zend/Amf/Value/Messaging/CommandMessage.php';
 
-/** @see Zend_Loader_PluginLoader */
-require_once 'Zend/Loader/PluginLoader.php';
-
 /** @see Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 
 use fproject\amf\auth\AuthAbstract;
+use fproject\amf\loader\ResourceLoader;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -71,7 +69,7 @@ class Zend_Amf_Server
 
     /**
      * Loader for classes in added directories
-     * @var Zend_Loader_PluginLoader
+     * @var ResourceLoader $_loader
      */
     protected $_loader;
 
@@ -127,7 +125,7 @@ class Zend_Amf_Server
      */
     public function __construct()
     {
-        Zend_Amf_Parse_TypeLoader::setResourceLoader(new Zend_Loader_PluginLoader(array("Zend_Amf_Parse_Resource" => "Zend/Amf/Parse/Resource")));
+        Zend_Amf_Parse_TypeLoader::setResourceLoader(new ResourceLoader(array("Zend_Amf_Parse_Resource" => "Zend/Amf/Parse/Resource")));
     }
 
     /**
@@ -268,13 +266,12 @@ class Zend_Amf_Server
     /**
      * Get PluginLoader for the Server
      *
-     * @return Zend_Loader_PluginLoader
+     * @return ResourceLoader
      */
     protected function getLoader()
     {
         if(empty($this->_loader)) {
-            require_once 'Zend/Loader/PluginLoader.php';
-            $this->_loader = new Zend_Loader_PluginLoader();
+            $this->_loader = new ResourceLoader();
         }
         return $this->_loader;
     }
