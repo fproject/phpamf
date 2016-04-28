@@ -19,7 +19,8 @@
  * @version    $Id$
  */
 
- 
+use fproject\amf\AmfException;
+
 /**
  * @category   Zend
  * @package    Zend_Xml_SecurityScan
@@ -34,13 +35,12 @@ class Zend_Xml_Security
      * Heuristic scan to detect entity in XML
      *
      * @param  string $xml
-     * @throws Zend_Xml_Exception
+     * @throws AmfException
      */
     protected static function heuristicScan($xml)
     {
         if (strpos($xml, '<!ENTITY') !== false) {
-            require_once 'Exception.php';
-            throw new Zend_Xml_Exception(self::ENTITY_DETECT);
+            throw new AmfException(self::ENTITY_DETECT);
         }
     }
 
@@ -64,7 +64,7 @@ class Zend_Xml_Security
      *
      * @param   string $xml
      * @param   DomDocument $dom
-     * @throws  Zend_Xml_Exception
+     * @throws  AmfException
      * @return  SimpleXMLElement|DomDocument|boolean
      */
     public static function scan($xml, DOMDocument $dom = null)
@@ -107,8 +107,7 @@ class Zend_Xml_Security
             foreach ($dom->childNodes as $child) {
                 if ($child->nodeType === XML_DOCUMENT_TYPE_NODE) {
                     if ($child->entities->length > 0) {
-                        require_once 'Exception.php';
-                        throw new Zend_Xml_Exception(self::ENTITY_DETECT);
+                        throw new AmfException(self::ENTITY_DETECT);
                     }
                 }
             }
@@ -135,14 +134,13 @@ class Zend_Xml_Security
      *
      * @param  string $file
      * @param  DOMDocument $dom
-     * @throws Zend_Xml_Exception
+     * @throws AmfException
      * @return SimpleXMLElement|DomDocument
      */
     public static function scanFile($file, DOMDocument $dom = null)
     {
         if (!file_exists($file)) {
-            require_once 'Exception.php';
-            throw new Zend_Xml_Exception(
+            throw new AmfException(
                 "The file $file specified doesn't exist"
             );
         }
