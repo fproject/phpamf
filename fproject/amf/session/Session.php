@@ -22,7 +22,7 @@ namespace fproject\amf\session;
 class Session extends SessionAbstract
 {
     /**
-     * Whether or not Zend_Session is being used with unit tests
+     * Whether or not Session is being used with unit tests
      *
      * @internal
      * @var bool
@@ -92,8 +92,8 @@ class Session extends SessionAbstract
     );
 
     /**
-     * List of options pertaining to Zend_Session that can be set by developers
-     * using Zend_Session::setOptions(). This list intentionally duplicates
+     * List of options pertaining to Session that can be set by developers
+     * using Session::setOptions(). This list intentionally duplicates
      * the individual declaration of static "class" variables by the same names.
      *
      * @var array
@@ -140,7 +140,7 @@ class Session extends SessionAbstract
     private static $_rememberMeSeconds = 1209600; // 2 weeks
 
     /**
-     * Whether the default options listed in Zend_Session::$_localOptions have been set
+     * Whether the default options listed in Session::$_localOptions have been set
      *
      * @var bool
      */
@@ -409,9 +409,9 @@ class Session extends SessionAbstract
             self::setOptions(is_array($options) ? $options : array());
         }
 
-        // In strict mode, do not allow auto-starting Zend_Session, such as via "new SessionNamespace()"
+        // In strict mode, do not allow auto-starting Session, such as via "new SessionNamespace()"
         if (self::$_strict && $options === true) {
-            throw new SessionException('You must explicitly start the session with Zend_Session::start() when session options are set to strict.');
+            throw new SessionException('You must explicitly start the session with Session::start() when session options are set to strict.');
         }
 
         $filename = $linenum = null;
@@ -592,7 +592,7 @@ class Session extends SessionAbstract
 
     /**
      * isRegenerated() - convenience method to determine if session_regenerate_id()
-     * has been called during this request by Zend_Session.
+     * has been called during this request by Session.
      *
      * @return bool
      */
@@ -667,7 +667,7 @@ class Session extends SessionAbstract
      * writeClose() - Shutdown the sesssion, close writing and detach $_SESSION from the back-end storage mechanism.
      * This will complete the internal data transformation on this request.
      *
-     * @param bool $readonly - OPTIONAL remove write access (i.e. throw error if Zend_Session's attempt writes)
+     * @param bool $readonly - OPTIONAL remove write access (i.e. throw error if Session's attempt writes)
      * @return void
      */
     public static function writeClose($readonly = true)
@@ -693,7 +693,7 @@ class Session extends SessionAbstract
      * destroy() - This is used to destroy session data, and optionally, the session cookie itself
      *
      * @param bool $remove_cookie - OPTIONAL remove session id cookie, defaults to true (remove cookie)
-     * @param bool $readonly - OPTIONAL remove write access (i.e. throw error if Zend_Session's attempt writes)
+     * @param bool $readonly - OPTIONAL remove write access (i.e. throw error if Session's attempt writes)
      * @return void
      */
     public static function destroy($remove_cookie = true, $readonly = true)
