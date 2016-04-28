@@ -1,33 +1,32 @@
 <?php
-/**
- * Zend Framework
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Xml
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
- */
+///////////////////////////////////////////////////////////////////////////////
+//
+// © Copyright f-project.net 2010-present.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+namespace fproject\amf\util;
 
 use fproject\amf\AmfException;
+use DOMDocument;
+use SimpleXMLElement;
 
 /**
- * @category   Zend
- * @package    Zend_Xml_SecurityScan
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * XML Security helper
  */
-class Zend_Xml_Security
+class XmlSecurity
 {
     const ENTITY_DETECT = 'Detected use of ENTITY in XML, disabled to prevent XXE/XEE attacks';
 
@@ -63,7 +62,7 @@ class Zend_Xml_Security
      * Scan XML string for potential XXE and XEE attacks
      *
      * @param   string $xml
-     * @param   DomDocument $dom
+     * @param   SimpleXMLElement|DomDocument $dom
      * @throws  AmfException
      * @return  SimpleXMLElement|DomDocument|boolean
      */
@@ -88,9 +87,9 @@ class Zend_Xml_Security
 
         // Load XML with network access disabled (LIBXML_NONET)
         // error disabled with @ for PHP-FPM scenario
-        set_error_handler(array('Zend_Xml_Security', 'loadXmlErrorHandler'), E_WARNING);
+        set_error_handler(array('XmlSecurity', 'loadXmlErrorHandler'), E_WARNING);
 
-        $result = $dom->loadXml($xml, LIBXML_NONET);
+        $result = $dom->loadXML($xml, LIBXML_NONET);
         restore_error_handler();
 
         if (!$result) {

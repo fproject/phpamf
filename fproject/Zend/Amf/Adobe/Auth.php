@@ -19,10 +19,10 @@
  * @version    $Id$
  */
 
-/** @see Zend_Xml_Security */
-require_once 'Zend/Xml/Security.php';
-
 use fproject\amf\auth\AuthResult;
+use fproject\amf\util\XmlSecurity;
+use fproject\amf\AmfException;
+use fproject\amf\acl\Acl;
 
 /**
  * This class implements authentication against XML file with roles for Flex Builder.
@@ -38,7 +38,7 @@ class Zend_Amf_Adobe_Auth extends \fproject\amf\auth\AuthAbstract
     /**
      * ACL for authorization
      *
-     * @var \fproject\amf\acl\Acl
+     * @var Acl
      */
     protected $_acl;
 
@@ -56,19 +56,19 @@ class Zend_Amf_Adobe_Auth extends \fproject\amf\auth\AuthAbstract
      */
     public function __construct($rolefile)
     {
-        $this->_acl = new \fproject\amf\acl\Acl();
-        $xml = Zend_Xml_Security::scanFile($rolefile);
-/*
-Roles file format:
- <roles>
-   <role id=”admin”>
-        <user name=”user1” password=”pwd”/>
-    </role>
-   <role id=”hr”>
-        <user name=”user2” password=”pwd2”/>
-    </role>
-</roles>
-*/
+        $this->_acl = new Acl();
+        $xml = XmlSecurity::scanFile($rolefile);
+        /*
+        Roles file format:
+         <roles>
+           <role id=”admin”>
+                <user name=”user1” password=”pwd”/>
+            </role>
+           <role id=”hr”>
+                <user name=”user2” password=”pwd2”/>
+            </role>
+        </roles>
+        */
         foreach($xml->role as $role) {
             $this->_acl->addRole(new \fproject\amf\acl\Role((string)$role["id"]));
             foreach($role->user as $user) {
@@ -81,7 +81,7 @@ Roles file format:
     /**
      * Get ACL with roles from XML file
      *
-     * @return \fproject\amf\acl\Acl
+     * @return Acl
      */
     public function getAcl()
     {
@@ -91,7 +91,7 @@ Roles file format:
     /**
      * Perform authentication
      *
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      * @return AuthResult
      * @see AuthAdapterInterface#authenticate()
      */
@@ -99,7 +99,7 @@ Roles file format:
     {
         if (empty($this->_username) ||
             empty($this->_password)) {
-            throw new \fproject\amf\AmfException('Username/password should be set');
+            throw new AmfException('Username/password should be set');
         }
 
         if(!isset($this->_users[$this->_username])) {

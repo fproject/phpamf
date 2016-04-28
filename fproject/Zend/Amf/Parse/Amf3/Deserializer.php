@@ -23,14 +23,13 @@
 /** Zend_Amf_Parse_Deserializer */
 require_once 'Zend/Amf/Parse/Deserializer.php';
 
-/** Zend_Xml_Security */
-require_once 'Zend/Xml/Security.php';
-
 /** Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 
 /** Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Value/TraitsInfo.php';
+
+use fproject\amf\util\XmlSecurity;
 
 /**
  * Read an AMF3 input stream and convert it into PHP data types.
@@ -559,7 +558,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
 
         $length = $xmlReference >> 1;
         $string = $this->_stream->readBytes($length);
-        return Zend_Xml_Security::scan($string);
+        return XmlSecurity::scan($string);
     }
 
     private function getReferenceObject($refMarker)

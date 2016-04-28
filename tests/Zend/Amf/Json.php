@@ -25,7 +25,7 @@
  * @see Zend_Json_Expr
  */
 
-/** @see Zend_Xml_Security */
+use fproject\amf\util\XmlSecurity;
 
 /**
  * Class for encoding to and decoding from JSON.
@@ -343,7 +343,7 @@ class Zend_Json
     public static function fromXml($xmlStringContents, $ignoreXmlAttributes=true)
     {
         // Load the XML formatted string into a Simple XML Element object.
-        $simpleXmlElementObject = Zend_Xml_Security::scan($xmlStringContents);
+        $simpleXmlElementObject = XmlSecurity::scan($xmlStringContents);
 
         // If it is not a valid XML content, throw an exception.
         if ($simpleXmlElementObject == null) {
