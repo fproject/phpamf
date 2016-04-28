@@ -30,6 +30,8 @@ require_once 'Zend/Amf/Parse/Serializer.php';
 /** Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 
+use fproject\amf\AmfException;
+
 /**
  * Detect PHP object type and convert it to a corresponding AMF3 object type
  *
@@ -77,7 +79,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      * In the case $data is NULL, this will param be used as 'byval' value for $data.
      * In the case $markerType is a AS3 Vector type (AMF3_VECTOR_INT, AMF3_VECTOR_UINT, AMF3_VECTOR_NUMBER or AMF3_VECTOR_OBJECT),
      * the $extraData will contain AS3 reflection information for writing AS3 Vector.
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
     public function writeTypeMarker(&$data, $markerType = null, $extraData = false)
     {
@@ -128,7 +130,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
                     return $this->writeVector($data, $markerType, $extraData);
                 //case Zend_Amf_Constants::AMF3_DICTIONARY:
                 default:
-                    throw new \fproject\amf\AmfException('Unknown Type Marker: ' . $markerType);
+                    throw new AmfException('Unknown Type Marker: ' . $markerType);
             }
         } else {
             // Detect Type Marker
@@ -175,7 +177,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
                     }
                     break;
                 default:
-                    throw new \fproject\amf\AmfException('Unsupported data type: ' . gettype($data));
+                    throw new AmfException('Unsupported data type: ' . gettype($data));
             }
             $this->writeTypeMarker($data, $markerType);
         }
@@ -262,7 +264,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      *
      * @param  string|Zend_Amf_Value_ByteArray $data
      * @return Zend_Amf_Parse_Amf3_Serializer
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
     public function writeByteArray(&$data)
     {
@@ -275,7 +277,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
         } else if ($data instanceof Zend_Amf_Value_ByteArray) {
             $data = $data->getData();
         } else {
-            throw new \fproject\amf\AmfException('Invalid ByteArray specified; must be a string or Zend_Amf_Value_ByteArray');
+            throw new AmfException('Invalid ByteArray specified; must be a string or Zend_Amf_Value_ByteArray');
         }
 
         $this->writeBinaryString($data);
@@ -288,7 +290,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      *
      * @param  DOMDocument|SimpleXMLElement $xml
      * @return Zend_Amf_Parse_Amf3_Serializer
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
     public function writeXml($xml)
     {
@@ -299,11 +301,11 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
         if(is_string($xml)) {
             //nothing to do
         } else if ($xml instanceof DOMDocument) {
-            $xml = $xml->saveXml();
+            $xml = $xml->saveXML();
         } else if ($xml instanceof SimpleXMLElement) {
             $xml = $xml->asXML();
         } else {
-            throw new \fproject\amf\AmfException('Invalid xml specified; must be a DOMDocument or SimpleXMLElement');
+            throw new AmfException('Invalid xml specified; must be a DOMDocument or SimpleXMLElement');
         }
 
         $this->writeBinaryString($xml);
@@ -316,7 +318,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      *
      * @param  DateTime $date
      * @return Zend_Amf_Parse_Amf3_Serializer
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
     public function writeDate($date)
     {
@@ -329,7 +331,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
         } /*elseif ($date instanceof Zend_Date) {
             $dateString = $date->toString('U') * 1000;
         }*/ else {
-            throw new \fproject\amf\AmfException('Invalid date specified; must be a DateTime object');
+            throw new AmfException('Invalid date specified; must be a DateTime object');
         }
 
         $this->writeInteger(0x01);
@@ -502,7 +504,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      *
      * @param mixed $object
      * @return Zend_Amf_Parse_Amf3_Serializer
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
     public function writeObject($object)
     {
@@ -646,15 +648,15 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
                     $this->writeString($this->_strEmpty);
                     break;
                 case Zend_Amf_Constants::ET_EXTERNAL:
-                    throw new \fproject\amf\AmfException('External Object Encoding not implemented');
+                    throw new AmfException('External Object Encoding not implemented');
                     break;
                 default:
-                    throw new \fproject\amf\AmfException('Unknown Object Encoding type: ' . $encoding);
+                    throw new AmfException('Unknown Object Encoding type: ' . $encoding);
             }
         }
         catch (Exception $e)
         {
-            throw new \fproject\amf\AmfException('Unable to writeObject output: ' . $e->getMessage(), 0, $e);
+            throw new AmfException('Unable to writeObject output: ' . $e->getMessage(), 0, $e);
         }
 
         return $this;
