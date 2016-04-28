@@ -41,6 +41,8 @@ require_once 'Zend/Amf/Value/Messaging/ErrorMessage.php';
  */
 require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
 
+use fproject\amf\loader\ResourceLoaderInterface;
+
 /**
  * Loads a local class and executes the instantiation of that class.
  *
@@ -82,7 +84,7 @@ final class Zend_Amf_Parse_TypeLoader
     );
 
     /**
-     * @var Zend_Loader_PluginLoader_Interface
+     * @var ResourceLoaderInterface
      */
     protected static $_resourceLoader = null;
 
@@ -164,9 +166,9 @@ final class Zend_Amf_Parse_TypeLoader
     /**
      * Set loader for resource type handlers
      *
-     * @param Zend_Loader_PluginLoader_Interface $loader
+     * @param ResourceLoaderInterface $loader
      */
-    public static function setResourceLoader(Zend_Loader_PluginLoader_Interface $loader)
+    public static function setResourceLoader(ResourceLoaderInterface $loader)
     {
         self::$_resourceLoader = $loader;
     }

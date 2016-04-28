@@ -165,7 +165,7 @@ class StreamContext3
         return stream_context_get_options($resource);
     }
 }
-class Zend_Amf_TestResourceLoader implements Zend_Loader_PluginLoader_Interface {
+class Zend_Amf_TestResourceLoader implements \fproject\amf\loader\ResourceLoaderInterface {
     public $suffix;
     public function __construct($suffix) {
         $this->suffix = $suffix;
