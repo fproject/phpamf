@@ -781,7 +781,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(strstr($key, '.') ? true : false, $key);
             $ns = substr($key, 0, strpos($key, '.'));
             $this->assertContains($ns, $namespaces, $key);
-            $this->assertTrue($value instanceof Zend_Server_Reflection_Function_Abstract);
+            $this->assertTrue($value instanceof \fproject\amf\reflect\AbstractFunctionReflector);
         }
     }
 

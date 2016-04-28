@@ -188,4 +188,9 @@ class ClassReflector extends AbstractReflector
     {
         $this->_reflection = new ReflectionClass($this->getName());
     }
+
+    public function newInstance($args = null)
+    {
+        return $this->_reflection->newInstance($args);
+    }
 }
