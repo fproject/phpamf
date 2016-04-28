@@ -29,7 +29,7 @@ require_once 'Zend/Amf/Parse/TypeLoader.php';
 /** Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Value/TraitsInfo.php';
 
-use fproject\amf\util\XmlSecurity;
+use fproject\common\utils\XmlSecurity;
 
 /**
  * Read an AMF3 input stream and convert it into PHP data types.

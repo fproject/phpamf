@@ -26,7 +26,7 @@ require_once 'Zend/Amf/Constants.php';
 /** @see Zend_Amf_Parse_Deserializer */
 require_once 'Zend/Amf/Parse/Deserializer.php';
 
-use fproject\amf\util\XmlSecurity;
+use fproject\common\utils\XmlSecurity;
 
 /**
  * Read an AMF0 input stream and convert it into PHP data types

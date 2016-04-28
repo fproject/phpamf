@@ -20,7 +20,7 @@
  */
 
 use fproject\amf\auth\AuthResult;
-use fproject\amf\util\XmlSecurity;
+use fproject\common\utils\XmlSecurity;
 use fproject\amf\AmfException;
 use fproject\amf\acl\Acl;
 

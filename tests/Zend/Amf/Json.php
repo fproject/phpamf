@@ -25,7 +25,7 @@
  * @see Zend_Json_Expr
  */
 
-use fproject\amf\util\XmlSecurity;
+use fproject\common\utils\XmlSecurity;
 
 /**
  * Class for encoding to and decoding from JSON.
