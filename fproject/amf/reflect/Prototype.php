@@ -79,7 +79,7 @@ class Prototype
     /**
      * Retrieve method parameters
      *
-     * @return array Array of {@link Zend_Server_Reflection_Parameter}s
+     * @return array Array of {@link ParameterReflector}s
      */
     public function getParameters()
     {

@@ -19,9 +19,6 @@
  * @version    $Id$
  */
 
-/** @see Zend_Server_Reflection */
-require_once 'Zend/Server/Reflection.php';
-
 /** @see Zend_Amf_Constants */
 require_once 'Zend/Amf/Constants.php';
 
@@ -43,6 +40,8 @@ use fproject\amf\reflect\AbstractFunctionReflector;
 use fproject\amf\reflect\FunctionReflector;
 use fproject\amf\reflect\MethodReflector;
 use fproject\amf\AmfException;
+use fproject\amf\reflect\ClassReflector;
+use fproject\amf\reflect\ReflectorHelper;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -770,7 +769,7 @@ class Zend_Amf_Server
 
         $this->_classAllowed[is_object($class) ? get_class($class) : $class] = true;
 
-        $this->_methods[] = Zend_Server_Reflection::reflectClass($class, $argv, $namespace);
+        $this->_methods[] = ReflectorHelper::reflectClass($class, $argv, $namespace);
         $this->_buildDispatchTable();
 
         return $this;
@@ -804,7 +803,7 @@ class Zend_Amf_Server
             if (!is_string($func) || !function_exists($func)) {
                 throw new AmfException('Unable to attach function');
             }
-            $this->_methods[] = Zend_Server_Reflection::reflectFunction($func, $argv, $namespace);
+            $this->_methods[] = ReflectorHelper::reflectFunction($func, $argv, $namespace);
         }
 
         $this->_buildDispatchTable();
@@ -857,7 +856,7 @@ class Zend_Amf_Server
                 continue;
             }
 
-            if ($dispatchable instanceof Zend_Server_Reflection_Class) {
+            if ($dispatchable instanceof ClassReflector) {
                 foreach ($dispatchable->getMethods() as $method) {
                     $ns   = $method->getNamespace();
                     $name = $method->getName();

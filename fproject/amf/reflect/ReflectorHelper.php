@@ -28,7 +28,7 @@ use ReflectionClass;
  * Reflection for determining method signatures to use with server classes
  *
  */
-class Reflection
+class ReflectorHelper
 {
     /**
      * Perform class reflection to create dispatch signatures

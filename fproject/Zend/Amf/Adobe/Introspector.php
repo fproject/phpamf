@@ -22,13 +22,9 @@
 /** @see Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 
-/** @see Zend_Reflection_Class */
-require_once 'Zend/Reflection/Class.php';
-
-/** @see Zend_Server_Reflection */
-require_once 'Zend/Server/Reflection.php';
-
 use fproject\amf\loader\Loader;
+use fproject\amf\reflect\ClassReflector;
+use fproject\amf\reflect\ReflectorHelper;
 
 /**
  * This class implements a service for generating AMF service descriptions as XML.
@@ -103,7 +99,7 @@ class Zend_Amf_Adobe_Introspector
         $this->_types = $this->_xml->createElement('types');
         $this->_ops   = $this->_xml->createElement('operations');
 
-        $r = Zend_Server_Reflection::reflectClass($serviceClass);
+        $r = ReflectorHelper::reflectClass($serviceClass);
         $this->_addService($r, $this->_ops);
 
         $serv->appendChild($this->_types);
@@ -139,7 +135,7 @@ class Zend_Amf_Adobe_Introspector
             return;
         }
 
-        $rc = new Zend_Reflection_Class($typename);
+        $rc = new ClassReflector($typename);
         foreach ($rc->getProperties() as $prop) {
             if (!$prop->isPublic()) {
                 continue;
@@ -158,11 +154,11 @@ class Zend_Amf_Adobe_Introspector
     /**
      * Build XML service description from reflection class
      *
-     * @param  Zend_Server_Reflection_Class $refclass
+     * @param  ClassReflector $refclass
      * @param  DOMElement $target target XML element
      * @return void
      */
-    protected function _addService(Zend_Server_Reflection_Class $refclass, DOMElement $target)
+    protected function _addService(ClassReflector $refclass, DOMElement $target)
     {
         foreach ($refclass->getMethods() as $method) {
             if (!$method->isPublic()
