@@ -30,7 +30,7 @@ use fproject\amf\AmfException;
  * creating its own list of {@link MethodReflector}s.
  *
  */
-class ClassReflector extends AbstractReflector
+class ClassReflector
 {
     /**
      * Optional configuration parameters; accessible via {@link __get} and

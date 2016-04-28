@@ -36,7 +36,7 @@ use fproject\amf\AmfException;
  * method {@link Prototype prototypes}.
  *
  */
-abstract class AbstractFunctionReflector extends AbstractReflector
+abstract class AbstractFunctionReflector
 {
     /**
      * @var Reflector
