@@ -87,7 +87,7 @@ class XmlSecurity
 
         // Load XML with network access disabled (LIBXML_NONET)
         // error disabled with @ for PHP-FPM scenario
-        set_error_handler(array('XmlSecurity', 'loadXmlErrorHandler'), E_WARNING);
+        set_error_handler(array('fproject\amf\util\XmlSecurity', 'loadXmlErrorHandler'), E_WARNING);
 
         $result = $dom->loadXML($xml, LIBXML_NONET);
         restore_error_handler();
