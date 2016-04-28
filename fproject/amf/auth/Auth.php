@@ -19,6 +19,10 @@
 
 namespace fproject\amf\auth;
 
+/**
+ * AMF Authenticator
+ * @package fproject\amf\auth
+ */
 class Auth
 {
     /**
