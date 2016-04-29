@@ -74,7 +74,7 @@ class Zend_Amf_Value_MessageBody
      * For server generated responses, it may contain any ActionScript
      * data/objects that the server was expected to provide.
      *
-     * @var string|Zend_Amf_Value_Messaging_AbstractMessage $_data
+     * @var string|\fproject\amf\value\messaging\AbstractMessage $_data
      */
     protected $_data;
 
@@ -84,7 +84,6 @@ class Zend_Amf_Value_MessageBody
      * @param  string $targetUri
      * @param  string $responseUri
      * @param  string $data
-     * @return void
      */
     public function __construct($targetUri, $responseUri, $data)
     {
@@ -146,7 +145,7 @@ class Zend_Amf_Value_MessageBody
     /**
      * Retrieve response data
      *
-     * @return string|Zend_Amf_Value_Messaging_AbstractMessage
+     * @return string|\fproject\amf\value\messaging\AbstractMessage
      */
     public function getData()
     {

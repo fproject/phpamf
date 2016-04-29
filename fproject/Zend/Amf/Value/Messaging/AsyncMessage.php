@@ -21,9 +21,6 @@
  */
 
 
-/** Zend_Amf_Value_Messaging_AbstractMessage */
-require_once 'Zend/Amf/Value/Messaging/AbstractMessage.php';
-
 /**
  * This type of message contains information necessary to perform
  * point-to-point or publish-subscribe messaging.
@@ -33,7 +30,7 @@ require_once 'Zend/Amf/Value/Messaging/AbstractMessage.php';
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Value_Messaging_AsyncMessage extends Zend_Amf_Value_Messaging_AbstractMessage
+class Zend_Amf_Value_Messaging_AsyncMessage extends \fproject\amf\value\messaging\AbstractMessage
 {
     /**
      * The message id to be responded to.

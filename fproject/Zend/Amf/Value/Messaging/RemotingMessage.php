@@ -20,9 +20,6 @@
  * @version    $Id$
  */
 
-/** Zend_Amf_Value_Messaging_AbstractMessage */
-require_once 'Zend/Amf/Value/Messaging/AbstractMessage.php';
-
 /**
  * This type of message contains information needed to perform
  * a Remoting invocation.
@@ -34,7 +31,7 @@ require_once 'Zend/Amf/Value/Messaging/AbstractMessage.php';
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Value_Messaging_RemotingMessage extends Zend_Amf_Value_Messaging_AbstractMessage
+class Zend_Amf_Value_Messaging_RemotingMessage extends \fproject\amf\value\messaging\AbstractMessage
 {
 
     /**
@@ -58,7 +55,6 @@ class Zend_Amf_Value_Messaging_RemotingMessage extends Zend_Amf_Value_Messaging_
     /**
      * Create a new Remoting Message
      *
-     * @return void
      */
     public function __construct()
     {

@@ -34,6 +34,8 @@ require_once 'Zend/Amf/Value/MessageHeader.php';
 /** @see Zend_Amf_Value_MessageBody */
 require_once 'Zend/Amf/Value/MessageBody.php';
 
+use fproject\amf\value\messaging\AbstractMessage;
+
 /**
  * Handle the incoming AMF request by deserializing the data to php object
  * types and storing the data for Zend_Amf_Server to handle for processing.
@@ -181,7 +183,7 @@ class Zend_Amf_Request
              * an AMF0 array called Content. The following code gets the object
              * out of the content array and sets it as the message data.
              */
-            if(is_array($data) && $data[0] instanceof Zend_Amf_Value_Messaging_AbstractMessage){
+            if(is_array($data) && $data[0] instanceof AbstractMessage){
                 $data = $data[0];
             }
 
