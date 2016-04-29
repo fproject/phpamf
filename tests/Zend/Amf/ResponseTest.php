@@ -24,10 +24,11 @@ require_once 'Zend/Amf/Response.php';
 require_once 'Zend/Amf/Request.php';
 require_once 'Zend/Amf/Value/MessageBody.php';
 require_once 'Zend/Amf/Value/MessageHeader.php';
-require_once 'Zend/Amf/Value/Messaging/AcknowledgeMessage.php';
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Contact.php';
 require_once 'ContactVO.php';
+
+use fproject\amf\value\messaging\AcknowledgeMessage;
 
 /**
  * Test case for Zend_Amf_Response
@@ -78,7 +79,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         $data = "zyxwvutsrqpmlkjihgfedcba";
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = 'C626EDB9-8CF4-C305-8915-096C8AA80E2E';
         $acknowledgeMessage->clientId = '49D6F1AF-ADFB-3A48-5B2D-00000A5D0301';
         $acknowledgeMessage->messageId = '5F58E888-58E8-12A9-7A85-00006D91CCB1';
@@ -114,7 +115,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         $data = array("g", "f", "e","d","c","b","a");
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = 'D3695635-7308-35A2-8451-09F7CAAB868A';
         $acknowledgeMessage->clientId = '54A7E9A2-9C2A-9849-5A3D-000070318519';
         $acknowledgeMessage->messageId = '2E68D735-A68E-D208-9ACC-00006FBCDE26';
@@ -147,7 +148,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         $data    =  31.57;
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = '1D556448-6DF0-6D0B-79C7-09798CC54A93';
         $acknowledgeMessage->clientId = '03EB43E5-3ADA-0F69-DA96-00007A54194D';
         $acknowledgeMessage->messageId = '5E4C2B6B-ADAC-4C49-52B6-0000205BC451';
@@ -184,7 +185,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         $data = $date;
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = '77D952FE-47FA-D789-83B6-097D43403C6C';
         $acknowledgeMessage->clientId = '2D043296-C81C-7189-4325-000007D62DA1';
         $acknowledgeMessage->messageId = '2A686BAF-7D69-11C8-9A0F-0000513C0958';
@@ -215,7 +216,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         $data = $date;
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = '77D952FE-47FA-D789-83B6-097D43403C6C';
         $acknowledgeMessage->clientId = '2D043296-C81C-7189-4325-000007D62DA1';
         $acknowledgeMessage->messageId = '2A686BAF-7D69-11C8-9A0F-0000513C0958';
@@ -249,7 +250,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         $data = 268435455;
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = '1D191AC2-8628-2C9A-09B2-0981CBCCF2CC';
         $acknowledgeMessage->clientId = '13D9DF0B-CCD0-1149-53D2-0000696908C2';
         $acknowledgeMessage->messageId = '03387968-E9BA-E149-A230-00006366BE67';
@@ -283,7 +284,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         $data = true;
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = '45B8A430-A13A-FE86-D62F-098900BDF482';
         $acknowledgeMessage->clientId = '4000C9FB-C97B-D609-DBAA-000048B69D81';
         $acknowledgeMessage->messageId = '5F9AA1BF-D474-BB69-12C6-0000775127E8';
@@ -317,7 +318,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         $data = false;
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = '9C5D0787-7301-432E-FD4F-098681A0EE30';
         $acknowledgeMessage->clientId = '5AC2D840-E652-86A8-CB7A-00000418AAA4';
         $acknowledgeMessage->messageId = '200337C4-0932-7D68-BB24-00005EBD5F95';
@@ -367,7 +368,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         array_push( $data, $contact );
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = 'AF307825-478F-C4CA-AC03-09C10CD02CCC';
         $acknowledgeMessage->clientId = '702B4B03-89F5-34C8-1B4E-0000049466FA';
         $acknowledgeMessage->messageId = '704B88DF-6D5E-A228-53E3-00001DA3041F';
@@ -419,7 +420,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         array_push( $data, $contact );
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = 'AF307825-478F-C4CA-AC03-09C10CD02CCC';
         $acknowledgeMessage->clientId = '702B4B03-89F5-34C8-1B4E-0000049466FA';
         $acknowledgeMessage->messageId = '704B88DF-6D5E-A228-53E3-00001DA3041F';
@@ -470,7 +471,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         array_push( $data, $contact );
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = 'AF307825-478F-C4CA-AC03-09C10CD02CCC';
         $acknowledgeMessage->clientId = '702B4B03-89F5-34C8-1B4E-0000049466FA';
         $acknowledgeMessage->messageId = '704B88DF-6D5E-A228-53E3-00001DA3041F';
@@ -507,7 +508,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         $data->loadXML($sXML);
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = 'B0B0E583-5A80-826B-C2D1-D67A63D2F5E1';
         $acknowledgeMessage->clientId = '3D281DFB-FAC8-E368-3267-0000696DA53F';
         $acknowledgeMessage->messageId = '436381AA-C8C1-9749-2B05-000067CEA2CD';
@@ -546,7 +547,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
 
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = 'B0B0E583-5A80-826B-C2D1-D67A63D2F5E1';
         $acknowledgeMessage->clientId = '3D281DFB-FAC8-E368-3267-0000696DA53F';
         $acknowledgeMessage->messageId = '436381AA-C8C1-9749-2B05-000067CEA2CD';
@@ -580,7 +581,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         $data = $data->getReference();
 
         // Create an acknowlege message for a response to a RemotingMessage
-        $acknowledgeMessage = new Zend_Amf_Value_Messaging_AcknowledgeMessage(null);
+        $acknowledgeMessage = new AcknowledgeMessage(null);
         $acknowledgeMessage->correlationId = '839B091C-8DDF-F6DD-2FF1-EAA82AE39608';
         $acknowledgeMessage->clientId = '21CC629C-58AF-2D68-A292-000006F8D883';
         $acknowledgeMessage->messageId = '05E70A68-FF7F-D289-1A94-00004CCECA98';

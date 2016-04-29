@@ -34,6 +34,7 @@ require_once 'ServiceA.php';
 require_once 'ServiceB.php';
 
 use fproject\amf\auth\XmlAuth;
+use fproject\amf\value\messaging\AcknowledgeMessage;
 
 /**
  * @category   Zend
@@ -321,7 +322,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // Now check if the return data was properly set.
         $acknowledgeMessage = $responseBody[0]->getData();
         // check that we have a message beening returned
-        $this->assertTrue($acknowledgeMessage instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($acknowledgeMessage instanceof AcknowledgeMessage);
         // Check the message body is the expected data to be returned
         $this->assertEquals("String: 12345", $acknowledgeMessage->body);
     }
@@ -356,7 +357,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // Now check if the return data was properly set.
         $acknowledgeMessage = $responseBody[0]->getData();
         // check that we have a message beening returned
-        $this->assertTrue($acknowledgeMessage instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($acknowledgeMessage instanceof AcknowledgeMessage);
         // Check the message body is the expected data to be returned
         $this->assertEquals("myMenuB", $acknowledgeMessage->body);
     }
@@ -385,7 +386,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // Now check if the return data was properly set.
         $acknowledgeMessage = $responseBody[0]->getData();
         // check that we have a message beening returned
-        $this->assertTrue($acknowledgeMessage instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($acknowledgeMessage instanceof AcknowledgeMessage);
         // Check that the MessageID was not corrupeted when set to the correlationId
         $this->assertEquals($acknowledgeMessage->correlationId, $message->messageId);
     }
@@ -592,7 +593,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
 
         foreach ($bodies as $body) {
             $data  = $body->getData();
-            if ('Zend_Amf_Value_Messaging_AcknowledgeMessage' == get_class($data)) {
+            if ('fproject\amf\value\messaging\AcknowledgeMessage' == get_class($data)) {
                 if ('baz:foo:bar' == $data->body) {
                     $found = true;
                     break;
@@ -628,7 +629,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $found  = false;
         foreach ($bodies as $body) {
             $data  = $body->getData();
-            if ('Zend_Amf_Value_Messaging_AcknowledgeMessage' == get_class($data)) {
+            if ('fproject\amf\value\messaging\AcknowledgeMessage' == get_class($data)) {
                 if ('testing' == $data->body) {
                     $found = true;
                     break;
@@ -665,7 +666,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $found  = false;
         foreach ($bodies as $body) {
             $data  = $body->getData();
-            if ('Zend_Amf_Value_Messaging_AcknowledgeMessage' == get_class($data)) {
+            if ('fproject\amf\value\messaging\AcknowledgeMessage' == get_class($data)) {
                 if ('bar: foo' == $data->body) {
                     $found = true;
                     break;
@@ -831,7 +832,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // Now check if the return data was properly set.
         $acknowledgeMessage = $responseBody[0]->getData();
         // check that we have a message beening returned
-        $this->assertTrue($acknowledgeMessage instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($acknowledgeMessage instanceof AcknowledgeMessage);
         // Check the message body is the expected data to be returned
         $this->assertTrue($acknowledgeMessage->body);
     }
@@ -887,7 +888,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // Now check if the return data was properly set.
         $acknowledgeMessage = $responseBody[0]->getData();
         // check that we have a message beening returned
-        $this->assertTrue($acknowledgeMessage instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($acknowledgeMessage instanceof AcknowledgeMessage);
         // Check the message body is the expected data to be returned
         $this->assertEquals(4, count($acknowledgeMessage->body));
     }
@@ -943,7 +944,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // Now check if the return data was properly set.
         $acknowledgeMessage = $responseBody[0]->getData();
         // check that we have a message beening returned
-        $this->assertTrue($acknowledgeMessage instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($acknowledgeMessage instanceof AcknowledgeMessage);
         // Check the message body is the expected data to be returned
         $this->assertEquals(4, count($acknowledgeMessage->body));
 
@@ -1019,7 +1020,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->_server->handle($request);
         set_include_path($origPath);
         $response = $this->_server->getResponse()->getAMFBodies();
-        $this->assertTrue($response[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($response[0]->getData() instanceof AcknowledgeMessage);
         $this->assertEquals("Service: MenuC", $response[0]->getData()->body);
     }
 
@@ -1040,7 +1041,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // let the server handle mock request
         $this->_server->handle($request);
         $response = $this->_server->getResponse()->getAMFBodies();
-        $this->assertTrue($response[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($response[0]->getData() instanceof AcknowledgeMessage);
         $this->assertEquals("Service: myMenuA", $response[0]->getData()->body);
     }
 

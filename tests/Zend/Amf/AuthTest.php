@@ -30,6 +30,8 @@ require_once 'Zend/Amf/Request.php';
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
 
+use fproject\amf\value\messaging\AcknowledgeMessage;
+
 /**
  * @category   Zend
  * @package    Zend_Amf
@@ -181,7 +183,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $this->_acl->allow("testrole", null, null);
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "");
-        $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($resp[0]->getData() instanceof AcknowledgeMessage);
         $this->assertContains("hello", $resp[1]->getData());
     }
 
@@ -192,7 +194,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $this->_acl->addRole(new \fproject\amf\acl\Role("testrole"));
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "");
-        $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($resp[0]->getData() instanceof AcknowledgeMessage);
         $data = $resp[1]->getData();
         $this->assertTrue($data instanceof Zend_Amf_Value_Messaging_ErrorMessage);
         $this->assertContains("not allowed", $data->faultString);
@@ -205,7 +207,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $this->_acl->addRole(new \fproject\amf\acl\Role("testrole"));
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "", 'Zend_Amf_Auth_testclass_NoAcl');
-        $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($resp[0]->getData() instanceof AcknowledgeMessage);
         $this->assertContains("hello", $resp[1]->getData());
     }
 
@@ -218,7 +220,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $this->_acl->addRole(new \fproject\amf\acl\Role("testrole2"));
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "", 'Zend_Amf_Auth_testclass_Acl');
-        $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($resp[0]->getData() instanceof AcknowledgeMessage);
         $this->assertContains("hello", $resp[1]->getData());
     }
 
@@ -230,7 +232,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $this->_acl->addRole(new \fproject\amf\acl\Role("testrole2"));
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "", 'Zend_Amf_Auth_testclass_Acl');
-        $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($resp[0]->getData() instanceof AcknowledgeMessage);
         $data = $resp[1]->getData();
         $this->assertTrue($data instanceof Zend_Amf_Value_Messaging_ErrorMessage);
         $this->assertContains("not allowed", $data->faultString);
@@ -245,7 +247,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $this->_acl->addRole(new \fproject\amf\acl\Role("testrole2"));
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "", 'Zend_Amf_Auth_testclass_Acl', 'hello2');
-        $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($resp[0]->getData() instanceof AcknowledgeMessage);
         $this->assertContains("hello", $resp[1]->getData());
     }
 
@@ -257,7 +259,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $this->_acl->allow("testrole", null, null);
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callServiceAuth("testuser", "");
-        $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($resp[0]->getData() instanceof AcknowledgeMessage);
         $this->assertContains("hello", $resp[1]->getData());
 
         // After logout same request should not be allowed
@@ -271,7 +273,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $this->_server->handle($request);
         $resp = $this->_server->getResponse()->getAmfBodies();
 
-        $this->assertTrue($resp[0]->getData() instanceof Zend_Amf_Value_Messaging_AcknowledgeMessage);
+        $this->assertTrue($resp[0]->getData() instanceof AcknowledgeMessage);
         $data = $resp[1]->getData();
         $this->assertTrue($data instanceof Zend_Amf_Value_Messaging_ErrorMessage);
         $this->assertContains("not allowed", $data->faultString);

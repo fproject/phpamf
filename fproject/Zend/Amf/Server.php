@@ -42,6 +42,7 @@ use fproject\amf\reflect\MethodReflector;
 use fproject\amf\AmfException;
 use fproject\amf\reflect\ClassReflector;
 use fproject\amf\reflect\ReflectorHelper;
+use fproject\amf\value\messaging\AcknowledgeMessage;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -366,16 +367,15 @@ class Zend_Amf_Server
      *
      * @see    Zend_Amf_Value_Messaging_CommandMessage
      * @param  Zend_Amf_Value_Messaging_CommandMessage $message
-     * @return Zend_Amf_Value_Messaging_AcknowledgeMessage
+     * @return AcknowledgeMessage
      * @throws AmfException
      */
     protected function _loadCommandMessage(Zend_Amf_Value_Messaging_CommandMessage $message)
     {
-        require_once 'Zend/Amf/Value/Messaging/AcknowledgeMessage.php';
         switch($message->operation) {
             case Zend_Amf_Value_Messaging_CommandMessage::DISCONNECT_OPERATION :
             case Zend_Amf_Value_Messaging_CommandMessage::CLIENT_PING_OPERATION :
-                $return = new Zend_Amf_Value_Messaging_AcknowledgeMessage($message);
+                $return = new AcknowledgeMessage($message);
                 break;
             case Zend_Amf_Value_Messaging_CommandMessage::LOGIN_OPERATION :
                 $data = explode(':', base64_decode($message->body));
@@ -392,7 +392,7 @@ class Zend_Amf_Server
                     throw new AmfException('Authentication failed');
                 }*/
 
-                $return = new Zend_Amf_Value_Messaging_AcknowledgeMessage($message);
+                $return = new AcknowledgeMessage($message);
                 if(property_exists($authResult->getIdentity(), 'token'))
                 {
                     $return->body = $authResult->getIdentity()->id.':'.$authResult->getIdentity()->token;
@@ -402,7 +402,7 @@ class Zend_Amf_Server
                 if($this->_auth) {
                     \fproject\amf\auth\Auth::getInstance()->clearIdentity();
                 }
-                $return = new Zend_Amf_Value_Messaging_AcknowledgeMessage($message);
+                $return = new AcknowledgeMessage($message);
                 break;
             default :
                 throw new AmfException('CommandMessage::' . $message->operation . ' not implemented');
@@ -571,8 +571,7 @@ class Zend_Amf_Server
                             // async call with command message
                             $return = $this->_loadCommandMessage($message);
                         } elseif ($message instanceof Zend_Amf_Value_Messaging_RemotingMessage) {
-                            require_once 'Zend/Amf/Value/Messaging/AcknowledgeMessage.php';
-                            $return = new Zend_Amf_Value_Messaging_AcknowledgeMessage($message);
+                            $return = new AcknowledgeMessage($message);
                             $return->body = $this->_dispatch($message->operation, $message->body, $message->source);
                         } else {
                             // Amf3 message sent with netConnection

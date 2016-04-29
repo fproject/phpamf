@@ -21,11 +21,6 @@
  */
 
 /**
- * @see Zend_Amf_Value_Messaging_AcknowledgeMessage
- */
-require_once 'Zend/Amf/Value/Messaging/AcknowledgeMessage.php';
-
-/**
  * @see Zend_Amf_Value_Messaging_CommandMessage
  */
 require_once 'Zend/Amf/Value/Messaging/CommandMessage.php';
@@ -60,7 +55,7 @@ final class Zend_Amf_Parse_TypeLoader
      * @var array AMF class map
      */
     public static $classMap = array (
-        'flex.messaging.messages.AcknowledgeMessage' => 'Zend_Amf_Value_Messaging_AcknowledgeMessage',
+        'flex.messaging.messages.AcknowledgeMessage' => 'fproject\amf\value\messaging\AcknowledgeMessage',
         'flex.messaging.messages.AsyncMessage'       => 'fproject\amf\value\messaging\AsyncMessage',
         'flex.messaging.messages.CommandMessage'     => 'Zend_Amf_Value_Messaging_CommandMessage',
         'flex.messaging.messages.ErrorMessage'       => 'Zend_Amf_Value_Messaging_ErrorMessage',
@@ -72,7 +67,7 @@ final class Zend_Amf_Parse_TypeLoader
      * @var array Default class map
      */
     protected static $_defaultClassMap = array(
-        'flex.messaging.messages.AcknowledgeMessage' => 'Zend_Amf_Value_Messaging_AcknowledgeMessage',
+        'flex.messaging.messages.AcknowledgeMessage' => 'fproject\amf\value\messaging\AcknowledgeMessage',
         'flex.messaging.messages.AsyncMessage'       => 'fproject\amf\value\messaging\AsyncMessage',
         'flex.messaging.messages.CommandMessage'     => 'Zend_Amf_Value_Messaging_CommandMessage',
         'flex.messaging.messages.ErrorMessage'       => 'Zend_Amf_Value_Messaging_ErrorMessage',
