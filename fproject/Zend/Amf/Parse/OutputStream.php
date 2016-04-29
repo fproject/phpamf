@@ -34,4 +34,13 @@
  */
 class Zend_Amf_Parse_OutputStream extends \fproject\common\utils\BinaryStream
 {
+    /**
+     * Constructor
+     *
+     * @throws Exception
+     */
+    public function __construct()
+    {
+        parent::__construct('');
+    }
 }
