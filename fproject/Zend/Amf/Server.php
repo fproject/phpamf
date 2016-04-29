@@ -19,8 +19,6 @@
  * @version    $Id$
  */
 
-/** @see Zend_Amf_Constants */
-require_once 'Zend/Amf/Constants.php';
 
 /** @see Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Parse/TypeLoader.php';
@@ -39,6 +37,7 @@ use fproject\amf\value\messaging\ErrorMessage;
 use fproject\amf\value\messaging\RemotingMessage;
 use fproject\amf\value\MessageHeader;
 use fproject\amf\value\MessageBody;
+use fproject\amf\Constants;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -250,8 +249,8 @@ class Zend_Amf_Server
         if($auth->hasIdentity()) {
             $role = $auth->getIdentity()->role;
         } else {
-            if($this->_acl->hasRole(Zend_Amf_Constants::GUEST_ROLE)) {
-                $role = Zend_Amf_Constants::GUEST_ROLE;
+            if($this->_acl->hasRole(Constants::GUEST_ROLE)) {
+                $role = Constants::GUEST_ROLE;
             } else {
                 throw new AmfException("Unauthenticated access not allowed");
             }
@@ -422,14 +421,14 @@ class Zend_Amf_Server
     {
         $return = null;
         switch ($objectEncoding) {
-            case Zend_Amf_Constants::AMF0_OBJECT_ENCODING :
+            case Constants::AMF0_OBJECT_ENCODING :
                 return array (
                         'description' => ($this->isProduction ()) ? '' : $description,
                         'detail' => ($this->isProduction ()) ? '' : $detail,
                         'line' => ($this->isProduction ()) ? 0 : $line,
                         'code' => $code
                 );
-            case Zend_Amf_Constants::AMF3_OBJECT_ENCODING :
+            case Constants::AMF3_OBJECT_ENCODING :
                 $return = new ErrorMessage ( $message );
                 $return->faultString = $this->isProduction () ? '' : $description;
                 $return->faultCode = $code;
@@ -493,23 +492,23 @@ class Zend_Amf_Server
         // Authenticate, if we have credential headers
         $error   = false;
         $headers = $request->getAmfHeaders();
-        if (isset($headers[Zend_Amf_Constants::CREDENTIALS_HEADER]) 
-            /*&& isset($headers[Zend_Amf_Constants::CREDENTIALS_HEADER]->userid)*/
-            && isset($headers[Zend_Amf_Constants::CREDENTIALS_HEADER]->password)
+        if (isset($headers[Constants::CREDENTIALS_HEADER]) 
+            /*&& isset($headers[Constants::CREDENTIALS_HEADER]->userid)*/
+            && isset($headers[Constants::CREDENTIALS_HEADER]->password)
         ) {
             try {
                 $authResult = $this->_handleAuth(
-                    $headers[Zend_Amf_Constants::CREDENTIALS_HEADER]->userid,
-                    $headers[Zend_Amf_Constants::CREDENTIALS_HEADER]->password
+                    $headers[Constants::CREDENTIALS_HEADER]->userid,
+                    $headers[Constants::CREDENTIALS_HEADER]->password
                 );
                 if ($authResult === true || $authResult->getCode() == \fproject\amf\auth\AuthResult::SUCCESS) {
                     // use RequestPersistentHeader to clear credentials
                     $response->addAmfHeader(
                         new MessageHeader(
-                            Zend_Amf_Constants::PERSISTENT_HEADER,
+                            Constants::PERSISTENT_HEADER,
                             false,
                             new MessageHeader(
-                                Zend_Amf_Constants::CREDENTIALS_HEADER,
+                                Constants::CREDENTIALS_HEADER,
                                 false, null
                             )
                         )
@@ -525,7 +524,7 @@ class Zend_Amf_Server
                     $e->getCode(),
                     $e->getLine()
                 );
-                $responseType = Zend_AMF_Constants::STATUS_METHOD;
+                $responseType = Constants::STATUS_METHOD;
             }
         }
 
@@ -541,7 +540,7 @@ class Zend_Amf_Server
             }
             try {
                 switch ($objectEncoding) {
-                    case Zend_Amf_Constants::AMF0_OBJECT_ENCODING:
+                    case Constants::AMF0_OBJECT_ENCODING:
                         // AMF0 Object Encoding
                         $targetURI = $body->getTargetURI();
                         $message = '';
@@ -558,7 +557,7 @@ class Zend_Amf_Server
                             $return = $this->_dispatch($targetURI, $body->getData());
                         }
                         break;
-                    case Zend_Amf_Constants::AMF3_OBJECT_ENCODING:
+                    case Constants::AMF3_OBJECT_ENCODING:
                     default:
                         // AMF3 read message type
                         $message = $body->getData();
@@ -586,11 +585,11 @@ class Zend_Amf_Server
                         }
                         break;
                 }
-                $responseType = Zend_AMF_Constants::RESULT_METHOD;
+                $responseType = Constants::RESULT_METHOD;
             } catch (Exception $e) {
                 $return = $this->_errorMessage($objectEncoding, $message,
                     $e->getMessage(), $e->getTraceAsString(),$e->getCode(),  $e->getLine());
-                $responseType = Zend_AMF_Constants::STATUS_METHOD;
+                $responseType = Constants::STATUS_METHOD;
             }
 
             $responseURI = $body->getResponseURI() . $responseType;
@@ -611,7 +610,7 @@ class Zend_Amf_Server
 
             // create a new AMF message header with the session id as a variable.
             $sessionValue = $joint . $this->_sessionName . "=" . $currentID;
-            $sessionHeader = new MessageHeader(Zend_Amf_Constants::URL_APPEND_HEADER, false, $sessionValue);
+            $sessionHeader = new MessageHeader(Constants::URL_APPEND_HEADER, false, $sessionValue);
             $response->addAmfHeader($sessionHeader);
         }
 

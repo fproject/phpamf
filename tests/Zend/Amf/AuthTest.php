@@ -33,6 +33,7 @@ use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\ErrorMessage;
 use fproject\amf\value\MessageBody;
+use fproject\amf\Constants;
 
 /**
  * @category   Zend
@@ -139,7 +140,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     {
         \fproject\amf\session\Session::$_unitTestEnabled = true;
         $this->_server->setAuth(new WrongPassword());
-        $this->_acl->addRole(new \fproject\amf\acl\Role(Zend_Amf_Constants::GUEST_ROLE));
+        $this->_acl->addRole(new \fproject\amf\acl\Role(Constants::GUEST_ROLE));
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callService();
         $this->assertTrue($resp instanceof ErrorMessage);
@@ -150,8 +151,8 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     {
         \fproject\amf\session\Session::$_unitTestEnabled = true;
         $this->_server->setAuth(new WrongPassword());
-        $this->_acl->addRole(new \fproject\amf\acl\Role(Zend_Amf_Constants::GUEST_ROLE));
-        $this->_acl->allow(Zend_Amf_Constants::GUEST_ROLE, null, null);
+        $this->_acl->addRole(new \fproject\amf\acl\Role(Constants::GUEST_ROLE));
+        $this->_acl->allow(Constants::GUEST_ROLE, null, null);
         $this->_server->setAcl($this->_acl);
         $resp = $this->_callService();
         $this->assertContains("hello", $resp);

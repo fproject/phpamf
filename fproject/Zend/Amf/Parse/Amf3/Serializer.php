@@ -20,15 +20,13 @@
  * @version    $Id$
  */
 
-/** Zend_Amf_Constants */
-require_once 'Zend/Amf/Constants.php';
-
 /** Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 
 use fproject\amf\AmfException;
 use fproject\amf\value\ByteArray;
 use fproject\amf\parse\Serializer;
+use fproject\amf\Constants;
 
 /**
  * Detect PHP object type and convert it to a corresponding AMF3 object type
@@ -91,42 +89,42 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
             $this->_stream->writeByte($markerType);
 
             switch ($markerType) {
-                case Zend_Amf_Constants::AMF3_NULL:
+                case Constants::AMF3_NULL:
                     break;
-                case Zend_Amf_Constants::AMF3_BOOLEAN_FALSE:
+                case Constants::AMF3_BOOLEAN_FALSE:
                     break;
-                case Zend_Amf_Constants::AMF3_BOOLEAN_TRUE:
+                case Constants::AMF3_BOOLEAN_TRUE:
                     break;
-                case Zend_Amf_Constants::AMF3_INTEGER:
+                case Constants::AMF3_INTEGER:
                     $this->writeInteger($data);
                     break;
-                case Zend_Amf_Constants::AMF3_NUMBER:
+                case Constants::AMF3_NUMBER:
                     $this->_stream->writeDouble($data);
                     break;
-                case Zend_Amf_Constants::AMF3_STRING:
+                case Constants::AMF3_STRING:
                     $this->writeString($data);
                     break;
-                case Zend_Amf_Constants::AMF3_DATE:
+                case Constants::AMF3_DATE:
                     $this->writeDate($data);
                     break;
-                case Zend_Amf_Constants::AMF3_ARRAY:
+                case Constants::AMF3_ARRAY:
                     $this->writeArray($data);
                     break;
-                case Zend_Amf_Constants::AMF3_OBJECT:
+                case Constants::AMF3_OBJECT:
                     $this->writeObject($data);
                     break;
-                case Zend_Amf_Constants::AMF3_BYTEARRAY:
+                case Constants::AMF3_BYTEARRAY:
                     $this->writeByteArray($data);
                     break;
-                case Zend_Amf_Constants::AMF3_XMLSTRING;
+                case Constants::AMF3_XMLSTRING;
                     $this->writeXml($data);
                     break;
-                case Zend_Amf_Constants::AMF3_VECTOR_INT:
-                case Zend_Amf_Constants::AMF3_VECTOR_UINT:
-                case Zend_Amf_Constants::AMF3_VECTOR_NUMBER:
-                case Zend_Amf_Constants::AMF3_VECTOR_OBJECT:
+                case Constants::AMF3_VECTOR_INT:
+                case Constants::AMF3_VECTOR_UINT:
+                case Constants::AMF3_VECTOR_NUMBER:
+                case Constants::AMF3_VECTOR_OBJECT:
                     return $this->writeVector($data, $markerType, $extraData);
-                //case Zend_Amf_Constants::AMF3_DICTIONARY:
+                //case Constants::AMF3_DICTIONARY:
                 default:
                     throw new AmfException('Unknown Type Marker: ' . $markerType);
             }
@@ -137,41 +135,41 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
             }
             switch (true) {
                 case (null === $data):
-                    $markerType = Zend_Amf_Constants::AMF3_NULL;
+                    $markerType = Constants::AMF3_NULL;
                     break;
                 case (is_bool($data)):
                     if ($data){
-                        $markerType = Zend_Amf_Constants::AMF3_BOOLEAN_TRUE;
+                        $markerType = Constants::AMF3_BOOLEAN_TRUE;
                     } else {
-                        $markerType = Zend_Amf_Constants::AMF3_BOOLEAN_FALSE;
+                        $markerType = Constants::AMF3_BOOLEAN_FALSE;
                     }
                     break;
                 case (is_int($data)):
                     if (($data > 0xFFFFFFF) || ($data < -268435456)) {
-                        $markerType = Zend_Amf_Constants::AMF3_NUMBER;
+                        $markerType = Constants::AMF3_NUMBER;
                     } else {
-                        $markerType = Zend_Amf_Constants::AMF3_INTEGER;
+                        $markerType = Constants::AMF3_INTEGER;
                     }
                     break;
                 case (is_float($data)):
-                    $markerType = Zend_Amf_Constants::AMF3_NUMBER;
+                    $markerType = Constants::AMF3_NUMBER;
                     break;
                 case (is_string($data)):
-                    $markerType = Zend_Amf_Constants::AMF3_STRING;
+                    $markerType = Constants::AMF3_STRING;
                     break;
                 case (is_array($data)):
-                    $markerType = Zend_Amf_Constants::AMF3_ARRAY;
+                    $markerType = Constants::AMF3_ARRAY;
                     break;
                 case (is_object($data)):
                     // Handle object types.
                     if ($data instanceof DateTime) {
-                        $markerType = Zend_Amf_Constants::AMF3_DATE;
+                        $markerType = Constants::AMF3_DATE;
                     } else if ($data instanceof ByteArray) {
-                        $markerType = Zend_Amf_Constants::AMF3_BYTEARRAY;
+                        $markerType = Constants::AMF3_BYTEARRAY;
                     } else if (($data instanceof DOMDocument) || ($data instanceof SimpleXMLElement)) {
-                        $markerType = Zend_Amf_Constants::AMF3_XMLSTRING;
+                        $markerType = Constants::AMF3_XMLSTRING;
                     } else {
-                        $markerType = Zend_Amf_Constants::AMF3_OBJECT;
+                        $markerType = Constants::AMF3_OBJECT;
                     }
                     break;
                 default:
@@ -401,16 +399,16 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
 
         switch ($markerType)
         {
-            case Zend_Amf_Constants::AMF3_VECTOR_INT:
+            case Constants::AMF3_VECTOR_INT:
                 $numberFormat = "i";
                 break;
-            case Zend_Amf_Constants::AMF3_VECTOR_UINT:
+            case Constants::AMF3_VECTOR_UINT:
                 $numberFormat = "I";
                 break;
-            case Zend_Amf_Constants::AMF3_VECTOR_NUMBER:
+            case Constants::AMF3_VECTOR_NUMBER:
                 $numberFormat = "d";
                 break;
-            case Zend_Amf_Constants::AMF3_VECTOR_OBJECT:
+            case Constants::AMF3_VECTOR_OBJECT:
                 return $this->writeObjectVector($array, $len, $vectorInfo['elementType']);
             default:
                 // Unknown vector type tag {type}
@@ -451,19 +449,19 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
         {
             $this->_stream->writeByte(0x01);
             if($elementType == "String")
-                $markerType = Zend_Amf_Constants::AMF3_STRING;
+                $markerType = Constants::AMF3_STRING;
             else
                 $markerType = null;
         }
         else
         {
             $this->writeString($elementType);
-            $markerType = Zend_Amf_Constants::AMF3_OBJECT;
+            $markerType = Constants::AMF3_OBJECT;
         }
 
         for ($i = 0; $i < $len; $i++) {
             if($elementType == "Boolean")
-                $markerType = boolval($array[$i]) ? Zend_Amf_Constants::AMF3_BOOLEAN_TRUE : Zend_Amf_Constants::AMF3_BOOLEAN_FALSE;
+                $markerType = boolval($array[$i]) ? Constants::AMF3_BOOLEAN_TRUE : Constants::AMF3_BOOLEAN_FALSE;
             $this->writeTypeMarker($array[$i], $markerType);
         }
     }
@@ -559,11 +557,11 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
             if($className == '')
             {
                 //if there is no className, we interpret the class as dynamic without any sealed members
-                $encoding = Zend_Amf_Constants::ET_DYNAMIC;
+                $encoding = Constants::ET_DYNAMIC;
             }
             else
             {
-                $encoding = Zend_Amf_Constants::ET_PROPLIST;
+                $encoding = Constants::ET_PROPLIST;
                 foreach($object as $key => $value) {
                     if( $key[0] != "_") {
                         $propertyNames[] = $key;
@@ -585,7 +583,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
             if(!empty($reflectProperties))
                 $this->_referenceDefinitions[$className]['reflectProperties'] = $reflectProperties;
 
-            $traitsInfo = Zend_Amf_Constants::AMF3_OBJECT_ENCODING;
+            $traitsInfo = Constants::AMF3_OBJECT_ENCODING;
             $traitsInfo |= $encoding << 2;
             $traitsInfo |= (count($propertyNames) << 4);
 
@@ -604,7 +602,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
         try
         {
             switch($encoding) {
-                case Zend_Amf_Constants::ET_PROPLIST:
+                case Constants::ET_PROPLIST:
                     //Write the sealed values to the output stream.
                     foreach ($propertyNames as $key)
                     {
@@ -628,7 +626,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
                         $this->writeTypeMarker($object->$key, $markerType, $extraData);
                     }
                     break;
-                case Zend_Amf_Constants::ET_DYNAMIC:
+                case Constants::ET_DYNAMIC:
                     //Write the sealed values to the output stream.
                     foreach ($propertyNames as $key) {
                         $this->writeTypeMarker($object->$key);
@@ -645,7 +643,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
                     //Write an empty string to end the dynamic part
                     $this->writeString($this->_strEmpty);
                     break;
-                case Zend_Amf_Constants::ET_EXTERNAL:
+                case Constants::ET_EXTERNAL:
                     throw new AmfException('External Object Encoding not implemented');
                     break;
                 default:

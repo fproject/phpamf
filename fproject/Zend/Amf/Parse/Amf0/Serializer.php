@@ -20,10 +20,8 @@
  * @version    $Id$
  */
 
-/** Zend_Amf_Constants */
-require_once 'Zend/Amf/Constants.php';
-
 use fproject\amf\parse\Serializer;
+use fproject\amf\Constants;
 
 /**
  * Serializer PHP misc types back to there corresponding AMF0 Type Marker.
@@ -73,41 +71,41 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
                 // Write the Type Marker to denote the following action script data type
                 $this->_stream->writeByte($markerType);
                 switch($markerType) {
-                    case Zend_Amf_Constants::AMF0_NUMBER:
+                    case Constants::AMF0_NUMBER:
                         $this->_stream->writeDouble($data);
                         break;
-                    case Zend_Amf_Constants::AMF0_BOOLEAN:
+                    case Constants::AMF0_BOOLEAN:
                         $this->_stream->writeByte($data);
                         break;
-                    case Zend_Amf_Constants::AMF0_STRING:
+                    case Constants::AMF0_STRING:
                         $this->_stream->writeUTF($data);
                         break;
-                    case Zend_Amf_Constants::AMF0_OBJECT:
+                    case Constants::AMF0_OBJECT:
                         $this->writeObject($data);
                         break;
-                    case Zend_Amf_Constants::AMF0_NULL:
+                    case Constants::AMF0_NULL:
                         break;
-                    case Zend_Amf_Constants::AMF0_REFERENCE:
+                    case Constants::AMF0_REFERENCE:
                         $this->_stream->writeInt($data);
                         break;
-                    case Zend_Amf_Constants::AMF0_MIXEDARRAY:
+                    case Constants::AMF0_MIXEDARRAY:
                         // Write length of numeric keys as zero.
                         $this->_stream->writeLong(0);
                         $this->writeObject($data);
                         break;
-                    case Zend_Amf_Constants::AMF0_ARRAY:
+                    case Constants::AMF0_ARRAY:
                         $this->writeArray($data);
                         break;
-                    case Zend_Amf_Constants::AMF0_DATE:
+                    case Constants::AMF0_DATE:
                         $this->writeDate($data);
                         break;
-                    case Zend_Amf_Constants::AMF0_LONGSTRING:
+                    case Constants::AMF0_LONGSTRING:
                         $this->_stream->writeLongUTF($data);
                         break;
-                    case Zend_Amf_Constants::AMF0_TYPEDOBJECT:
+                    case Constants::AMF0_TYPEDOBJECT:
                         $this->writeTypedObject($data);
                         break;
-                    case Zend_Amf_Constants::AMF0_AMF3:
+                    case Constants::AMF0_AMF3:
                         $this->writeAmf3TypeMarker($data);
                         break;
                     default:
@@ -120,36 +118,36 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
             }
             switch (true) {
                 case (is_int($data) || is_float($data)):
-                    $markerType = Zend_Amf_Constants::AMF0_NUMBER;
+                    $markerType = Constants::AMF0_NUMBER;
                     break;
                 case (is_bool($data)):
-                    $markerType = Zend_Amf_Constants::AMF0_BOOLEAN;
+                    $markerType = Constants::AMF0_BOOLEAN;
                     break;
                 case (is_string($data) && (($this->_mbStringFunctionsOverloaded ? mb_strlen($data, '8bit') : strlen($data)) > 65536)):
-                    $markerType = Zend_Amf_Constants::AMF0_LONGSTRING;
+                    $markerType = Constants::AMF0_LONGSTRING;
                     break;
                 case (is_string($data)):
-                    $markerType = Zend_Amf_Constants::AMF0_STRING;
+                    $markerType = Constants::AMF0_STRING;
                     break;
                 case (is_object($data)):
                     //20140627 NguyenBS Remove Zend_Date
                     if (($data instanceof DateTime)) {
-                        $markerType = Zend_Amf_Constants::AMF0_DATE;
+                        $markerType = Constants::AMF0_DATE;
                     } else {
 
                         if($className = $this->getClassName($data)){
                             //Object is a Typed object set classname
-                            $markerType = Zend_Amf_Constants::AMF0_TYPEDOBJECT;
+                            $markerType = Constants::AMF0_TYPEDOBJECT;
                             $this->_className = $className;
                         } else {
                             // Object is a generic classname
-                            $markerType = Zend_Amf_Constants::AMF0_OBJECT;
+                            $markerType = Constants::AMF0_OBJECT;
                         }
                         break;
                     }
                     break;
                 case (null === $data):
-                    $markerType = Zend_Amf_Constants::AMF0_NULL;
+                    $markerType = Constants::AMF0_NULL;
                     break;
                 case (is_array($data)):
                     // check if it is an associative array
@@ -157,18 +155,18 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
                     foreach (array_keys($data) as $key) {
                         // check if it contains non-integer keys
                         if (!is_numeric($key) || intval($key) != $key) {
-                            $markerType = Zend_Amf_Constants::AMF0_OBJECT;
+                            $markerType = Constants::AMF0_OBJECT;
                             break;
                             // check if it is a sparse indexed array
                          } else if ($key != $i) {
-                             $markerType = Zend_Amf_Constants::AMF0_MIXEDARRAY;
+                             $markerType = Constants::AMF0_MIXEDARRAY;
                              break;
                          }
                          $i++;
                     }
                     // Dealing with a standard numeric array
                     if(!$markerType){
-                        $markerType = Zend_Amf_Constants::AMF0_ARRAY;
+                        $markerType = Constants::AMF0_ARRAY;
                         break;
                     }
                     break;
@@ -198,15 +196,15 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
             $object = &$objectByVal;
         }
 
-        if ($markerType == Zend_Amf_Constants::AMF0_OBJECT
-            || $markerType == Zend_Amf_Constants::AMF0_MIXEDARRAY
-            || $markerType == Zend_Amf_Constants::AMF0_ARRAY
-            || $markerType == Zend_Amf_Constants::AMF0_TYPEDOBJECT
+        if ($markerType == Constants::AMF0_OBJECT
+            || $markerType == Constants::AMF0_MIXEDARRAY
+            || $markerType == Constants::AMF0_ARRAY
+            || $markerType == Constants::AMF0_TYPEDOBJECT
         ) {
             $ref = array_search($object, $this->_referenceObjects, true);
             //handle object reference
             if($ref !== false){
-                $this->writeTypeMarker($ref,Zend_Amf_Constants::AMF0_REFERENCE);
+                $this->writeTypeMarker($ref,Constants::AMF0_REFERENCE);
                 return true;
             }
 
@@ -234,7 +232,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
 
         // Write the end object flag
         $this->_stream->writeInt(0);
-        $this->_stream->writeByte(Zend_Amf_Constants::AMF0_OBJECTTERM);
+        $this->_stream->writeByte(Constants::AMF0_OBJECTTERM);
         return $this;
     }
 

@@ -19,15 +19,13 @@
  * @version    $Id$
  */
 
-/** @see Zend_Amf_Constants */
-require_once 'Zend/Amf/Constants.php';
-
 /** @see Zend_Amf_Parse_Amf0_Serializer */
 require_once 'Zend/Amf/Parse/Amf0/Serializer.php';
 
 use fproject\amf\value\MessageHeader;
 use fproject\amf\value\MessageBody;
 use fproject\amf\parse\OutputStream;
+use fproject\amf\Constants;
 
 /**
  * Handles converting the PHP object ready for response back into AMF
@@ -93,7 +91,7 @@ class Zend_Amf_Response
             $serializer = new Zend_Amf_Parse_Amf0_Serializer($stream);
             $stream->writeUTF($header->name);
             $stream->writeByte($header->mustRead);
-            $stream->writeLong(Zend_Amf_Constants::UNKNOWN_CONTENT_LENGTH);
+            $stream->writeLong(Constants::UNKNOWN_CONTENT_LENGTH);
             if (is_object($header->data)) {
                 // Workaround for PHP5 with E_STRICT enabled complaining about
                 // "Only variables should be passed by reference"
@@ -111,9 +109,9 @@ class Zend_Amf_Response
             $serializer = new Zend_Amf_Parse_Amf0_Serializer($stream);
             $stream->writeUTF($body->getTargetURI());
             $stream->writeUTF($body->getResponseURI());
-            $stream->writeLong(Zend_Amf_Constants::UNKNOWN_CONTENT_LENGTH);
+            $stream->writeLong(Constants::UNKNOWN_CONTENT_LENGTH);
             $bodyData = $body->getData();
-            $markerType = ($this->_objectEncoding == Zend_Amf_Constants::AMF0_OBJECT_ENCODING) ? null : Zend_Amf_Constants::AMF0_AMF3;
+            $markerType = ($this->_objectEncoding == Constants::AMF0_OBJECT_ENCODING) ? null : Constants::AMF0_AMF3;
             if (is_object($bodyData)) {
                 // Workaround for PHP5 with E_STRICT enabled complaining about
                 // "Only variables should be passed by reference"

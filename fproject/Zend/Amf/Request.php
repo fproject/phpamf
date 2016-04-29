@@ -22,15 +22,12 @@
 /** @see Zend_Amf_Parse_Amf0_Deserializer */
 require_once 'Zend/Amf/Parse/Amf0/Deserializer.php';
 
-/** @see Zend_Amf_Constants */
-require_once 'Zend/Amf/Constants.php';
-
-
 use fproject\amf\value\messaging\AbstractMessage;
 use fproject\amf\value\MessageHeader;
 use fproject\amf\AmfException;
 use fproject\amf\value\MessageBody;
 use fproject\amf\parse\InputStream;
+use fproject\amf\Constants;
 
 /**
  * Handle the incoming AMF request by deserializing the data to php object
@@ -103,9 +100,9 @@ class Zend_Amf_Request
     public function readMessage(InputStream $stream)
     {
         $clientVersion = $stream->readUnsignedShort();
-        if (($clientVersion != Zend_Amf_Constants::AMF0_OBJECT_ENCODING)
-            && ($clientVersion != Zend_Amf_Constants::AMF3_OBJECT_ENCODING)
-            && ($clientVersion != Zend_Amf_Constants::FMS_OBJECT_ENCODING)
+        if (($clientVersion != Constants::AMF0_OBJECT_ENCODING)
+            && ($clientVersion != Constants::AMF3_OBJECT_ENCODING)
+            && ($clientVersion != Constants::FMS_OBJECT_ENCODING)
         ) {
             throw new AmfException('Unknown Player Version ' . $clientVersion);
         }
@@ -173,7 +170,7 @@ class Zend_Amf_Request
         }
 
         // Check for AMF3 objectEncoding
-        if ($this->_deserializer->getObjectEncoding() == Zend_Amf_Constants::AMF3_OBJECT_ENCODING) {
+        if ($this->_deserializer->getObjectEncoding() == Constants::AMF3_OBJECT_ENCODING) {
             /*
              * When and AMF3 message is sent to the server it is nested inside
              * an AMF0 array called Content. The following code gets the object
@@ -184,7 +181,7 @@ class Zend_Amf_Request
             }
 
             // set the encoding so we return our message in AMF3
-            $this->_objectEncoding = Zend_Amf_Constants::AMF3_OBJECT_ENCODING;
+            $this->_objectEncoding = Constants::AMF3_OBJECT_ENCODING;
         }
 
         $body = new MessageBody($targetURI, $responseURI, $data);

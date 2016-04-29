@@ -20,13 +20,11 @@
  * @version    $Id$
  */
 
-/** Zend_Amf_Constants */
-require_once 'Zend/Amf/Constants.php';
-
 
 use fproject\common\utils\XmlSecurity;
 use fproject\amf\value\messaging\ArrayCollection;
 use fproject\amf\parse\Deserializer;
+use fproject\amf\Constants;
 
 /**
  * Read an AMF0 input stream and convert it into PHP data types
@@ -51,7 +49,7 @@ class Zend_Amf_Parse_Amf0_Deserializer extends Deserializer
      *
      * @var int
      */
-    protected $_objectEncoding = Zend_Amf_Constants::AMF0_OBJECT_ENCODING;
+    protected $_objectEncoding = Constants::AMF0_OBJECT_ENCODING;
 
     /**
      * Read AMF markers and dispatch for deserialization
@@ -72,63 +70,63 @@ class Zend_Amf_Parse_Amf0_Deserializer extends Deserializer
 
         switch($typeMarker) {
             // number
-            case Zend_Amf_Constants::AMF0_NUMBER:
+            case Constants::AMF0_NUMBER:
                 return $this->_stream->readDouble();
 
             // boolean
-            case Zend_Amf_Constants::AMF0_BOOLEAN:
+            case Constants::AMF0_BOOLEAN:
                 return (boolean) $this->_stream->readByte();
 
             // string
-            case Zend_Amf_Constants::AMF0_STRING:
+            case Constants::AMF0_STRING:
                 return $this->_stream->readUTF();
 
             // object
-            case Zend_Amf_Constants::AMF0_OBJECT:
+            case Constants::AMF0_OBJECT:
                 return $this->readObject();
 
             // null
-            case Zend_Amf_Constants::AMF0_NULL:
+            case Constants::AMF0_NULL:
                 return null;
 
             // undefined
-            case Zend_Amf_Constants::AMF0_UNDEFINED:
+            case Constants::AMF0_UNDEFINED:
                 return null;
 
             // Circular references are returned here
-            case Zend_Amf_Constants::AMF0_REFERENCE:
+            case Constants::AMF0_REFERENCE:
                 return $this->readReference();
 
             // mixed array with numeric and string keys
-            case Zend_Amf_Constants::AMF0_MIXEDARRAY:
+            case Constants::AMF0_MIXEDARRAY:
                 return $this->readMixedArray();
 
             // array
-            case Zend_Amf_Constants::AMF0_ARRAY:
+            case Constants::AMF0_ARRAY:
                 return $this->readArray();
 
             // date
-            case Zend_Amf_Constants::AMF0_DATE:
+            case Constants::AMF0_DATE:
                 return $this->readDate();
 
             // longString  strlen(string) > 2^16
-            case Zend_Amf_Constants::AMF0_LONGSTRING:
+            case Constants::AMF0_LONGSTRING:
                 return $this->_stream->readLongUTF();
 
             //internal AS object,  not supported
-            case Zend_Amf_Constants::AMF0_UNSUPPORTED:
+            case Constants::AMF0_UNSUPPORTED:
                 return null;
 
             // XML
-            case Zend_Amf_Constants::AMF0_XML:
+            case Constants::AMF0_XML:
                 return $this->readXmlString();
 
             // typed object ie Custom Class
-            case Zend_Amf_Constants::AMF0_TYPEDOBJECT:
+            case Constants::AMF0_TYPEDOBJECT:
                 return $this->readTypedObject();
 
             //AMF3-specific
-            case Zend_Amf_Constants::AMF0_AMF3:
+            case Constants::AMF0_AMF3:
                 return $this->readAmf3TypeMarker();
 
             default:
@@ -156,7 +154,7 @@ class Zend_Amf_Parse_Amf0_Deserializer extends Deserializer
         while (true) {
             $key        = $this->_stream->readUTF();
             $typeMarker = $this->_stream->readByte();
-            if ($typeMarker != Zend_Amf_Constants::AMF0_OBJECTTERM ){
+            if ($typeMarker != Constants::AMF0_OBJECTTERM ){
                 //Recursivly call readTypeMarker to get the types of properties in the object
                 $object[$key] = $this->readTypeMarker($typeMarker);
             } else {
@@ -296,7 +294,7 @@ class Zend_Amf_Parse_Amf0_Deserializer extends Deserializer
     {
         require_once 'Zend/Amf/Parse/Amf3/Deserializer.php';
         $deserializer = new Zend_Amf_Parse_Amf3_Deserializer($this->_stream);
-        $this->_objectEncoding = Zend_Amf_Constants::AMF3_OBJECT_ENCODING;
+        $this->_objectEncoding = Constants::AMF3_OBJECT_ENCODING;
         return $deserializer->readTypeMarker();
     }
 

@@ -26,6 +26,7 @@ require_once 'Zend/Amf/Parse/TypeLoader.php';
 use fproject\common\utils\XmlSecurity;
 use fproject\amf\value\TraitsInfo;
 use fproject\amf\parse\Deserializer;
+use fproject\amf\Constants;
 
 /**
  * Read an AMF3 input stream and convert it into PHP data types.
@@ -76,37 +77,37 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Deserializer
         }
 
         switch($typeMarker) {
-            case Zend_Amf_Constants::AMF3_UNDEFINED:
+            case Constants::AMF3_UNDEFINED:
                 return null;
-            case Zend_Amf_Constants::AMF3_NULL:
+            case Constants::AMF3_NULL:
                 return null;
-            case Zend_Amf_Constants::AMF3_BOOLEAN_FALSE:
+            case Constants::AMF3_BOOLEAN_FALSE:
                 return false;
-            case Zend_Amf_Constants::AMF3_BOOLEAN_TRUE:
+            case Constants::AMF3_BOOLEAN_TRUE:
                 return true;
-            case Zend_Amf_Constants::AMF3_INTEGER:
+            case Constants::AMF3_INTEGER:
                 return $this->readInteger();
-            case Zend_Amf_Constants::AMF3_NUMBER:
+            case Constants::AMF3_NUMBER:
                 return $this->_stream->readDouble();
-            case Zend_Amf_Constants::AMF3_STRING:
+            case Constants::AMF3_STRING:
                 return $this->readString();
-            case Zend_Amf_Constants::AMF3_DATE:
+            case Constants::AMF3_DATE:
                 return $this->readDate();
-            case Zend_Amf_Constants::AMF3_ARRAY:
+            case Constants::AMF3_ARRAY:
                 return $this->readArray();
-            case Zend_Amf_Constants::AMF3_OBJECT:
+            case Constants::AMF3_OBJECT:
                 return $this->readObject();
-            case Zend_Amf_Constants::AMF3_XML:
-            case Zend_Amf_Constants::AMF3_XMLSTRING:
+            case Constants::AMF3_XML:
+            case Constants::AMF3_XMLSTRING:
                 return $this->readXmlString();
-            case Zend_Amf_Constants::AMF3_BYTEARRAY:
+            case Constants::AMF3_BYTEARRAY:
                 return $this->readString();
-            case Zend_Amf_Constants::AMF3_VECTOR_INT:
-            case Zend_Amf_Constants::AMF3_VECTOR_UINT:
-            case Zend_Amf_Constants::AMF3_VECTOR_NUMBER:
-            case Zend_Amf_Constants::AMF3_VECTOR_OBJECT:
+            case Constants::AMF3_VECTOR_INT:
+            case Constants::AMF3_VECTOR_UINT:
+            case Constants::AMF3_VECTOR_NUMBER:
+            case Constants::AMF3_VECTOR_OBJECT:
                 return $this->readVector($typeMarker);
-            //case Zend_Amf_Constants::AMF3_DICTIONARY:
+            //case Constants::AMF3_DICTIONARY:
             default:
                 $this->throwZendException('Unsupported type marker: {0}',[$typeMarker]);
         }
@@ -285,19 +286,19 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Deserializer
 
         switch ($type)
         {
-            case Zend_Amf_Constants::AMF3_VECTOR_INT:
+            case Constants::AMF3_VECTOR_INT:
                 $eltSize = 4;
                 $numberFormat = "ival";
                 break;
-            case Zend_Amf_Constants::AMF3_VECTOR_UINT:
+            case Constants::AMF3_VECTOR_UINT:
                 $eltSize = 4;
                 $numberFormat = "Ival";
                 break;
-            case Zend_Amf_Constants::AMF3_VECTOR_NUMBER:
+            case Constants::AMF3_VECTOR_NUMBER:
                 $eltSize = 8;
                 $numberFormat = "dval";
                 break;
-            case Zend_Amf_Constants::AMF3_VECTOR_OBJECT:
+            case Constants::AMF3_VECTOR_OBJECT:
                 return $this->readObjectVector($len, $fixed);
             default:
                 // Unknown vector type tag {type}
