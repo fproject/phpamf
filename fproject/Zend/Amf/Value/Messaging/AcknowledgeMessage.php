@@ -20,8 +20,7 @@
  * @version    $Id$
  */
 
-/** Zend_Amf_Value_Messaging_AsyncMessage */
-require_once 'Zend/Amf/Value/Messaging/AsyncMessage.php';
+use fproject\amf\value\messaging\AsyncMessage;
 
 /**
  * This is the type of message returned by the MessageBroker
@@ -35,7 +34,7 @@ require_once 'Zend/Amf/Value/Messaging/AsyncMessage.php';
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Value_Messaging_AcknowledgeMessage extends Zend_Amf_Value_Messaging_AsyncMessage
+class Zend_Amf_Value_Messaging_AcknowledgeMessage extends AsyncMessage
 {
     /**
      * Create a new Acknowledge Message
