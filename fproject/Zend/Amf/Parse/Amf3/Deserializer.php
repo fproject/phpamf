@@ -26,10 +26,8 @@ require_once 'Zend/Amf/Parse/Deserializer.php';
 /** Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 
-/** Zend_Amf_Parse_TypeLoader */
-require_once 'Zend/Amf/Value/TraitsInfo.php';
-
 use fproject\common\utils\XmlSecurity;
+use fproject\amf\value\TraitsInfo;
 
 /**
  * Read an AMF3 input stream and convert it into PHP data types.
@@ -532,7 +530,7 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
         $count = ($ref >> 4); /* uint29 */
         $className = $this->readString();
 
-        $ti = new Zend_Amf_Value_TraitsInfo($className, $dynamic, $externalizable, []);
+        $ti = new TraitsInfo($className, $dynamic, $externalizable, []);
 
         // Remember Trait Info
         $this->_traitsTable[] = $ti;
