@@ -27,6 +27,7 @@ require_once 'Zend/Amf/Constants.php';
 require_once 'Zend/Amf/Parse/Deserializer.php';
 
 use fproject\common\utils\XmlSecurity;
+use fproject\amf\value\messaging\ArrayCollection;
 
 /**
  * Read an AMF0 input stream and convert it into PHP data types
@@ -280,7 +281,7 @@ class Zend_Amf_Parse_Amf0_Deserializer extends Zend_Amf_Parse_Deserializer
                 $returnObject->$key = $value;
             }
         }
-        if($returnObject instanceof Zend_Amf_Value_Messaging_ArrayCollection) {
+        if($returnObject instanceof ArrayCollection) {
             $returnObject = get_object_vars($returnObject);
         }
         return $returnObject;

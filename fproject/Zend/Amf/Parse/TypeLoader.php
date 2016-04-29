@@ -48,7 +48,7 @@ final class Zend_Amf_Parse_TypeLoader
         'flex.messaging.messages.CommandMessage'     => 'fproject\amf\value\messaging\CommandMessage',
         'flex.messaging.messages.ErrorMessage'       => 'fproject\amf\value\messaging\ErrorMessage',
         'flex.messaging.messages.RemotingMessage'    => 'fproject\amf\value\messaging\RemotingMessage',
-        'flex.messaging.io.ArrayCollection'          => 'Zend_Amf_Value_Messaging_ArrayCollection',
+        'flex.messaging.io.ArrayCollection'          => 'fproject\amf\value\messaging\ArrayCollection',
     );
 
     /**
@@ -60,7 +60,7 @@ final class Zend_Amf_Parse_TypeLoader
         'flex.messaging.messages.CommandMessage'     => 'fproject\amf\value\messaging\CommandMessage',
         'flex.messaging.messages.ErrorMessage'       => 'fproject\amf\value\messaging\ErrorMessage',
         'flex.messaging.messages.RemotingMessage'    => 'fproject\amf\value\messaging\RemotingMessage',
-        'flex.messaging.io.ArrayCollection'          => 'Zend_Amf_Value_Messaging_ArrayCollection',
+        'flex.messaging.io.ArrayCollection'          => 'fproject\amf\value\messaging\ArrayCollection',
     );
 
     /**
