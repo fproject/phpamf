@@ -50,7 +50,7 @@ class Zend_Amf_Util_BinaryStreamTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \fproject\amf\AmfException
+     * @expectedException Exception
      */
     public function testConstructorShouldThrowExceptionForInvalidStream()
     {
@@ -58,7 +58,7 @@ class Zend_Amf_Util_BinaryStreamTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \fproject\amf\AmfException
+     * @expectedException Exception
      */
     public function testReadBytesShouldRaiseExceptionForBufferUnderrun()
     {
