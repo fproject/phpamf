@@ -24,6 +24,7 @@ require_once 'Zend/Amf/Request.php';
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Contact.php';
 
+use fproject\amf\value\messaging\CommandMessage;
 
 /**
  * Test case for Zend_Amf_Request
@@ -277,7 +278,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * ActionScript mx.messaging.messages.CommandMessage to Zend_Amf_Value_Messaging_CommandMessage
+     * ActionScript mx.messaging.messages.CommandMessage to CommandMessage
      *
      */
     public function testAmf3CommandMessageRequest()
@@ -296,7 +297,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_CommandMessage);
+        $this->assertTrue($message instanceof CommandMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals(5, $message->operation);
     }

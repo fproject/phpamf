@@ -31,6 +31,7 @@ require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
 
 use fproject\amf\value\messaging\AcknowledgeMessage;
+use fproject\amf\value\messaging\CommandMessage;
 
 /**
  * @category   Zend
@@ -79,9 +80,9 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     protected function _addLogin($request, $username, $password)
     {
         $cmdBody = new Zend_Amf_Value_MessageBody("","/1","");
-        $loginCmd = new Zend_Amf_Value_Messaging_CommandMessage();
+        $loginCmd = new CommandMessage();
         $cmdBody->setData($loginCmd);
-        $loginCmd->operation = Zend_Amf_Value_Messaging_CommandMessage::LOGIN_OPERATION;
+        $loginCmd->operation = CommandMessage::LOGIN_OPERATION;
         $loginCmd->body = "$username:$password";
         $request->addAmfBody($cmdBody);
     }
@@ -89,9 +90,9 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     protected function _addLogout($request)
     {
         $cmdBody = new Zend_Amf_Value_MessageBody("","/1","");
-        $loginCmd = new Zend_Amf_Value_Messaging_CommandMessage();
+        $loginCmd = new CommandMessage();
         $cmdBody->setData($loginCmd);
-        $loginCmd->operation = Zend_Amf_Value_Messaging_CommandMessage::LOGOUT_OPERATION;
+        $loginCmd->operation = CommandMessage::LOGOUT_OPERATION;
         $request->addAmfBody($cmdBody);
     }
 

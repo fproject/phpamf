@@ -1,26 +1,23 @@
 <?php
-/**
- * Zend Framework
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Amf
- * @subpackage Value
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
- */
+///////////////////////////////////////////////////////////////////////////////
+//
+// © Copyright f-project.net 2010-present.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+///////////////////////////////////////////////////////////////////////////////
 
-use fproject\amf\value\messaging\AsyncMessage;
+namespace fproject\amf\value\messaging;
 
 /**
  * A message that represents an infrastructure command passed between
@@ -31,12 +28,8 @@ use fproject\amf\value\messaging\AsyncMessage;
  *
  * Note: THESE VALUES MUST BE THE SAME ON CLIENT AND SERVER
  *
- * @package    Zend_Amf
- * @subpackage Value
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Value_Messaging_CommandMessage extends AsyncMessage
+class CommandMessage extends AsyncMessage
 {
     /**
      *  This operation is used to subscribe to a remote destination.

@@ -28,9 +28,6 @@ require_once 'Zend/Amf/Value/MessageBody.php';
 /** @see Zend_Amf_Value_MessageHeader */
 require_once 'Zend/Amf/Value/MessageHeader.php';
 
-/** @see Zend_Amf_Value_Messaging_CommandMessage */
-require_once 'Zend/Amf/Value/Messaging/CommandMessage.php';
-
 /** @see Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 
@@ -43,6 +40,7 @@ use fproject\amf\AmfException;
 use fproject\amf\reflect\ClassReflector;
 use fproject\amf\reflect\ReflectorHelper;
 use fproject\amf\value\messaging\AcknowledgeMessage;
+use fproject\amf\value\messaging\CommandMessage;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -365,19 +363,19 @@ class Zend_Amf_Server
      *
      * A command message is a flex.messaging.messages.CommandMessage
      *
-     * @see    Zend_Amf_Value_Messaging_CommandMessage
-     * @param  Zend_Amf_Value_Messaging_CommandMessage $message
+     * @see    CommandMessage
+     * @param  CommandMessage $message
      * @return AcknowledgeMessage
      * @throws AmfException
      */
-    protected function _loadCommandMessage(Zend_Amf_Value_Messaging_CommandMessage $message)
+    protected function _loadCommandMessage(CommandMessage $message)
     {
         switch($message->operation) {
-            case Zend_Amf_Value_Messaging_CommandMessage::DISCONNECT_OPERATION :
-            case Zend_Amf_Value_Messaging_CommandMessage::CLIENT_PING_OPERATION :
+            case CommandMessage::DISCONNECT_OPERATION :
+            case CommandMessage::CLIENT_PING_OPERATION :
                 $return = new AcknowledgeMessage($message);
                 break;
-            case Zend_Amf_Value_Messaging_CommandMessage::LOGIN_OPERATION :
+            case CommandMessage::LOGIN_OPERATION :
                 $data = explode(':', base64_decode($message->body));
                 $userid = $data[0];
                 $password = isset($data[1])?$data[1]:"";
@@ -398,7 +396,7 @@ class Zend_Amf_Server
                     $return->body = $authResult->getIdentity()->id.':'.$authResult->getIdentity()->token;
                 }
                 break;
-           case Zend_Amf_Value_Messaging_CommandMessage::LOGOUT_OPERATION :
+           case CommandMessage::LOGOUT_OPERATION :
                 if($this->_auth) {
                     \fproject\amf\auth\Auth::getInstance()->clearIdentity();
                 }
@@ -567,7 +565,7 @@ class Zend_Amf_Server
                     default:
                         // AMF3 read message type
                         $message = $body->getData();
-                        if ($message instanceof Zend_Amf_Value_Messaging_CommandMessage) {
+                        if ($message instanceof CommandMessage) {
                             // async call with command message
                             $return = $this->_loadCommandMessage($message);
                         } elseif ($message instanceof Zend_Amf_Value_Messaging_RemotingMessage) {

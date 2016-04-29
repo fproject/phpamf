@@ -35,6 +35,7 @@ require_once 'ServiceB.php';
 
 use fproject\amf\auth\XmlAuth;
 use fproject\amf\value\messaging\AcknowledgeMessage;
+use fproject\amf\value\messaging\CommandMessage;
 
 /**
  * @category   Zend
@@ -368,7 +369,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
      */
     public function testCommandMessagePingOperation()
     {
-        $message = new Zend_Amf_Value_Messaging_CommandMessage();
+        $message = new CommandMessage();
         $message->operation = 5;
         $message->messageId = $message->generateId();
         // create a mock message body to place th remoting message inside
@@ -421,7 +422,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidCommandMessageShouldResultInErrorMessage()
     {
-        $message = new Zend_Amf_Value_Messaging_CommandMessage();
+        $message = new CommandMessage();
         $message->operation = 'pong';
         $message->messageId = $message->generateId();
 
