@@ -260,10 +260,9 @@ class Amf0Deserializer extends Deserializer
      */
     public function readTypedObject()
     {
-         require_once 'Zend/Amf/Parse/TypeLoader.php';
         // get the remote class name
         $className = $this->_stream->readUTF();
-        $loader = Zend_Amf_Parse_TypeLoader::loadType($className);
+        $loader = TypeLoader::loadType($className);
         $returnObject = new $loader();
         $properties = get_object_vars($this->readObject());
         foreach($properties as $key=>$value) {
@@ -285,8 +284,7 @@ class Amf0Deserializer extends Deserializer
      */
     public function readAmf3TypeMarker()
     {
-        require_once 'Zend/Amf/Parse/Amf3/Deserializer.php';
-        $deserializer = new Zend_Amf_Parse_Amf3_Deserializer($this->_stream);
+        $deserializer = new Amf3Deserializer($this->_stream);
         $this->_objectEncoding = Constants::AMF3_OBJECT_ENCODING;
         return $deserializer->readTypeMarker();
     }

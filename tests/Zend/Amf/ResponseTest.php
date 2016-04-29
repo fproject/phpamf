@@ -23,13 +23,13 @@
 require_once 'Zend/Amf/Response.php';
 require_once 'Zend/Amf/Request.php';
 
-require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Contact.php';
 require_once 'ContactVO.php';
 
 use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\MessageHeader;
 use fproject\amf\value\MessageBody;
+use fproject\amf\parse\TypeLoader;
 
 /**
  * Test case for Zend_Amf_Response
@@ -58,7 +58,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         date_default_timezone_set('America/Chicago');
-        Zend_Amf_Parse_TypeLoader::resetMap();
+        TypeLoader::resetMap();
         $this->_response = new Zend_Amf_Response();
     }
 
@@ -731,7 +731,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
 
     public function testPhpObjectSerializedToAmf0TypedObjectClassMap()
     {
-        Zend_Amf_Parse_TypeLoader::setMapping("ContactVO","Contact");
+        TypeLoader::setMapping("ContactVO","Contact");
 
         $data = array();
         $contact = new Contact();

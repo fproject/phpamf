@@ -21,13 +21,13 @@
  */
 
 require_once 'Zend/Amf/Request.php';
-require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Contact.php';
 
 use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\RemotingMessage;
 use fproject\amf\value\MessageHeader;
 use fproject\amf\value\MessageBody;
+use fproject\amf\parse\TypeLoader;
 
 /**
  * Test case for Zend_Amf_Request
@@ -53,7 +53,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         date_default_timezone_set("America/Chicago");
-        Zend_Amf_Parse_TypeLoader::resetMap();
+        TypeLoader::resetMap();
         $this->_request = new Zend_Amf_Request();
     }
 
@@ -215,7 +215,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     public function testComplexTypedObjectParameterDeserializedToPhp()
     {
         require_once "WorkCalendar.php";
-        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.WorkCalendar'] = 'WorkCalendar';
+        TypeLoader::$classMap['net.fproject.calendar.WorkCalendar'] = 'WorkCalendar';
 
         $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/complexTypedObjectAmf3Request.bin');
         // send the mock object request to be deserialized
@@ -247,10 +247,10 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
      */
     public function testComplexTypedObjectParameterDeserializedToPhpUsingPSR0()
     {
-        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.WorkCalendar'] = 'fproject\calendar\WorkCalendar';
-        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.Period'] = 'fproject\calendar\Period';
-        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.WorkShift'] = 'fproject\calendar\WorkShift';
-        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.WeekDay'] = 'fproject\calendar\WeekDay';
+        TypeLoader::$classMap['net.fproject.calendar.WorkCalendar'] = 'fproject\calendar\WorkCalendar';
+        TypeLoader::$classMap['net.fproject.calendar.Period'] = 'fproject\calendar\Period';
+        TypeLoader::$classMap['net.fproject.calendar.WorkShift'] = 'fproject\calendar\WorkShift';
+        TypeLoader::$classMap['net.fproject.calendar.WeekDay'] = 'fproject\calendar\WeekDay';
 
         $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/complexTypedObjectAmf3Request.bin');
         // send the mock object request to be deserialized
@@ -835,7 +835,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
 
     public function testAmf0TypedObjecDeserializedToNativePHPObject()
     {
-        Zend_Amf_Parse_TypeLoader::setMapping("ContactVO","Contact");
+        TypeLoader::setMapping("ContactVO","Contact");
         $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/typedObjectAmf0Request.bin');
         // send the mock object request to be deserialized
         $this->_request->initialize($myRequest);

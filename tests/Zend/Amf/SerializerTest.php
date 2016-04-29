@@ -1,9 +1,9 @@
 <?php
-require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'ContactElt.php';
 require_once 'Container.php';
 
 use fproject\amf\parse\OutputStream;
+use fproject\amf\parse\TypeLoader;
 
 class SerializerTest extends PHPUnit_Framework_TestCase
 {
@@ -13,7 +13,7 @@ class SerializerTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         date_default_timezone_set('America/Chicago');
-        Zend_Amf_Parse_TypeLoader::resetMap();
+        TypeLoader::resetMap();
     }
 
     public function tearDown()

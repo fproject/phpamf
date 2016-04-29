@@ -1,38 +1,33 @@
 <?php
-/**
- * Zend Framework
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Amf
- * @subpackage Parse
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
- */
+///////////////////////////////////////////////////////////////////////////////
+//
+// © Copyright f-project.net 2010-present.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+///////////////////////////////////////////////////////////////////////////////
 
+namespace fproject\amf\parse;
 
 use fproject\amf\loader\ResourceLoaderInterface;
+use fproject\amf\AmfException;
 
 /**
  * Loads a local class and executes the instantiation of that class.
  *
  * @todo       PHP 5.3 can drastically change this class w/ namespace and the new call_user_func w/ namespace
- * @package    Zend_Amf
- * @subpackage Parse
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-final class Zend_Amf_Parse_TypeLoader
+final class TypeLoader
 {
     /**
      * @var string callback class
@@ -187,31 +182,31 @@ final class Zend_Amf_Parse_TypeLoader
      *
      * @param resource $resource
      * @return mixed
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
     public static function handleResource($resource)
     {
         if(!self::$_resourceLoader) {
-            throw new \fproject\amf\AmfException('Unable to handle resources - resource plugin loader not set');
+            throw new AmfException('Unable to handle resources - resource plugin loader not set');
         }
         try {
             while(is_resource($resource)) {
                 $resclass = self::getResourceParser($resource);
                 if(!$resclass) {
-                    throw new \fproject\amf\AmfException('Can not serialize resource type: '. get_resource_type($resource));
+                    throw new AmfException('Can not serialize resource type: '. get_resource_type($resource));
                 }
                 $parser = new $resclass();
                 if(is_callable(array($parser, 'parse'))) {
                     $resource = $parser->parse($resource);
                 } else {
-                    throw new \fproject\amf\AmfException("Could not call parse() method on class $resclass");
+                    throw new AmfException("Could not call parse() method on class $resclass");
                 }
             }
             return $resource;
-        } catch(\fproject\amf\AmfException $e) {
-            throw new \fproject\amf\AmfException($e->getMessage(), $e->getCode(), $e);
-        } catch(Exception $e) {
-            throw new \fproject\amf\AmfException('Can not serialize resource type: '. get_resource_type($resource), 0, $e);
+        } catch(AmfException $e) {
+            throw new AmfException($e->getMessage(), $e->getCode(), $e);
+        } catch(\Exception $e) {
+            throw new AmfException('Can not serialize resource type: '. get_resource_type($resource), 0, $e);
         }
     }
 }

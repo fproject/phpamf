@@ -20,13 +20,11 @@
  * @version    $Id$
  */
 
-/** Zend_Amf_Parse_TypeLoader */
-require_once 'Zend/Amf/Parse/TypeLoader.php';
-
 use fproject\amf\AmfException;
 use fproject\amf\value\ByteArray;
 use fproject\amf\parse\Serializer;
 use fproject\amf\Constants;
+use fproject\amf\parse\TypeLoader;
 
 /**
  * Detect PHP object type and convert it to a corresponding AMF3 object type
@@ -131,7 +129,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
         } else {
             // Detect Type Marker
             if (is_resource($data)) {
-                $data = Zend_Amf_Parse_TypeLoader::handleResource($data);
+                $data = TypeLoader::handleResource($data);
             }
             switch (true) {
                 case (null === $data):
@@ -511,7 +509,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
         //Check to see if the object is a typed object and we need to change
         switch (true) {
              // the return class mapped name back to actionscript class name.
-            case ($className = Zend_Amf_Parse_TypeLoader::getMappedClassName(get_class($object))):
+            case ($className = TypeLoader::getMappedClassName(get_class($object))):
                 break;
 
             // Check to see if the user has defined an explicit Action Script type.

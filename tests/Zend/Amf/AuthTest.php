@@ -27,13 +27,13 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 
 require_once 'Zend/Amf/Server.php';
 require_once 'Zend/Amf/Request.php';
-require_once 'Zend/Amf/Parse/TypeLoader.php';
 
 use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\ErrorMessage;
 use fproject\amf\value\MessageBody;
 use fproject\amf\Constants;
+use fproject\amf\parse\TypeLoader;
 
 /**
  * @category   Zend
@@ -63,7 +63,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     {
         $this->_server = new Zend_Amf_Server();
         $this->_server->setProduction(false);
-        Zend_Amf_Parse_TypeLoader::resetMap();
+        TypeLoader::resetMap();
         $this->_acl = new \fproject\amf\acl\Acl();
     }
 

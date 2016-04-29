@@ -27,7 +27,6 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 
 require_once 'Zend/Amf/Server.php';
 require_once 'Zend/Amf/Request.php';
-require_once 'Zend/Amf/Parse/TypeLoader.php';
 
 
 require_once 'ServiceA.php';
@@ -39,6 +38,7 @@ use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\ErrorMessage;
 use fproject\amf\value\messaging\RemotingMessage;
 use fproject\amf\value\MessageBody;
+use fproject\amf\parse\TypeLoader;
 
 /**
  * @category   Zend
@@ -63,13 +63,13 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     {
         $this->_server = new Zend_Amf_Server();
         $this->_server->setProduction(false);
-        Zend_Amf_Parse_TypeLoader::resetMap();
+        TypeLoader::resetMap();
     }
 
     public function tearDown()
     {
         unset($this->_server);
-        //Zend_Amf_Parse_TypeLoader::resetMap();
+        //TypeLoader::resetMap();
     }
 
     /**
@@ -458,7 +458,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     public function testClassMap()
     {
         $this->_server->setClassMap('controller.test', 'Zend_Amf_testclass');
-        $className = Zend_Amf_Parse_TypeLoader::getMappedClassName('Zend_Amf_testclass');
+        $className = TypeLoader::getMappedClassName('Zend_Amf_testclass');
         $this->assertEquals('controller.test', $className);
     }
 

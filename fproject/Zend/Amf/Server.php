@@ -20,9 +20,6 @@
  */
 
 
-/** @see Zend_Amf_Parse_TypeLoader */
-require_once 'Zend/Amf/Parse/TypeLoader.php';
-
 use fproject\amf\auth\AuthAbstract;
 use fproject\amf\loader\ResourceLoader;
 use fproject\amf\reflect\AbstractFunctionReflector;
@@ -38,6 +35,7 @@ use fproject\amf\value\messaging\RemotingMessage;
 use fproject\amf\value\MessageHeader;
 use fproject\amf\value\MessageBody;
 use fproject\amf\Constants;
+use fproject\amf\parse\TypeLoader;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -124,7 +122,7 @@ class Zend_Amf_Server
      */
     public function __construct()
     {
-        Zend_Amf_Parse_TypeLoader::setResourceLoader(new ResourceLoader(array("Zend_Amf_Parse_Resource" => "Zend/Amf/Parse/Resource")));
+        TypeLoader::setResourceLoader(new ResourceLoader(array("Zend_Amf_Parse_Resource" => "Zend/Amf/Parse/Resource")));
     }
 
     /**
@@ -288,7 +286,7 @@ class Zend_Amf_Server
     protected function _dispatch($method, $params = null, $source = null)
     {
         if($source) {
-            if(($mapped = Zend_Amf_Parse_TypeLoader::getMappedClassName($source)) !== false) {
+            if(($mapped = TypeLoader::getMappedClassName($source)) !== false) {
                 $source = $mapped;
             }
         }
@@ -926,8 +924,7 @@ class Zend_Amf_Server
      */
     public function setClassMap($asClass, $phpClass)
     {
-        require_once 'Zend/Amf/Parse/TypeLoader.php';
-        Zend_Amf_Parse_TypeLoader::setMapping($asClass, $phpClass);
+        TypeLoader::setMapping($asClass, $phpClass);
         return $this;
     }
 

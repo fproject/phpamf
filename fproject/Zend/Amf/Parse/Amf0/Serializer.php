@@ -22,6 +22,7 @@
 
 use fproject\amf\parse\Serializer;
 use fproject\amf\Constants;
+use fproject\amf\parse\TypeLoader;
 
 /**
  * Serializer PHP misc types back to there corresponding AMF0 Type Marker.
@@ -114,7 +115,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
             }
         } else {
             if (is_resource($data)) {
-                $data = Zend_Amf_Parse_TypeLoader::handleResource($data);
+                $data = TypeLoader::handleResource($data);
             }
             switch (true) {
                 case (is_int($data) || is_float($data)):
@@ -323,13 +324,12 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
      */
     protected function getClassName($object)
     {
-        require_once 'Zend/Amf/Parse/TypeLoader.php';
         //Check to see if the object is a typed object and we need to change
         $className = '';
         switch (true) {
             // the return class mapped name back to actionscript class name.
-            case Zend_Amf_Parse_TypeLoader::getMappedClassName(get_class($object)):
-                $className = Zend_Amf_Parse_TypeLoader::getMappedClassName(get_class($object));
+            case TypeLoader::getMappedClassName(get_class($object)):
+                $className = TypeLoader::getMappedClassName(get_class($object));
                 break;
                 // Check to see if the user has defined an explicit Action Script type.
             case isset($object->_explicitType):
