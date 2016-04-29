@@ -22,7 +22,6 @@
 
 require_once 'Zend/Amf/Response.php';
 require_once 'Zend/Amf/Request.php';
-require_once 'Zend/Amf/Value/MessageBody.php';
 
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Contact.php';
