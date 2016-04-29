@@ -20,22 +20,19 @@
  * @version    $Id$
  */
 
-/** Zend_Amf_Util_BinaryStream */
-require_once 'Zend/Amf/Util/BinaryStream.php';
-
 /**
  * Iterate at a binary level through the AMF response
  *
  * OutputStream extends BinaryStream as eventually BinaryStream could be placed
  * outside of Zend_Amf in order to allow other packages to use the class.
  *
- * @uses       Zend_Amf_Util_BinaryStream
+ * @uses       BinaryStream
  * @package    Zend_Amf
  * @subpackage Parse
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Parse_OutputStream extends Zend_Amf_Util_BinaryStream
+class Zend_Amf_Parse_OutputStream extends \fproject\common\utils\BinaryStream
 {
     /**
      * Constructor

@@ -20,9 +20,6 @@
  * @version    $Id$
  */
 
-/** Zend_Amf_Util_BinaryStream */
-require_once 'Zend/Amf/Util/BinaryStream.php';
-
 /**
  * InputStream is used to iterate at a binary level through the AMF request.
  *
@@ -34,6 +31,6 @@ require_once 'Zend/Amf/Util/BinaryStream.php';
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Parse_InputStream extends Zend_Amf_Util_BinaryStream
+class Zend_Amf_Parse_InputStream extends \fproject\common\utils\BinaryStream
 {
 }
