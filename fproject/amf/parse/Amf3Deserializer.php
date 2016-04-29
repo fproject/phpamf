@@ -22,6 +22,7 @@ namespace fproject\amf\parse;
 use fproject\common\utils\XmlSecurity;
 use fproject\amf\value\TraitsInfo;
 use fproject\amf\Constants;
+use DateTime;
 
 /**
  * Read an AMF3 input stream and convert it into PHP data types.
@@ -539,7 +540,7 @@ class Amf3Deserializer extends Deserializer
      * Convert XML to SimpleXml
      * If user wants DomDocument they can use dom_import_simplexml
      *
-     * @return SimpleXMLElement|DOMDocument|bool
+     * @return \SimpleXMLElement|\DOMDocument|bool
      */
     public function readXmlString()
     {
