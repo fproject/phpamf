@@ -23,15 +23,12 @@
 /** Zend_Amf_Constants */
 require_once 'Zend/Amf/Constants.php';
 
-
-/** Zend_Amf_Parse_Serializer */
-require_once 'Zend/Amf/Parse/Serializer.php';
-
 /** Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 
 use fproject\amf\AmfException;
 use fproject\amf\value\ByteArray;
+use fproject\amf\parse\Serializer;
 
 /**
  * Detect PHP object type and convert it to a corresponding AMF3 object type
@@ -41,7 +38,7 @@ use fproject\amf\value\ByteArray;
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
+class Zend_Amf_Parse_Amf3_Serializer extends Serializer
 {
     /**
      * A constant empty string

@@ -7,7 +7,7 @@ use fproject\amf\parse\OutputStream;
 
 class SerializerTest extends PHPUnit_Framework_TestCase
 {
-    /** @var  Zend_Amf_Parse_Serializer $_serializer */
+    /** @var  Serializer $_serializer */
     protected $_serializer;
 
     public function setUp()

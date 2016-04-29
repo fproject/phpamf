@@ -19,7 +19,7 @@
 
 namespace fproject\amf\parse;
 
-class AbstractParser
+abstract class AbstractParser
 {
     /**
      * Throw Parser Exception

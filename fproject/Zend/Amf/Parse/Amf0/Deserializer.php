@@ -23,11 +23,10 @@
 /** Zend_Amf_Constants */
 require_once 'Zend/Amf/Constants.php';
 
-/** @see Zend_Amf_Parse_Deserializer */
-require_once 'Zend/Amf/Parse/Deserializer.php';
 
 use fproject\common\utils\XmlSecurity;
 use fproject\amf\value\messaging\ArrayCollection;
+use fproject\amf\parse\Deserializer;
 
 /**
  * Read an AMF0 input stream and convert it into PHP data types
@@ -39,7 +38,7 @@ use fproject\amf\value\messaging\ArrayCollection;
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Parse_Amf0_Deserializer extends Zend_Amf_Parse_Deserializer
+class Zend_Amf_Parse_Amf0_Deserializer extends Deserializer
 {
     /**
      * An array of objects used for recursively deserializing an object.
