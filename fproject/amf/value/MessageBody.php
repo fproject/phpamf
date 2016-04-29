@@ -82,8 +82,8 @@ class MessageBody
      */
     public function __construct($targetUri, $responseUri, $data)
     {
-        $this->setTargetUri($targetUri);
-        $this->setResponseUri($responseUri);
+        $this->setTargetURI($targetUri);
+        $this->setResponseURI($responseUri);
         $this->setData($data);
     }
 
@@ -92,7 +92,7 @@ class MessageBody
      *
      * @return string
      */
-    public function getTargetUri()
+    public function getTargetURI()
     {
         return $this->_targetUri;
     }
@@ -103,7 +103,7 @@ class MessageBody
      * @param  string $targetUri
      * @return MessageBody
      */
-    public function setTargetUri($targetUri)
+    public function setTargetURI($targetUri)
     {
         if (null === $targetUri) {
             $targetUri = '';
@@ -117,7 +117,7 @@ class MessageBody
      *
      * @return string
      */
-    public function getResponseUri()
+    public function getResponseURI()
     {
         return $this->_responseUri;
     }
@@ -128,7 +128,7 @@ class MessageBody
      * @param  string $responseUri
      * @return MessageBody
      */
-    public function setResponseUri($responseUri)
+    public function setResponseURI($responseUri)
     {
         if (null === $responseUri) {
             $responseUri = '';
