@@ -122,7 +122,7 @@ class Zend_Amf_Server
      */
     public function __construct()
     {
-        TypeLoader::setResourceLoader(new ResourceLoader(array("Resource" => "amf/parse/resource")));
+        TypeLoader::setResourceLoader(new ResourceLoader());
     }
 
     /**
