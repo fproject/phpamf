@@ -19,15 +19,13 @@
  * @version    $Id$
  */
 
-/** @see Zend_Amf_Parse_Amf0_Deserializer */
-require_once 'Zend/Amf/Parse/Amf0/Deserializer.php';
-
 use fproject\amf\value\messaging\AbstractMessage;
 use fproject\amf\value\MessageHeader;
 use fproject\amf\AmfException;
 use fproject\amf\value\MessageBody;
 use fproject\amf\parse\InputStream;
 use fproject\amf\Constants;
+use fproject\amf\parse\Amf0Deserializer;
 
 /**
  * Handle the incoming AMF request by deserializing the data to php object
@@ -66,7 +64,7 @@ class Zend_Amf_Request
     protected $_inputStream;
 
     /**
-     * @var Zend_Amf_Parse_AMF0_Deserializer
+     * @var Amf0Deserializer
      */
     protected $_deserializer;
 
@@ -85,7 +83,7 @@ class Zend_Amf_Request
     public function initialize($request)
     {
         $this->_inputStream  = new InputStream($request);
-        $this->_deserializer = new Zend_Amf_Parse_Amf0_Deserializer($this->_inputStream);
+        $this->_deserializer = new Amf0Deserializer($this->_inputStream);
         $this->readMessage($this->_inputStream);
         return $this;
     }
