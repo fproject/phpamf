@@ -28,12 +28,10 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 require_once 'Zend/Amf/Server.php';
 require_once 'Zend/Amf/Request.php';
 require_once 'Zend/Amf/Parse/TypeLoader.php';
-require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
 
 use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\ErrorMessage;
-
 /**
  * @category   Zend
  * @package    Zend_Amf

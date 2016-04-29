@@ -23,7 +23,6 @@
 require_once 'Zend/Amf/Server.php';
 require_once 'Zend/Amf/Request.php';
 require_once 'Zend/Amf/Parse/TypeLoader.php';
-require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
 
 /**
  * @category   Zend
