@@ -25,9 +25,6 @@ require_once 'Zend/Amf/Constants.php';
 /** @see Zend_Amf_Value_MessageBody */
 require_once 'Zend/Amf/Value/MessageBody.php';
 
-/** @see Zend_Amf_Value_MessageHeader */
-require_once 'Zend/Amf/Value/MessageHeader.php';
-
 /** @see Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 
@@ -43,6 +40,7 @@ use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\ErrorMessage;
 use fproject\amf\value\messaging\RemotingMessage;
+use fproject\amf\value\MessageHeader;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -509,10 +507,10 @@ class Zend_Amf_Server
                 if ($authResult === true || $authResult->getCode() == \fproject\amf\auth\AuthResult::SUCCESS) {
                     // use RequestPersistentHeader to clear credentials
                     $response->addAmfHeader(
-                        new Zend_Amf_Value_MessageHeader(
+                        new MessageHeader(
                             Zend_Amf_Constants::PERSISTENT_HEADER,
                             false,
-                            new Zend_Amf_Value_MessageHeader(
+                            new MessageHeader(
                                 Zend_Amf_Constants::CREDENTIALS_HEADER,
                                 false, null
                             )
@@ -615,7 +613,7 @@ class Zend_Amf_Server
 
             // create a new AMF message header with the session id as a variable.
             $sessionValue = $joint . $this->_sessionName . "=" . $currentID;
-            $sessionHeader = new Zend_Amf_Value_MessageHeader(Zend_Amf_Constants::URL_APPEND_HEADER, false, $sessionValue);
+            $sessionHeader = new MessageHeader(Zend_Amf_Constants::URL_APPEND_HEADER, false, $sessionValue);
             $response->addAmfHeader($sessionHeader);
         }
 

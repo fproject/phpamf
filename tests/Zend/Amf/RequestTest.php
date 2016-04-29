@@ -26,6 +26,7 @@ require_once 'Contact.php';
 
 use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\RemotingMessage;
+use fproject\amf\value\MessageHeader;
 
 /**
  * Test case for Zend_Amf_Request
@@ -876,7 +877,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that no headers where recieved
         $this->assertEquals(1 , sizeof($this->_request->getAmfHeaders()));
         $requestHeaders = $this->_request->getAmfHeaders();
-        $this->assertTrue($requestHeaders[0] instanceof Zend_Amf_Value_MessageHeader);
+        $this->assertTrue($requestHeaders[0] instanceof MessageHeader);
         $this->assertEquals('Credentials', $requestHeaders[0]->name);
         $this->assertFalse($requestHeaders[0]->mustRead);
         $data = $requestHeaders[0]->data;

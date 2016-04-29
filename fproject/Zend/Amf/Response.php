@@ -28,6 +28,8 @@ require_once 'Zend/Amf/Parse/OutputStream.php';
 /** @see Zend_Amf_Parse_Amf0_Serializer */
 require_once 'Zend/Amf/Parse/Amf0/Serializer.php';
 
+use fproject\amf\value\MessageHeader;
+
 /**
  * Handles converting the PHP object ready for response back into AMF
  *
@@ -48,7 +50,7 @@ class Zend_Amf_Response
     protected $_bodies = [];
 
     /**
-     * Array of Zend_Amf_Value_MessageHeader objects
+     * Array of MessageHeader objects
      * @var array
      */
     protected $_headers = [];
@@ -171,10 +173,10 @@ class Zend_Amf_Response
     /**
      * Add an AMF Header to be sent back to the flash player
      *
-     * @param  Zend_Amf_Value_MessageHeader $header
+     * @param  MessageHeader $header
      * @return Zend_Amf_Response
      */
-    public function addAmfHeader(Zend_Amf_Value_MessageHeader $header)
+    public function addAmfHeader(MessageHeader $header)
     {
         $this->_headers[] = $header;
         return $this;
@@ -183,7 +185,7 @@ class Zend_Amf_Response
     /**
      * Retrieve attached AMF message headers
      *
-     * @return array Array of Zend_Amf_Value_MessageHeader objects
+     * @return array Array of MessageHeader objects
      */
     public function getAmfHeaders()
     {

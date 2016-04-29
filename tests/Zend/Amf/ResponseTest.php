@@ -23,12 +23,13 @@
 require_once 'Zend/Amf/Response.php';
 require_once 'Zend/Amf/Request.php';
 require_once 'Zend/Amf/Value/MessageBody.php';
-require_once 'Zend/Amf/Value/MessageHeader.php';
+
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Contact.php';
 require_once 'ContactVO.php';
 
 use fproject\amf\value\messaging\AcknowledgeMessage;
+use fproject\amf\value\MessageHeader;
 
 /**
  * Test case for Zend_Amf_Response
@@ -993,8 +994,8 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
 
     public function testResponseShouldAggregateMessageHeaders()
     {
-        $this->header1 = new Zend_Amf_Value_MessageHeader('foo', false, 'bar');
-        $this->header2 = new Zend_Amf_Value_MessageHeader('bar', true, 'baz');
+        $this->header1 = new MessageHeader('foo', false, 'bar');
+        $this->header2 = new MessageHeader('bar', true, 'baz');
         $this->_response->addAmfHeader($this->header1)
                         ->addAmfHeader($this->header2);
         $headers = $this->_response->getAmfHeaders();

@@ -28,13 +28,13 @@ require_once 'Zend/Amf/Parse/Amf0/Deserializer.php';
 /** @see Zend_Amf_Constants */
 require_once 'Zend/Amf/Constants.php';
 
-/** @see Zend_Amf_Value_MessageHeader */
-require_once 'Zend/Amf/Value/MessageHeader.php';
 
 /** @see Zend_Amf_Value_MessageBody */
 require_once 'Zend/Amf/Value/MessageBody.php';
 
 use fproject\amf\value\messaging\AbstractMessage;
+use fproject\amf\value\MessageHeader;
+use fproject\amf\AmfException;
 
 /**
  * Handle the incoming AMF request by deserializing the data to php object
@@ -102,7 +102,7 @@ class Zend_Amf_Request
      *
      * @param Zend_Amf_Parse_InputStream $stream
      * @return Zend_Amf_Request
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
     public function readMessage(Zend_Amf_Parse_InputStream $stream)
     {
@@ -111,7 +111,7 @@ class Zend_Amf_Request
             && ($clientVersion != Zend_Amf_Constants::AMF3_OBJECT_ENCODING)
             && ($clientVersion != Zend_Amf_Constants::FMS_OBJECT_ENCODING)
         ) {
-            throw new \fproject\amf\AmfException('Unknown Player Version ' . $clientVersion);
+            throw new AmfException('Unknown Player Version ' . $clientVersion);
         }
 
         $this->_bodies  = [];
@@ -140,8 +140,8 @@ class Zend_Amf_Request
      * - MUST UNDERSTAND Boolean
      * - LENGTH Int
      * - DATA Object
-     * @return Zend_Amf_Value_MessageHeader
-     * @throws \fproject\amf\AmfException
+     * @return MessageHeader
+     * @throws AmfException
      */
     public function readHeader()
     {
@@ -152,17 +152,17 @@ class Zend_Amf_Request
         try {
             $data = $this->_deserializer->readTypeMarker();
         } catch (Exception $e) {
-            throw new \fproject\amf\AmfException('Unable to parse ' . $name . ' header data: ' . $e->getMessage() . ' '. $e->getLine(), 0, $e);
+            throw new AmfException('Unable to parse ' . $name . ' header data: ' . $e->getMessage() . ' '. $e->getLine(), 0, $e);
         }
 
-        $header = new Zend_Amf_Value_MessageHeader($name, $mustRead, $data, $length);
+        $header = new MessageHeader($name, $mustRead, $data, $length);
         return $header;
     }
 
     /**
      * Deserialize a message body from the input stream
      * @return Zend_Amf_Value_MessageBody
-     * @throws \fproject\amf\AmfException
+     * @throws AmfException
      */
     public function readBody()
     {
@@ -173,7 +173,7 @@ class Zend_Amf_Request
         try {
             $data = $this->_deserializer->readTypeMarker();
         } catch (Exception $e) {
-            throw new \fproject\amf\AmfException('Unable to parse ' . $targetURI . ' body data ' . $e->getMessage(), 0, $e);
+            throw new AmfException('Unable to parse ' . $targetURI . ' body data ' . $e->getMessage(), 0, $e);
         }
 
         // Check for AMF3 objectEncoding
