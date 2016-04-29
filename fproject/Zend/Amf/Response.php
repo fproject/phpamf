@@ -19,13 +19,11 @@
  * @version    $Id$
  */
 
-/** @see Zend_Amf_Parse_Amf0_Serializer */
-require_once 'Zend/Amf/Parse/Amf0/Serializer.php';
-
 use fproject\amf\value\MessageHeader;
 use fproject\amf\value\MessageBody;
 use fproject\amf\parse\OutputStream;
 use fproject\amf\Constants;
+use fproject\amf\parse\Amf0Serializer;
 
 /**
  * Handles converting the PHP object ready for response back into AMF
@@ -88,7 +86,7 @@ class Zend_Amf_Response
         $headerCount = count($this->_headers);
         $stream->writeInt($headerCount);
         foreach ($this->getAmfHeaders() as $header) {
-            $serializer = new Zend_Amf_Parse_Amf0_Serializer($stream);
+            $serializer = new Amf0Serializer($stream);
             $stream->writeUTF($header->name);
             $stream->writeByte($header->mustRead);
             $stream->writeLong(Constants::UNKNOWN_CONTENT_LENGTH);
@@ -106,7 +104,7 @@ class Zend_Amf_Response
         $bodyCount = count($this->_bodies);
         $stream->writeInt($bodyCount);
         foreach ($this->_bodies as $body) {
-            $serializer = new Zend_Amf_Parse_Amf0_Serializer($stream);
+            $serializer = new Amf0Serializer($stream);
             $stream->writeUTF($body->getTargetURI());
             $stream->writeUTF($body->getResponseURI());
             $stream->writeLong(Constants::UNKNOWN_CONTENT_LENGTH);

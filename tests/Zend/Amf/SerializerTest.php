@@ -4,10 +4,11 @@ require_once 'Container.php';
 
 use fproject\amf\parse\OutputStream;
 use fproject\amf\parse\TypeLoader;
+use fproject\amf\parse\Amf3Serializer;
 
 class SerializerTest extends PHPUnit_Framework_TestCase
 {
-    /** @var  Serializer $_serializer */
+    /** @var  \fproject\amf\parse\Serializer $_serializer */
     protected $_serializer;
 
     public function setUp()
@@ -33,7 +34,7 @@ class SerializerTest extends PHPUnit_Framework_TestCase
         $container->data = $data;
 
         $outputStream = new OutputStream();
-        $serializer = new Zend_Amf_Parse_Amf3_Serializer($outputStream);
+        $serializer = new Amf3Serializer($outputStream);
         $serializer->writeTypeMarker($container);
         // Load the expected binary.
         $mockFile = file_get_contents(dirname(__FILE__) .'/Parse/mock/amf3TypedVector.bin');

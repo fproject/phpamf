@@ -1,40 +1,37 @@
 <?php
-/**
- * Zend Framework
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Amf
- * @subpackage Parse_Amf3
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
- */
+///////////////////////////////////////////////////////////////////////////////
+//
+// © Copyright f-project.net 2010-present.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+namespace fproject\amf\parse;
 
 use fproject\amf\AmfException;
 use fproject\amf\value\ByteArray;
-use fproject\amf\parse\Serializer;
 use fproject\amf\Constants;
-use fproject\amf\parse\TypeLoader;
+use DateTime;
+use DOMDocument;
+use SimpleXMLElement;
+use fproject\amf\reflect\AmfReflector;
 
 /**
  * Detect PHP object type and convert it to a corresponding AMF3 object type
  *
- * @package    Zend_Amf
- * @subpackage Parse_Amf3
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Parse_Amf3_Serializer extends Serializer
+class Amf3Serializer extends Serializer
 {
     /**
      * A constant empty string
@@ -175,13 +172,14 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
             }
             $this->writeTypeMarker($data, $markerType);
         }
+        return 0;//To avoid PHP warning
     }
 
     /**
      * Write an AMF3 integer
      *
      * @param float|int $int
-     * @return Zend_Amf_Parse_Amf3_Serializer
+     * @return Amf3Serializer
      */
     public function writeInteger($int)
     {
@@ -215,7 +213,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
      * The string is prepended with strlen($string) << 1 | 0x01
      *
      * @param  string $string
-     * @return Zend_Amf_Parse_Amf3_Serializer
+     * @return Amf3Serializer
      */
     protected function writeBinaryString(&$string){
         $ref = ($this->_mbStringFunctionsOverloaded ? mb_strlen($string, '8bit') : strlen($string)) << 1 | 0x01;
@@ -229,7 +227,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
      * Send string to output stream
      *
      * @param  string $string
-     * @return Zend_Amf_Parse_Amf3_Serializer
+     * @return Amf3Serializer
      */
     public function writeString(&$string)
     {
@@ -257,7 +255,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
      * Send ByteArray to output stream
      *
      * @param  string|ByteArray $data
-     * @return Zend_Amf_Parse_Amf3_Serializer
+     * @return Amf3Serializer
      * @throws AmfException
      */
     public function writeByteArray(&$data)
@@ -283,7 +281,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
      * Send xml to output stream
      *
      * @param  DOMDocument|SimpleXMLElement $xml
-     * @return Zend_Amf_Parse_Amf3_Serializer
+     * @return Amf3Serializer
      * @throws AmfException
      */
     public function writeXml($xml)
@@ -311,7 +309,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
      * Convert DateTime to AMF date
      *
      * @param  DateTime $date
-     * @return Zend_Amf_Parse_Amf3_Serializer
+     * @return Amf3Serializer
      * @throws AmfException
      */
     public function writeDate($date)
@@ -338,7 +336,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
      * Write a PHP array back to the amf output stream
      *
      * @param array $array
-     * @return Zend_Amf_Parse_Amf3_Serializer
+     * @return Amf3Serializer
      */
     public function writeArray(&$array)
     {
@@ -381,7 +379,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
      * @param array $array
      * @param $markerType
      * @param $vectorInfo
-     * @return Zend_Amf_Parse_Amf3_Serializer
+     * @return Amf3Serializer
      */
     public function writeVector(&$array, $markerType, $vectorInfo)
     {
@@ -440,6 +438,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
      * @param array $array
      * @param int $len
      * @param string $elementType
+     * @return $this
      */
     public function writeObjectVector($array, $len, $elementType)
     {
@@ -462,6 +461,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
                 $markerType = boolval($array[$i]) ? Constants::AMF3_BOOLEAN_TRUE : Constants::AMF3_BOOLEAN_FALSE;
             $this->writeTypeMarker($array[$i], $markerType);
         }
+        return $this;
     }
 
     /**
@@ -497,7 +497,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
      * Write object to output stream
      *
      * @param mixed $object
-     * @return Zend_Amf_Parse_Amf3_Serializer
+     * @return Amf3Serializer
      * @throws AmfException
      */
     public function writeObject($object)
@@ -523,7 +523,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
                 break;
 
             // No return class name is set make it a generic object
-            case ($object instanceof stdClass):
+            case ($object instanceof \stdClass):
                 $className = '';
                 break;
 
@@ -566,7 +566,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
                     }
                     if(is_array($value) && is_null($reflectProperties))
                     {
-                        $reflector = new \fproject\amf\reflect\AmfReflector($object);
+                        $reflector = new AmfReflector($object);
                         $reflectProperties = $reflector->annotations;
                     }
                 }
@@ -648,7 +648,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Serializer
                     throw new AmfException('Unknown Object Encoding type: ' . $encoding);
             }
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
             throw new AmfException('Unable to writeObject output: ' . $e->getMessage(), 0, $e);
         }

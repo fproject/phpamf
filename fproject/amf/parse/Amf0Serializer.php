@@ -1,39 +1,33 @@
 <?php
-/**
- * Zend Framework
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Amf
- * @subpackage Parse_Amf0
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
- */
+///////////////////////////////////////////////////////////////////////////////
+//
+// © Copyright f-project.net 2010-present.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+///////////////////////////////////////////////////////////////////////////////
 
-use fproject\amf\parse\Serializer;
+namespace fproject\amf\parse;
+
 use fproject\amf\Constants;
-use fproject\amf\parse\TypeLoader;
+use DateTime;
+use fproject\amf\AmfException;
 
 /**
  * Serializer PHP misc types back to there corresponding AMF0 Type Marker.
  *
- * @uses       Serializer
- * @package    Zend_Amf
- * @subpackage Parse_Amf0
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Parse_Amf0_Serializer extends Serializer
+class Amf0Serializer extends Serializer
 {
     /**
      * @var string Name of the class to be returned
@@ -56,8 +50,8 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
      * @param  mixed $data
      * @param  mixed $markerType
      * @param  mixed $dataByVal
-     * @return Zend_Amf_Parse_Amf0_Serializer
-     * @throws \fproject\amf\AmfException for unrecognized types or data
+     * @return Amf0Serializer
+     * @throws AmfException for unrecognized types or data
      */
     public function writeTypeMarker(&$data, $markerType = null, $dataByVal = false)
     {
@@ -110,7 +104,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
                         $this->writeAmf3TypeMarker($data);
                         break;
                     default:
-                        throw new \fproject\amf\AmfException("Unknown Type Marker: " . $markerType);
+                        throw new AmfException("Unknown Type Marker: " . $markerType);
                 }
             }
         } else {
@@ -172,7 +166,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
                     }
                     break;
                 default:
-                    throw new \fproject\amf\AmfException('Unsupported data type: ' . gettype($data));
+                    throw new AmfException('Unsupported data type: ' . gettype($data));
             }
 
             $this->writeTypeMarker($data, $markerType);
@@ -218,8 +212,9 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
     /**
      * Write a PHP array with string or mixed keys.
      *
-     * @param object $data
-     * @return Zend_Amf_Parse_Amf0_Serializer
+     * @param $object
+     * @return Amf0Serializer
+     * @throws AmfException
      */
     public function writeObject($object)
     {
@@ -242,7 +237,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
      * is encountered call writeTypeMarker with mixed array.
      *
      * @param array $array
-     * @return Zend_Amf_Parse_Amf0_Serializer
+     * @return Amf0Serializer
      */
     public function writeArray(&$array)
     {
@@ -266,15 +261,15 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
      * Convert the DateTime into an AMF Date
      *
      * @param  DateTime $data
-     * @throws \fproject\amf\AmfException
-     * @return Zend_Amf_Parse_Amf0_Serializer
+     * @throws AmfException
+     * @return Amf0Serializer
      */
     public function writeDate($data)
     {
         if ($data instanceof DateTime) {
             $dateString = $data->format('U');
         } else {
-            throw new \fproject\amf\AmfException('Invalid date specified; must be a DateTime object');
+            throw new AmfException('Invalid date specified; must be a DateTime object');
         }
         $dateString *= 1000;
 
@@ -291,7 +286,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
      * Write a class mapped object to the output stream.
      *
      * @param  object $data
-     * @return Zend_Amf_Parse_Amf0_Serializer
+     * @return Amf0Serializer
      */
     public function writeTypedObject($data)
     {
@@ -305,12 +300,11 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
      * encountered it will not return to AMf0.
      *
      * @param  string $data
-     * @return Zend_Amf_Parse_Amf0_Serializer
+     * @return Amf0Serializer
      */
     public function writeAmf3TypeMarker(&$data)
     {
-        require_once 'Zend/Amf/Parse/Amf3/Serializer.php';
-        $serializer = new Zend_Amf_Parse_Amf3_Serializer($this->_stream);
+        $serializer = new Amf3Serializer($this->_stream);
         $serializer->writeTypeMarker($data);
         return $this;
     }
@@ -325,7 +319,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
     protected function getClassName($object)
     {
         //Check to see if the object is a typed object and we need to change
-        $className = '';
+        //$className = '';
         switch (true) {
             // the return class mapped name back to actionscript class name.
             case TypeLoader::getMappedClassName(get_class($object)):
@@ -340,7 +334,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Serializer
                 $className = $object->getASClassName();
                 break;
                 // No return class name is set make it a generic object
-            case ($object instanceof stdClass):
+            case ($object instanceof \stdClass):
                 $className = '';
                 break;
         // By default, use object's class name
