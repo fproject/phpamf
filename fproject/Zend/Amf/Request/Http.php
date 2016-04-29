@@ -50,7 +50,6 @@ class Zend_Amf_Request_Http extends Zend_Amf_Request
      * occurs in doing so, or if the AMF body is invalid, the request is declared a
      * fault.
      *
-     * @return void
      */
     public function __construct()
     {
