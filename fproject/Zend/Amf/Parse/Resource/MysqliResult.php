@@ -92,7 +92,6 @@ class Zend_Amf_Parse_Resource_MysqliResult
         "MYSQLI_TYPE_CHAR"        => 'string',
         "MYSQLI_TYPE_VARCHAR"     => 'string',
         "MYSQLI_TYPE_GEOMETRY"    => 'object',
-        "MYSQLI_TYPE_BIT"         => 'integer',
     );
 
     /**
