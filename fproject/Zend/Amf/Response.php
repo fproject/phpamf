@@ -22,14 +22,12 @@
 /** @see Zend_Amf_Constants */
 require_once 'Zend/Amf/Constants.php';
 
-/** @see Zend_Amf_Parse_OutputStream */
-require_once 'Zend/Amf/Parse/OutputStream.php';
-
 /** @see Zend_Amf_Parse_Amf0_Serializer */
 require_once 'Zend/Amf/Parse/Amf0/Serializer.php';
 
 use fproject\amf\value\MessageHeader;
 use fproject\amf\value\MessageBody;
+use fproject\amf\parse\OutputStream;
 
 /**
  * Handles converting the PHP object ready for response back into AMF
@@ -57,7 +55,7 @@ class Zend_Amf_Response
     protected $_headers = [];
 
     /**
-     * @var Zend_Amf_Parse_OutputStream
+     * @var OutputStream
      */
     protected $_outputStream;
 
@@ -68,7 +66,7 @@ class Zend_Amf_Response
      */
     public function finalize()
     {
-        $this->_outputStream = new Zend_Amf_Parse_OutputStream();
+        $this->_outputStream = new OutputStream();
         $this->writeMessage($this->_outputStream);
         return $this;
     }
@@ -77,10 +75,10 @@ class Zend_Amf_Response
      * Serialize the PHP data types back into Actionscript and
      * create and AMF stream.
      *
-     * @param  Zend_Amf_Parse_OutputStream $stream
+     * @param  OutputStream $stream
      * @return Zend_Amf_Response
      */
-    public function writeMessage(Zend_Amf_Parse_OutputStream $stream)
+    public function writeMessage(OutputStream $stream)
     {
         $objectEncoding = $this->_objectEncoding;
 

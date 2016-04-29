@@ -20,6 +20,8 @@
  * @version    $Id$
  */
 
+use fproject\amf\parse\OutputStream;
+
 /**
  * Base abstract class for all AMF serializers.
  *
@@ -47,10 +49,9 @@ abstract class Zend_Amf_Parse_Serializer extends \fproject\amf\parse\AbstractPar
     /**
      * Constructor
      *
-     * @param  Zend_Amf_Parse_OutputStream $stream
-     * @return void
+     * @param  OutputStream $stream
      */
-    public function __construct(Zend_Amf_Parse_OutputStream $stream)
+    public function __construct(OutputStream $stream)
     {
         $this->_stream = $stream;
         $this->_mbStringFunctionsOverloaded = function_exists('mb_strlen') && (ini_get('mbstring.func_overload') !== '') && ((int)ini_get('mbstring.func_overload') & 2);

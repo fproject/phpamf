@@ -19,9 +19,6 @@
  * @version    $Id$
  */
 
-/** @see Zend_Amf_Parse_InputStream */
-require_once 'Zend/Amf/Parse/InputStream.php';
-
 /** @see Zend_Amf_Parse_Amf0_Deserializer */
 require_once 'Zend/Amf/Parse/Amf0/Deserializer.php';
 
@@ -33,6 +30,7 @@ use fproject\amf\value\messaging\AbstractMessage;
 use fproject\amf\value\MessageHeader;
 use fproject\amf\AmfException;
 use fproject\amf\value\MessageBody;
+use fproject\amf\parse\InputStream;
 
 /**
  * Handle the incoming AMF request by deserializing the data to php object
@@ -66,7 +64,7 @@ class Zend_Amf_Request
     protected $_objectEncoding = 0;
 
     /**
-     * @var Zend_Amf_Parse_InputStream
+     * @var InputStream
      */
     protected $_inputStream;
 
@@ -89,7 +87,7 @@ class Zend_Amf_Request
      */
     public function initialize($request)
     {
-        $this->_inputStream  = new Zend_Amf_Parse_InputStream($request);
+        $this->_inputStream  = new InputStream($request);
         $this->_deserializer = new Zend_Amf_Parse_Amf0_Deserializer($this->_inputStream);
         $this->readMessage($this->_inputStream);
         return $this;
@@ -98,11 +96,11 @@ class Zend_Amf_Request
     /**
      * Takes the raw AMF input stream and converts it into valid PHP objects
      *
-     * @param Zend_Amf_Parse_InputStream $stream
+     * @param InputStream $stream
      * @return Zend_Amf_Request
      * @throws AmfException
      */
-    public function readMessage(Zend_Amf_Parse_InputStream $stream)
+    public function readMessage(InputStream $stream)
     {
         $clientVersion = $stream->readUnsignedShort();
         if (($clientVersion != Zend_Amf_Constants::AMF0_OBJECT_ENCODING)

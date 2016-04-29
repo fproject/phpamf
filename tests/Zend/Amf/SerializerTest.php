@@ -2,8 +2,8 @@
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'ContactElt.php';
 require_once 'Container.php';
-//require_once 'Zend/Amf/Parse/Amf3/Serializer';
-//require_once 'Zend/Amf/Parse/OutputStream';
+
+use fproject\amf\parse\OutputStream;
 
 class SerializerTest extends PHPUnit_Framework_TestCase
 {
@@ -32,7 +32,7 @@ class SerializerTest extends PHPUnit_Framework_TestCase
         $container = new Container();
         $container->data = $data;
 
-        $outputStream = new Zend_Amf_Parse_OutputStream();
+        $outputStream = new OutputStream();
         $serializer = new Zend_Amf_Parse_Amf3_Serializer($outputStream);
         $serializer->writeTypeMarker($container);
         // Load the expected binary.

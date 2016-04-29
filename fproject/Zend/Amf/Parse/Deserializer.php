@@ -20,6 +20,8 @@
  * @version    $Id$
  */
 
+use fproject\amf\parse\InputStream;
+
 /**
  * Abstract cass that all deserializer must implement.
  *
@@ -38,17 +40,16 @@ abstract class Zend_Amf_Parse_Deserializer extends \fproject\amf\parse\AbstractP
     /**
      * The raw string that represents the AMF request.
      *
-     * @var Zend_Amf_Parse_InputStream
+     * @var InputStream
      */
     protected $_stream;
 
     /**
      * Constructor
      *
-     * @param  Zend_Amf_Parse_InputStream $stream
-     * @return void
+     * @param  InputStream $stream
      */
-    public function __construct(Zend_Amf_Parse_InputStream $stream)
+    public function __construct(InputStream $stream)
     {
         $this->_stream = $stream;
     }
@@ -58,7 +59,7 @@ abstract class Zend_Amf_Parse_Deserializer extends \fproject\amf\parse\AbstractP
      * for deserializing those marker types. Markers are the data type of
      * the following value.
      *
-     * @param  int $typeMarker
+     * @param int $markerType
      * @return mixed Whatever the data type is of the marker in php
      */
     public abstract function readTypeMarker($markerType = null);
