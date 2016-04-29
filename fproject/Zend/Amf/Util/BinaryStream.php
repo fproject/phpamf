@@ -224,7 +224,7 @@ class Zend_Amf_Util_BinaryStream
      *
      * @return string
      */
-    public function readLongUtf()
+    public function readLongUTF()
     {
         $length = $this->readLong();
         return $this->readBytes($length);
@@ -236,7 +236,7 @@ class Zend_Amf_Util_BinaryStream
      * @param  string $stream
      * @return Zend_Amf_Util_BinaryStream
      */
-    public function writeLongUtf($stream)
+    public function writeLongUTF($stream)
     {
         $this->writeLong($this->_mbStringFunctionsOverloaded ? mb_strlen($stream, '8bit') : strlen($stream));
         $this->_stream.= $stream;
