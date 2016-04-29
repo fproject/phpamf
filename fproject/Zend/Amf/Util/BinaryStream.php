@@ -199,7 +199,7 @@ class Zend_Amf_Util_BinaryStream
      *
      * @return string A UTF-8 string produced by the byte representation of characters
      */
-    public function readUtf()
+    public function readUTF()
     {
         $length = $this->readInt();
         return $this->readBytes($length);
@@ -211,7 +211,7 @@ class Zend_Amf_Util_BinaryStream
      * @param  string $stream
      * @return Zend_Amf_Util_BinaryStream
      */
-    public function writeUtf($stream)
+    public function writeUTF($stream)
     {
         $this->writeInt($this->_mbStringFunctionsOverloaded ? mb_strlen($stream, '8bit') : strlen($stream));
         $this->_stream.= $stream;
