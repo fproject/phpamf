@@ -29,9 +29,11 @@ require_once 'Zend/Amf/Server.php';
 require_once 'Zend/Amf/Request.php';
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
-require_once 'Zend/Amf/Adobe/Auth.php';
+
 require_once 'ServiceA.php';
 require_once 'ServiceB.php';
+
+use fproject\amf\auth\XmlAuth;
 
 /**
  * @category   Zend
@@ -1097,7 +1099,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     public function testSettingAuthAdapterWithAclSetsServerAcl()
     {
         $aclFile     = dirname(__FILE__) . '/_files/acl.xml';
-        $authAdapter = new Zend_Amf_Adobe_Auth($aclFile);
+        $authAdapter = new XmlAuth($aclFile);
         $this->_server->setAuth($authAdapter);
         $this->assertSame($authAdapter->getAcl(), $this->_server->getAcl());
     }
@@ -1109,7 +1111,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->_server->setAcl($acl);
 
         $aclFile     = dirname(__FILE__) . '/_files/acl.xml';
-        $authAdapter = new Zend_Amf_Adobe_Auth($aclFile);
+        $authAdapter = new XmlAuth($aclFile);
         $this->_server->setAuth($authAdapter);
 
         $this->assertNotSame($authAdapter->getAcl(), $this->_server->getAcl());
