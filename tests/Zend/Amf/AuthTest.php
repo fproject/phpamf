@@ -32,6 +32,8 @@ require_once 'Zend/Amf/Parse/TypeLoader.php';
 use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\ErrorMessage;
+use fproject\amf\value\MessageBody;
+
 /**
  * @category   Zend
  * @package    Zend_Amf
@@ -72,13 +74,13 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     {
         $data[] = "12345";
         $this->_server->setClass($class);
-        $newBody = new Zend_Amf_Value_MessageBody("$class.$method","/1",$data);
+        $newBody = new MessageBody("$class.$method","/1",$data);
         $request->addAmfBody($newBody);
     }
 
     protected function _addLogin($request, $username, $password)
     {
-        $cmdBody = new Zend_Amf_Value_MessageBody("","/1","");
+        $cmdBody = new MessageBody("","/1","");
         $loginCmd = new CommandMessage();
         $cmdBody->setData($loginCmd);
         $loginCmd->operation = CommandMessage::LOGIN_OPERATION;
@@ -88,7 +90,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
 
     protected function _addLogout($request)
     {
-        $cmdBody = new Zend_Amf_Value_MessageBody("","/1","");
+        $cmdBody = new MessageBody("","/1","");
         $loginCmd = new CommandMessage();
         $cmdBody->setData($loginCmd);
         $loginCmd->operation = CommandMessage::LOGOUT_OPERATION;

@@ -22,9 +22,6 @@
 /** @see Zend_Amf_Constants */
 require_once 'Zend/Amf/Constants.php';
 
-/** @see Zend_Amf_Value_MessageBody */
-require_once 'Zend/Amf/Value/MessageBody.php';
-
 /** @see Zend_Amf_Parse_TypeLoader */
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 
@@ -41,6 +38,7 @@ use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\ErrorMessage;
 use fproject\amf\value\messaging\RemotingMessage;
 use fproject\amf\value\MessageHeader;
+use fproject\amf\value\MessageBody;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -537,7 +535,7 @@ class Zend_Amf_Server
             if ($error) {
                 // Error during authentication; just report it and be done
                 $responseURI = $body->getResponseURI() . $responseType;
-                $newBody     = new Zend_Amf_Value_MessageBody($responseURI, null, $error);
+                $newBody     = new MessageBody($responseURI, null, $error);
                 $response->addAmfBody($newBody);
                 continue;
             }
@@ -596,7 +594,7 @@ class Zend_Amf_Server
             }
 
             $responseURI = $body->getResponseURI() . $responseType;
-            $newBody     = new Zend_Amf_Value_MessageBody($responseURI, null, $return);
+            $newBody     = new MessageBody($responseURI, null, $return);
             $response->addAmfBody($newBody);
         }
         // Add a session header to the body if session is requested.

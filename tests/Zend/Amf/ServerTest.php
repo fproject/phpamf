@@ -38,6 +38,7 @@ use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\ErrorMessage;
 use fproject\amf\value\messaging\RemotingMessage;
+use fproject\amf\value\MessageBody;
 
 /**
  * @category   Zend
@@ -214,7 +215,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // serialize the data to an AMF output stream
         $data[] = "12345";
         $this->_server->setClass('Zend_Amf_testclass');
-        $newBody = new Zend_Amf_Value_MessageBody("Zend_Amf_testclass.test1","/1",$data);
+        $newBody = new MessageBody("Zend_Amf_testclass.test1","/1",$data);
         $request = new Zend_Amf_Request();
         $request->addAmfBody($newBody);
         $request->setObjectEncoding(0x00);
@@ -232,7 +233,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // serialize the data to an AMF output stream
         $data = array('foo', 'bar');
         $this->_server->addFunction('Zend_Amf_Server_testFunction');
-        $newBody = new Zend_Amf_Value_MessageBody("Zend_Amf_Server_testFunction","/1",$data);
+        $newBody = new MessageBody("Zend_Amf_Server_testFunction","/1",$data);
         $request = new Zend_Amf_Request();
         $request->addAmfBody($newBody);
         $request->setObjectEncoding(0x00);
@@ -257,7 +258,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // serialize the data to an AMF output stream
         $data[] = "12345";
         $this->_server->setClass('Zend_Amf_testclass');
-        $newBody = new Zend_Amf_Value_MessageBody("Zend_Amf_testclass.test1","/1",$data);
+        $newBody = new MessageBody("Zend_Amf_testclass.test1","/1",$data);
         $request = new Zend_Amf_Request();
         $request->addAmfBody($newBody);
         $request->setObjectEncoding(0x03);
@@ -282,7 +283,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // serialize the data to an AMF output stream
         $data = array('foo', 'bar');
         $this->_server->addFunction('Zend_Amf_Server_testFunction');
-        $newBody = new Zend_Amf_Value_MessageBody("Zend_Amf_Server_testFunction","/1",$data);
+        $newBody = new MessageBody("Zend_Amf_Server_testFunction","/1",$data);
         $request = new Zend_Amf_Request();
         $request->addAmfBody($newBody);
         $request->setObjectEncoding(0x03);
@@ -311,7 +312,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->source = 'Zend_Amf_testclass';
         $message->body = $data;
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1",$message);
+        $newBody = new MessageBody(null,"/1",$message);
         $request = new Zend_Amf_Request();
         // at the requested service to a request
         $request->addAmfBody($newBody);
@@ -346,7 +347,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->source = 'ServiceB';
         $message->body = array();
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1",$message);
+        $newBody = new MessageBody(null,"/1",$message);
         $request = new Zend_Amf_Request();
         // at the requested service to a request
         $request->addAmfBody($newBody);
@@ -375,7 +376,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->operation = 5;
         $message->messageId = $message->generateId();
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1",$message);
+        $newBody = new MessageBody(null,"/1",$message);
         $request = new Zend_Amf_Request();
         // at the requested service to a request
         $request->addAmfBody($newBody);
@@ -399,7 +400,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // serialize the data to an AMF output stream
         $data[] = "12345";
         $this->_server->setClass('Zend_Amf_testclass');
-        $newBody = new Zend_Amf_Value_MessageBody("bogus","/1",$data);
+        $newBody = new MessageBody("bogus","/1",$data);
         $request = new Zend_Amf_Request();
         $request->addAmfBody($newBody);
         $request->setObjectEncoding(0x00);
@@ -429,7 +430,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->messageId = $message->generateId();
 
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1",$message);
+        $newBody = new MessageBody(null,"/1",$message);
         $request = new Zend_Amf_Request();
 
         // at the requested service to a request
@@ -473,7 +474,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->body      = $data;
 
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1",$message);
+        $newBody = new MessageBody(null,"/1",$message);
         $request = new Zend_Amf_Request();
 
         // at the requested service to a request
@@ -509,7 +510,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->body      = $data;
 
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1",$message);
+        $newBody = new MessageBody(null,"/1",$message);
         $request = new Zend_Amf_Request();
 
         // at the requested service to a request
@@ -546,7 +547,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->body      = $data;
 
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1",$message);
+        $newBody = new MessageBody(null,"/1",$message);
         $request = new Zend_Amf_Request();
 
         // at the requested service to a request
@@ -582,7 +583,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->body      = $data;
 
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null, "/1" ,$message);
+        $newBody = new MessageBody(null, "/1" ,$message);
         $request = new Zend_Amf_Request();
 
         // at the requested service to a request
@@ -619,7 +620,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->body      = $data;
 
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null, "/1" ,$message);
+        $newBody = new MessageBody(null, "/1" ,$message);
         $request = new Zend_Amf_Request();
 
         // at the requested service to a request
@@ -656,7 +657,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->body      = $data;
 
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null, "/1" ,$message);
+        $newBody = new MessageBody(null, "/1" ,$message);
         $request = new Zend_Amf_Request();
 
         // at the requested service to a request
@@ -692,7 +693,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->body      = $data;
 
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null, "/1" ,$message);
+        $newBody = new MessageBody(null, "/1" ,$message);
         $request = new Zend_Amf_Request();
 
         // at the requested service to a request
@@ -821,7 +822,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->source = 'Zend_Amf_testclass';
         $message->body = $data;
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1",$message);
+        $newBody = new MessageBody(null,"/1",$message);
         $request = new Zend_Amf_Request();
         // at the requested service to a request
         $request->addAmfBody($newBody);
@@ -848,7 +849,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     {
         $data[] = array('item1', 'item2');
         $this->_server->setClass('Zend_Amf_testclass');
-        $newBody = new Zend_Amf_Value_MessageBody("Zend_Amf_testclass.testSingleArrayParamater","/1",$data);
+        $newBody = new MessageBody("Zend_Amf_testclass.testSingleArrayParamater","/1",$data);
         $request = new Zend_Amf_Request();
         $request->addAmfBody($newBody);
         $request->setObjectEncoding(0x00);
@@ -877,7 +878,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->source = 'Zend_Amf_testclass';
         $message->body = $data;
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1",$message);
+        $newBody = new MessageBody(null,"/1",$message);
         $request = new Zend_Amf_Request();
         // at the requested service to a request
         $request->addAmfBody($newBody);
@@ -905,7 +906,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $data[] = array('item1', 'item2');
         $data[] = array('item3', 'item4');
         $this->_server->setClass('Zend_Amf_testclass');
-        $newBody = new Zend_Amf_Value_MessageBody("Zend_Amf_testclass.testMultiArrayParamater","/1",$data);
+        $newBody = new MessageBody("Zend_Amf_testclass.testMultiArrayParamater","/1",$data);
         $request = new Zend_Amf_Request();
         $request->addAmfBody($newBody);
         $request->setObjectEncoding(0x00);
@@ -933,7 +934,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->source = 'Zend_Amf_testclass';
         $message->body = $data;
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1",$message);
+        $newBody = new MessageBody(null,"/1",$message);
         $request = new Zend_Amf_Request();
         // at the requested service to a request
         $request->addAmfBody($newBody);
@@ -972,7 +973,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->source = 'Zend_Amf_testSession';
         $message->body = array();
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1", $message);
+        $newBody = new MessageBody(null,"/1", $message);
         $request = new Zend_Amf_Request();
         // at the requested service to a request
         $request->addAmfBody($newBody);
@@ -1014,7 +1015,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->source = 'ServiceC';
         $message->body = array();
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1", $message);
+        $newBody = new MessageBody(null,"/1", $message);
         $request = new Zend_Amf_Request();
         // at the requested service to a request
         $request->addAmfBody($newBody);
@@ -1036,7 +1037,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->source = 'My.ServiceA';
         $message->body = array();
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1", $message);
+        $newBody = new MessageBody(null,"/1", $message);
         $request = new Zend_Amf_Request();
         // at the requested service to a request
         $request->addAmfBody($newBody);
@@ -1060,7 +1061,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->source = 'Zend_Json';
         $message->body = array("123");
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1", $message);
+        $newBody = new MessageBody(null,"/1", $message);
         $request = new Zend_Amf_Request();
         // at the requested service to a request
         $request->addAmfBody($newBody);
@@ -1086,7 +1087,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message->source = 'Zend_Amf_testException';
         $message->body = array("123");
         // create a mock message body to place th remoting message inside
-        $newBody = new Zend_Amf_Value_MessageBody(null,"/1", $message);
+        $newBody = new MessageBody(null,"/1", $message);
         $request = new Zend_Amf_Request();
         // at the requested service to a request
         $request->addAmfBody($newBody);
@@ -1150,7 +1151,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
             'email'        => 32,
             'cellphone'    => 22,
         ));
-        $body = new Zend_Amf_Value_MessageBody(null, "\1", $message);
+        $body = new MessageBody(null, "\1", $message);
 
         $request = new Zend_Amf_Request();
         $request->addAmfBody($body);

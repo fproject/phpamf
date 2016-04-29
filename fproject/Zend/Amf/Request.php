@@ -29,12 +29,10 @@ require_once 'Zend/Amf/Parse/Amf0/Deserializer.php';
 require_once 'Zend/Amf/Constants.php';
 
 
-/** @see Zend_Amf_Value_MessageBody */
-require_once 'Zend/Amf/Value/MessageBody.php';
-
 use fproject\amf\value\messaging\AbstractMessage;
 use fproject\amf\value\MessageHeader;
 use fproject\amf\AmfException;
+use fproject\amf\value\MessageBody;
 
 /**
  * Handle the incoming AMF request by deserializing the data to php object
@@ -161,7 +159,7 @@ class Zend_Amf_Request
 
     /**
      * Deserialize a message body from the input stream
-     * @return Zend_Amf_Value_MessageBody
+     * @return MessageBody
      * @throws AmfException
      */
     public function readBody()
@@ -191,7 +189,7 @@ class Zend_Amf_Request
             $this->_objectEncoding = Zend_Amf_Constants::AMF3_OBJECT_ENCODING;
         }
 
-        $body = new Zend_Amf_Value_MessageBody($targetURI, $responseURI, $data);
+        $body = new MessageBody($targetURI, $responseURI, $data);
         return $body;
     }
 
@@ -208,10 +206,10 @@ class Zend_Amf_Request
     /**
      * Accessor to private array of message bodies.
      *
-     * @param  Zend_Amf_Value_MessageBody $message
+     * @param  MessageBody $message
      * @return Zend_Amf_Request
      */
-    public function addAmfBody(Zend_Amf_Value_MessageBody $message)
+    public function addAmfBody(MessageBody $message)
     {
         $this->_bodies[] = $message;
         return $this;

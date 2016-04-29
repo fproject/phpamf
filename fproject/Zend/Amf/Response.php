@@ -29,6 +29,7 @@ require_once 'Zend/Amf/Parse/OutputStream.php';
 require_once 'Zend/Amf/Parse/Amf0/Serializer.php';
 
 use fproject\amf\value\MessageHeader;
+use fproject\amf\value\MessageBody;
 
 /**
  * Handles converting the PHP object ready for response back into AMF
@@ -45,7 +46,7 @@ class Zend_Amf_Response
     protected $_objectEncoding = 0;
 
     /**
-     * @var Zend_Amf_Value_MessageBody[] $_bodies Array of Zend_Amf_Value_MessageBody objects
+     * @var MessageBody[] $_bodies Array of MessageBody objects
      */
     protected $_bodies = [];
 
@@ -151,10 +152,10 @@ class Zend_Amf_Response
     /**
      * Add an AMF body to be sent to the Flash Player
      *
-     * @param  Zend_Amf_Value_MessageBody $body
+     * @param  MessageBody $body
      * @return Zend_Amf_Response
      */
-    public function addAmfBody(Zend_Amf_Value_MessageBody $body)
+    public function addAmfBody(MessageBody $body)
     {
         $this->_bodies[] = $body;
         return $this;
@@ -163,7 +164,7 @@ class Zend_Amf_Response
     /**
      * Return an array of AMF bodies to be serialized
      *
-     * @return Zend_Amf_Value_MessageBody[]
+     * @return MessageBody[]
      */
     public function getAmfBodies()
     {

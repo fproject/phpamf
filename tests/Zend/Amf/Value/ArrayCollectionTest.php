@@ -26,7 +26,7 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 use fproject\amf\value\messaging\ArrayCollection;
 
 /**
- * Test case for Zend_Amf_Value_MessageBody
+ * Test case for MessageBody
  *
  * @category   Zend
  * @package    Zend_Amf
