@@ -22,10 +22,6 @@
 
 
 /**
- * @see Zend_Amf_Value_Messaging_ErrorMessage
- */
-require_once 'Zend/Amf/Value/Messaging/ErrorMessage.php';
-/**
  * @see Zend_Amf_Value_Messaging_RemotingMessage
  */
 require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
@@ -55,7 +51,7 @@ final class Zend_Amf_Parse_TypeLoader
         'flex.messaging.messages.AcknowledgeMessage' => 'fproject\amf\value\messaging\AcknowledgeMessage',
         'flex.messaging.messages.AsyncMessage'       => 'fproject\amf\value\messaging\AsyncMessage',
         'flex.messaging.messages.CommandMessage'     => 'fproject\amf\value\messaging\CommandMessage',
-        'flex.messaging.messages.ErrorMessage'       => 'Zend_Amf_Value_Messaging_ErrorMessage',
+        'flex.messaging.messages.ErrorMessage'       => 'fproject\amf\value\messaging\ErrorMessage',
         'flex.messaging.messages.RemotingMessage'    => 'Zend_Amf_Value_Messaging_RemotingMessage',
         'flex.messaging.io.ArrayCollection'          => 'Zend_Amf_Value_Messaging_ArrayCollection',
     );
@@ -67,7 +63,7 @@ final class Zend_Amf_Parse_TypeLoader
         'flex.messaging.messages.AcknowledgeMessage' => 'fproject\amf\value\messaging\AcknowledgeMessage',
         'flex.messaging.messages.AsyncMessage'       => 'fproject\amf\value\messaging\AsyncMessage',
         'flex.messaging.messages.CommandMessage'     => 'fproject\amf\value\messaging\CommandMessage',
-        'flex.messaging.messages.ErrorMessage'       => 'Zend_Amf_Value_Messaging_ErrorMessage',
+        'flex.messaging.messages.ErrorMessage'       => 'fproject\amf\value\messaging\ErrorMessage',
         'flex.messaging.messages.RemotingMessage'    => 'Zend_Amf_Value_Messaging_RemotingMessage',
         'flex.messaging.io.ArrayCollection'          => 'Zend_Amf_Value_Messaging_ArrayCollection',
     );

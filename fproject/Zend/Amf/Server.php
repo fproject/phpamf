@@ -41,6 +41,7 @@ use fproject\amf\reflect\ClassReflector;
 use fproject\amf\reflect\ReflectorHelper;
 use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\messaging\CommandMessage;
+use fproject\amf\value\messaging\ErrorMessage;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -418,7 +419,7 @@ class Zend_Amf_Server
      * @param mixed $detail Detailed data about the error
      * @param int $code Error code
      * @param int $line Error line
-     * @return Zend_Amf_Value_Messaging_ErrorMessage|array
+     * @return ErrorMessage|array
      */
     protected function _errorMessage($objectEncoding, $message, $description, $detail, $code, $line)
     {
@@ -432,8 +433,7 @@ class Zend_Amf_Server
                         'code' => $code
                 );
             case Zend_Amf_Constants::AMF3_OBJECT_ENCODING :
-                require_once 'Zend/Amf/Value/Messaging/ErrorMessage.php';
-                $return = new Zend_Amf_Value_Messaging_ErrorMessage ( $message );
+                $return = new ErrorMessage ( $message );
                 $return->faultString = $this->isProduction () ? '' : $description;
                 $return->faultCode = $code;
                 $return->faultDetail = $this->isProduction () ? '' : $detail;

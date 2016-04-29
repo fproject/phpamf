@@ -36,6 +36,7 @@ require_once 'ServiceB.php';
 use fproject\amf\auth\XmlAuth;
 use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\messaging\CommandMessage;
+use fproject\amf\value\messaging\ErrorMessage;
 
 /**
  * @category   Zend
@@ -445,7 +446,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $message = $responseBody[0]->getData();
 
         // check that we have a message beening returned
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_ErrorMessage);
+        $this->assertTrue($message instanceof ErrorMessage);
     }
 
     /**
@@ -484,7 +485,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $found  = false;
         foreach ($bodies as $body) {
             $data = $body->getData();
-            if ($data instanceof Zend_Amf_Value_Messaging_ErrorMessage) {
+            if ($data instanceof ErrorMessage) {
                 if (strstr($data->faultString, 'does not exist')) {
                     $found = true;
                     break;
@@ -520,7 +521,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $found  = false;
         foreach ($bodies as $body) {
             $data = $body->getData();
-            if ($data instanceof Zend_Amf_Value_Messaging_ErrorMessage) {
+            if ($data instanceof ErrorMessage) {
                 if (strstr($data->faultString, 'should not be displayed')) {
                     $found = true;
                     break;
@@ -557,7 +558,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $found  = false;
         foreach ($bodies as $body) {
             $data = $body->getData();
-            if ($data instanceof Zend_Amf_Value_Messaging_ErrorMessage) {
+            if ($data instanceof ErrorMessage) {
                 if (strstr($data->faultString, 'should not be displayed')) {
                     $found = true;
                     break;
@@ -703,7 +704,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $found  = false;
         foreach ($bodies as $body) {
             $data  = $body->getData();
-            if ('Zend_Amf_Value_Messaging_ErrorMessage' == get_class($data)) {
+            if ('fproject\amf\value\messaging\ErrorMessage' == get_class($data)) {
                 if (strstr($data->faultString, 'Error instantiating class')) {
                     $found = true;
                     break;
@@ -1066,12 +1067,12 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // let the server handle mock request
         $this->_server->handle($request);
         $response = $this->_server->getResponse()->getAMFBodies();
-        $this->assertTrue($response[0]->getData() instanceof Zend_Amf_Value_Messaging_ErrorMessage);
+        $this->assertTrue($response[0]->getData() instanceof ErrorMessage);
         // test the same while ensuring Zend_Json is loaded
         require_once 'Json.php';
         $this->_server->handle($request);
         $response = $this->_server->getResponse()->getAMFBodies();
-        $this->assertTrue($response[0]->getData() instanceof Zend_Amf_Value_Messaging_ErrorMessage);
+        $this->assertTrue($response[0]->getData() instanceof ErrorMessage);
     }
 
     /* See ZF-7102 */
@@ -1092,7 +1093,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         // let the server handle mock request
         $this->_server->handle($request);
         $response = $this->_server->getResponse()->getAMFBodies();
-        $this->assertTrue($response[0]->getData() instanceof Zend_Amf_Value_Messaging_ErrorMessage);
+        $this->assertTrue($response[0]->getData() instanceof ErrorMessage);
         $this->assertContains("Oops, exception!", $response[0]->getData()->faultString);
     }
 
