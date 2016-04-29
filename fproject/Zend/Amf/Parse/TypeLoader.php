@@ -21,11 +21,6 @@
  */
 
 
-/**
- * @see Zend_Amf_Value_Messaging_RemotingMessage
- */
-require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
-
 use fproject\amf\loader\ResourceLoaderInterface;
 
 /**
@@ -52,7 +47,7 @@ final class Zend_Amf_Parse_TypeLoader
         'flex.messaging.messages.AsyncMessage'       => 'fproject\amf\value\messaging\AsyncMessage',
         'flex.messaging.messages.CommandMessage'     => 'fproject\amf\value\messaging\CommandMessage',
         'flex.messaging.messages.ErrorMessage'       => 'fproject\amf\value\messaging\ErrorMessage',
-        'flex.messaging.messages.RemotingMessage'    => 'Zend_Amf_Value_Messaging_RemotingMessage',
+        'flex.messaging.messages.RemotingMessage'    => 'fproject\amf\value\messaging\RemotingMessage',
         'flex.messaging.io.ArrayCollection'          => 'Zend_Amf_Value_Messaging_ArrayCollection',
     );
 
@@ -64,7 +59,7 @@ final class Zend_Amf_Parse_TypeLoader
         'flex.messaging.messages.AsyncMessage'       => 'fproject\amf\value\messaging\AsyncMessage',
         'flex.messaging.messages.CommandMessage'     => 'fproject\amf\value\messaging\CommandMessage',
         'flex.messaging.messages.ErrorMessage'       => 'fproject\amf\value\messaging\ErrorMessage',
-        'flex.messaging.messages.RemotingMessage'    => 'Zend_Amf_Value_Messaging_RemotingMessage',
+        'flex.messaging.messages.RemotingMessage'    => 'fproject\amf\value\messaging\RemotingMessage',
         'flex.messaging.io.ArrayCollection'          => 'Zend_Amf_Value_Messaging_ArrayCollection',
     );
 

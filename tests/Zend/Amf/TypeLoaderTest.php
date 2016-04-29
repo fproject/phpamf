@@ -49,7 +49,7 @@ class Zend_Amf_TypeloaderTest extends PHPUnit_Framework_TestCase
     public function testGetMappedClassNameForClient()
     {
         $class = Zend_Amf_Parse_TypeLoader::getMappedClassName('flex.messaging.messages.RemotingMessage');
-        $this->assertEquals('Zend_Amf_Value_Messaging_RemotingMessage', $class);
+        $this->assertEquals('fproject\amf\value\messaging\RemotingMessage', $class);
     }
 
     /**
@@ -58,7 +58,7 @@ class Zend_Amf_TypeloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMappedClassNameForServer()
     {
-        $class = Zend_Amf_Parse_TypeLoader::getMappedClassName('Zend_Amf_Value_Messaging_RemotingMessage');
+        $class = Zend_Amf_Parse_TypeLoader::getMappedClassName('fproject\amf\value\messaging\RemotingMessage');
         $this->assertEquals('flex.messaging.messages.RemotingMessage', $class);
     }
 
@@ -68,7 +68,7 @@ class Zend_Amf_TypeloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testLoadTypeSuccess(){
         $class = Zend_Amf_Parse_TypeLoader::loadType('flex.messaging.messages.RemotingMessage');
-        $this->assertEquals('Zend_Amf_Value_Messaging_RemotingMessage', $class);
+        $this->assertEquals('fproject\amf\value\messaging\RemotingMessage', $class);
     }
 
     /**

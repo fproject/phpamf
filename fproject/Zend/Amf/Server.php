@@ -42,6 +42,7 @@ use fproject\amf\reflect\ReflectorHelper;
 use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\ErrorMessage;
+use fproject\amf\value\messaging\RemotingMessage;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -568,7 +569,7 @@ class Zend_Amf_Server
                         if ($message instanceof CommandMessage) {
                             // async call with command message
                             $return = $this->_loadCommandMessage($message);
-                        } elseif ($message instanceof Zend_Amf_Value_Messaging_RemotingMessage) {
+                        } elseif ($message instanceof RemotingMessage) {
                             $return = new AcknowledgeMessage($message);
                             $return->body = $this->_dispatch($message->operation, $message->body, $message->source);
                         } else {

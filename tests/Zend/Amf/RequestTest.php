@@ -25,6 +25,7 @@ require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Contact.php';
 
 use fproject\amf\value\messaging\CommandMessage;
+use fproject\amf\value\messaging\RemotingMessage;
 
 /**
  * Test case for Zend_Amf_Request
@@ -80,7 +81,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnUndefined', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -107,7 +108,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnString', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -136,7 +137,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnArray', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -166,7 +167,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnNumber', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -195,7 +196,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnDate', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -226,9 +227,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
-        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
+        /** @var RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('SampleService', $message->source);
@@ -261,9 +262,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
-        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
+        /** @var RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('SampleService', $message->source);
@@ -295,7 +296,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
-        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
+        /** @var RemotingMessage $message */
         $message = $bodies[0]->getData();
         $this->assertTrue($message instanceof CommandMessage);
         // Make sure that our endpoint is properly set.
@@ -320,9 +321,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
-        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
+        /** @var RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('ContactService', $message->source);
@@ -355,9 +356,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
-        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
+        /** @var RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('ContactService', $message->source);
@@ -390,9 +391,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
-        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
+        /** @var RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('ContactService', $message->source);
@@ -425,9 +426,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
-        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
+        /** @var RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('ContactService', $message->source);
@@ -461,7 +462,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnInt', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -488,7 +489,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnBool', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -515,7 +516,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnBool', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -540,7 +541,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $bodies = $this->_request->getAmfBodies();
         $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
+        $this->assertTrue($message instanceof RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnXml', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);

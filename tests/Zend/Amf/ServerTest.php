@@ -28,7 +28,7 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 require_once 'Zend/Amf/Server.php';
 require_once 'Zend/Amf/Request.php';
 require_once 'Zend/Amf/Parse/TypeLoader.php';
-require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
+
 
 require_once 'ServiceA.php';
 require_once 'ServiceB.php';
@@ -37,6 +37,7 @@ use fproject\amf\auth\XmlAuth;
 use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\ErrorMessage;
+use fproject\amf\value\messaging\RemotingMessage;
 
 /**
  * @category   Zend
@@ -305,7 +306,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $data[] = "12345";
         $this->_server->setClass('Zend_Amf_testclass');
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'test1';
         $message->source = 'Zend_Amf_testclass';
         $message->body = $data;
@@ -340,7 +341,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->_server->setClass('ServiceA');
         $this->_server->setClass('ServiceB');
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'getMenu';
         $message->source = 'ServiceB';
         $message->body = array();
@@ -467,7 +468,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->_server->setClass('Zend_Amf_testclass');
 
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'bogus'; // INVALID method!
         $message->body      = $data;
 
@@ -502,7 +503,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->_server->setClass('Zend_Amf_testclass');
 
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'throwException';
         $message->source    = 'Zend_Amf_testclass';
         $message->body      = $data;
@@ -539,7 +540,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
                       ->setProduction(true);
 
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'throwException';
         $message->source    = 'Zend_Amf_testclass';
         $message->body      = $data;
@@ -575,7 +576,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->_server->setClass('Zend_Amf_testclass', '', 'foo', 'bar');
 
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'checkArgv';
         $message->source    = 'Zend_Amf_testclass';
         $message->body      = $data;
@@ -612,7 +613,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->_server->setClass('Zend_Amf_testclass');
 
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'checkStaticUsage';
         $message->source    = 'Zend_Amf_testclass';
         $message->body      = $data;
@@ -649,7 +650,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->_server->addFunction('Zend_Amf_Server_testFunction');
 
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'Zend_Amf_Server_testFunction';
         $message->source    = null;
         $message->body      = $data;
@@ -685,7 +686,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->_server->setClass('Zend_Amf_testclassPrivate');
 
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'test1';
         $message->source    = 'Zend_Amf_testclassPrivate';
         $message->body      = $data;
@@ -815,7 +816,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $data[] = array('item1', 'item2');
         $this->_server->setClass('Zend_Amf_testclass');
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'testSingleArrayParamater';
         $message->source = 'Zend_Amf_testclass';
         $message->body = $data;
@@ -871,7 +872,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $data[] = array('item3', 'item4');
         $this->_server->setClass('Zend_Amf_testclass');
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'testMultiArrayParamater';
         $message->source = 'Zend_Amf_testclass';
         $message->body = $data;
@@ -927,7 +928,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $data[] = array('item3', 'item4');
         $this->_server->setClass('Zend_Amf_testclass');
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'testMultiArrayParamater';
         $message->source = 'Zend_Amf_testclass';
         $message->body = $data;
@@ -966,7 +967,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->_server->setSession();
 
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'getCount';
         $message->source = 'Zend_Amf_testSession';
         $message->body = array();
@@ -1008,7 +1009,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $origPath = get_include_path();
         set_include_path($origPath.PATH_SEPARATOR.dirname(__FILE__));
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'getMenu';
         $message->source = 'ServiceC';
         $message->body = array();
@@ -1030,7 +1031,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     {
         $this->_server->addDirectory(dirname(__FILE__)."/_files/services");
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'getMenu';
         $message->source = 'My.ServiceA';
         $message->body = array();
@@ -1054,7 +1055,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     {
         $this->_server->addDirectory(dirname(__FILE__)."/_files/services");
         // create a mock remoting message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'encode';
         $message->source = 'Zend_Json';
         $message->body = array("123");
@@ -1080,7 +1081,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
     {
         $this->_server->setClass('Zend_Amf_testException');
         $this->_server->setProduction(false);
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation = 'hello';
         $message->source = 'Zend_Amf_testException';
         $message->body = array("123");
@@ -1130,7 +1131,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $server->addDirectory(dirname(__FILE__) . '/_files/zf-6130/services');
 
         // Create a mock message
-        $message = new Zend_Amf_Value_Messaging_RemotingMessage();
+        $message = new RemotingMessage();
         $message->operation   = 'createEmployee';
         $message->source      = 'EmployeeService'; // original raw request used "destination"
         $message->body        = array(array(
