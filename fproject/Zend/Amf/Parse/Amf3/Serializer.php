@@ -31,6 +31,7 @@ require_once 'Zend/Amf/Parse/Serializer.php';
 require_once 'Zend/Amf/Parse/TypeLoader.php';
 
 use fproject\amf\AmfException;
+use fproject\amf\value\ByteArray;
 
 /**
  * Detect PHP object type and convert it to a corresponding AMF3 object type
@@ -166,9 +167,9 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
                     break;
                 case (is_object($data)):
                     // Handle object types.
-                    if (($data instanceof DateTime) || ($data instanceof Zend_Date)) {
+                    if ($data instanceof DateTime) {
                         $markerType = Zend_Amf_Constants::AMF3_DATE;
-                    } else if ($data instanceof Zend_Amf_Value_ByteArray) {
+                    } else if ($data instanceof ByteArray) {
                         $markerType = Zend_Amf_Constants::AMF3_BYTEARRAY;
                     } else if (($data instanceof DOMDocument) || ($data instanceof SimpleXMLElement)) {
                         $markerType = Zend_Amf_Constants::AMF3_XMLSTRING;
@@ -262,7 +263,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
     /**
      * Send ByteArray to output stream
      *
-     * @param  string|Zend_Amf_Value_ByteArray $data
+     * @param  string|ByteArray $data
      * @return Zend_Amf_Parse_Amf3_Serializer
      * @throws AmfException
      */
@@ -274,10 +275,10 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
 
         if (is_string($data)) {
             //nothing to do
-        } else if ($data instanceof Zend_Amf_Value_ByteArray) {
+        } else if ($data instanceof ByteArray) {
             $data = $data->getData();
         } else {
-            throw new AmfException('Invalid ByteArray specified; must be a string or Zend_Amf_Value_ByteArray');
+            throw new AmfException('Invalid ByteArray specified; must be a string or fproject\amf\value\ByteArray');
         }
 
         $this->writeBinaryString($data);
