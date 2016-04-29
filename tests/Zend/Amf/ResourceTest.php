@@ -24,6 +24,7 @@ require_once 'Zend/Amf/Server.php';
 require_once 'Zend/Amf/Request.php';
 
 use fproject\amf\value\MessageBody;
+use fproject\amf\parse\TypeLoader;
 
 /**
  * @category   Zend
