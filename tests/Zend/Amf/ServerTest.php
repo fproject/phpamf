@@ -40,6 +40,7 @@ use fproject\amf\value\MessageBody;
 use fproject\amf\parse\TypeLoader;
 use fproject\amf\Request;
 use fproject\amf\HttpRequest;
+use fproject\amf\Response;
 
 /**
  * @category   Zend
