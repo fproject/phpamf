@@ -23,7 +23,7 @@ namespace fproject\amf\parse\resource;
  * This class will convert stream resource to string by just reading it
  *
  */
-class Stream
+class Resource_Stream
 {
     /**
      * Parse resource into string
