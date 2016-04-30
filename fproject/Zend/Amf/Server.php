@@ -39,6 +39,7 @@ use fproject\amf\parse\TypeLoader;
 use fproject\amf\Request;
 use fproject\amf\HttpRequest;
 use fproject\amf\Response;
+use fproject\amf\HttpResponse;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -720,8 +721,7 @@ class Zend_Amf_Server
     public function getResponse()
     {
         if (null === ($response = $this->_response)) {
-            require_once 'Zend/Amf/Response/Http.php';
-            $this->setResponse(new Zend_Amf_Response_Http());
+            $this->setResponse(new HttpResponse());
         }
         return $this->_response;
     }

@@ -41,6 +41,7 @@ use fproject\amf\parse\TypeLoader;
 use fproject\amf\Request;
 use fproject\amf\HttpRequest;
 use fproject\amf\Response;
+use fproject\amf\HttpResponse;
 
 /**
  * @category   Zend
@@ -759,7 +760,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->_server->setResponse('fproject\amf\Response');
         $response = $this->_server->getResponse();
         $this->assertTrue($response instanceof Response);
-        $this->assertFalse($response instanceof Zend_Amf_Response_Http);
+        $this->assertFalse($response instanceof HttpResponse);
     }
 
     /**
