@@ -28,7 +28,7 @@ use Exception;
 
 /**
  * Handle the incoming AMF request by deserializing the data to php object
- * types and storing the data for Zend_Amf_Server to handle for processing.
+ * types and storing the data for fproject\amf\Server to handle for processing.
  *
  * @todo       Currently not checking if the object needs to be Type Mapped to a server object.
  */

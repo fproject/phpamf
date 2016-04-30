@@ -25,8 +25,6 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
     define("PHPUnit_MAIN_METHOD", "Zend_Amf_AuthTest::main");
 }
 
-require_once 'Zend/Amf/Server.php';
-
 use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\messaging\CommandMessage;
 use fproject\amf\value\messaging\ErrorMessage;
@@ -34,6 +32,7 @@ use fproject\amf\value\MessageBody;
 use fproject\amf\Constants;
 use fproject\amf\parse\TypeLoader;
 use fproject\amf\Request;
+use fproject\amf\Server;
 
 /**
  * @category   Zend
@@ -49,7 +48,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     /**
      * Enter description here...
      *
-     * @var Zend_Amf_Server
+     * @var Server
      */
     protected $_server;
 
@@ -61,7 +60,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->_server = new Zend_Amf_Server();
+        $this->_server = new Server();
         $this->_server->setProduction(false);
         TypeLoader::resetMap();
         $this->_acl = new \fproject\amf\acl\Acl();

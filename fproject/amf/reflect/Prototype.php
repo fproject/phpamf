@@ -79,7 +79,7 @@ class Prototype
     /**
      * Retrieve method parameters
      *
-     * @return array Array of {@link ParameterReflector}s
+     * @return ParameterReflector[] Array of {@link ParameterReflector}s
      */
     public function getParameters()
     {

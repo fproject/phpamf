@@ -25,8 +25,6 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
     define("PHPUnit_MAIN_METHOD", "Zend_Amf_ServerTest::main");
 }
 
-require_once 'Zend/Amf/Server.php';
-
 
 require_once 'ServiceA.php';
 require_once 'ServiceB.php';
@@ -42,6 +40,7 @@ use fproject\amf\Request;
 use fproject\amf\HttpRequest;
 use fproject\amf\Response;
 use fproject\amf\HttpResponse;
+use fproject\amf\Server;
 
 /**
  * @category   Zend
@@ -53,7 +52,7 @@ use fproject\amf\HttpResponse;
  */
 class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
 {
-    /** @var  Zend_Amf_Server $_server */
+    /** @var  Server $_server */
     protected $_server;
 
     public static function main()
@@ -64,7 +63,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->_server = new Zend_Amf_Server();
+        $this->_server = new Server();
         $this->_server->setProduction(false);
         TypeLoader::resetMap();
     }
@@ -82,12 +81,12 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
      */
     public function test__construct()
     {
-        $this->assertTrue($this->_server instanceof Zend_Amf_Server);
+        $this->assertTrue($this->_server instanceof Server);
     }
 
     public function testIsProductionByDefault()
     {
-        $this->_server = new Zend_Amf_Server;
+        $this->_server = new Server;
         $this->assertTrue($this->_server->isProduction());
     }
 
@@ -174,7 +173,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
             // do nothing
         }
 
-        $server = new Zend_Amf_Server();
+        $server = new Server();
         try {
             $server->addFunction(
                 array(
@@ -1131,7 +1130,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
      */
     public function testServerShouldCastObjectArgumentsToAppropriateType()
     {
-        $server = new Zend_Amf_Server();
+        $server = new Server();
         $server->addDirectory(dirname(__FILE__) . '/_files/zf-6130/services');
 
         // Create a mock message
@@ -1199,7 +1198,7 @@ function Zend_Amf_Server_testFunction2()
 }
 
 /**
- * Class to used with Zend_Amf_Server unit tests.
+ * Class to used with Server unit tests.
  *
  */
 class Zend_Amf_testclass

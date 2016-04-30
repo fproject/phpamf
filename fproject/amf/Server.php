@@ -1,31 +1,29 @@
 <?php
-/**
- * Zend Framework
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Amf
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
- */
+///////////////////////////////////////////////////////////////////////////////
+//
+// © Copyright f-project.net 2010-present.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+///////////////////////////////////////////////////////////////////////////////
 
+namespace fproject\amf;
 
 use fproject\amf\auth\AuthAbstract;
 use fproject\amf\loader\ResourceLoader;
 use fproject\amf\reflect\AbstractFunctionReflector;
 use fproject\amf\reflect\FunctionReflector;
 use fproject\amf\reflect\MethodReflector;
-use fproject\amf\AmfException;
 use fproject\amf\reflect\ClassReflector;
 use fproject\amf\reflect\ReflectorHelper;
 use fproject\amf\value\messaging\AcknowledgeMessage;
@@ -34,24 +32,20 @@ use fproject\amf\value\messaging\ErrorMessage;
 use fproject\amf\value\messaging\RemotingMessage;
 use fproject\amf\value\MessageHeader;
 use fproject\amf\value\MessageBody;
-use fproject\amf\Constants;
 use fproject\amf\parse\TypeLoader;
-use fproject\amf\Request;
-use fproject\amf\HttpRequest;
-use fproject\amf\Response;
-use fproject\amf\HttpResponse;
+use fproject\amf\acl\Acl;
+use fproject\amf\acl\Resource;
+use Exception;
+use fproject\amf\auth\Auth;
+use fproject\amf\auth\AuthResult;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
  * Zend Framework
  *
  * @todo       Make the reflection methods cache and autoload.
- * @package    Zend_Amf
- * @subpackage Server
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Server
+class Server
 {
     /**
      * Array of dispatchables
@@ -118,7 +112,7 @@ class Zend_Amf_Server
     /**
      * ACL handler object
      *
-     * @var \fproject\amf\acl\Acl
+     * @var Acl
      */
     protected $_acl;
     /**
@@ -136,7 +130,7 @@ class Zend_Amf_Server
      * the ACL of this instance with it (if none exists already).
      *
      * @param  AuthAbstract $auth
-     * @return Zend_Amf_Server
+     * @return Server
      */
     public function setAuth(AuthAbstract $auth)
     {
@@ -159,10 +153,10 @@ class Zend_Amf_Server
     /**
      * Set ACL adapter
      *
-     * @param  \fproject\amf\acl\Acl $acl
-     * @return Zend_Amf_Server
+     * @param  Acl $acl
+     * @return Server
      */
-    public function setAcl(\fproject\amf\acl\Acl $acl)
+    public function setAcl(Acl $acl)
     {
         $this->_acl = $acl;
         return $this;
@@ -170,7 +164,7 @@ class Zend_Amf_Server
    /**
      * Get ACL adapter
      *
-     * @return \fproject\amf\acl\Acl
+     * @return Acl
      */
     public function getAcl()
     {
@@ -181,7 +175,7 @@ class Zend_Amf_Server
      * Set production flag
      *
      * @param  bool $flag
-     * @return Zend_Amf_Server
+     * @return Server
      */
     public function setProduction($flag)
     {
@@ -201,7 +195,7 @@ class Zend_Amf_Server
 
     /**
      * @param string $namespace
-     * @return Zend_Amf_Server
+     * @return Server
      * @internal param of $namespace all incoming sessions defaults to Zend_Amf
      */
     public function setSession($namespace = 'Zend_Amf')
@@ -236,7 +230,7 @@ class Zend_Amf_Server
         if($object) {
             $class = is_object($object)?get_class($object):$object;
             if(!$this->_acl->has($class)) {
-                $this->_acl->addResource(new \fproject\amf\acl\Resource($class));
+                $this->_acl->addResource(new Resource($class));
             }
             $call = array($object, "initAcl");
             if(is_callable($call) && !call_user_func($call, $this->_acl)) {
@@ -247,7 +241,7 @@ class Zend_Amf_Server
             $class = null;
         }
 
-        $auth = \fproject\amf\auth\Auth::getInstance();
+        $auth = Auth::getInstance();
         if($auth->hasIdentity()) {
             $role = $auth->getIdentity()->role;
         } else {
@@ -397,7 +391,7 @@ class Zend_Amf_Server
                 break;
            case CommandMessage::LOGOUT_OPERATION :
                 if($this->_auth) {
-                    \fproject\amf\auth\Auth::getInstance()->clearIdentity();
+                    Auth::getInstance()->clearIdentity();
                 }
                 $return = new AcknowledgeMessage($message);
                 break;
@@ -445,7 +439,7 @@ class Zend_Amf_Server
      *
      * @param string $userId
      * @param string $password
-     * @return bool|\fproject\amf\auth\AuthResult
+     * @return bool|AuthResult
      * @throws AmfException
      *
      */
@@ -455,7 +449,7 @@ class Zend_Amf_Server
             return true;
         }
         $this->_auth->setCredentials($userId, $password);
-        $auth = \fproject\amf\auth\Auth::getInstance();
+        $auth = Auth::getInstance();
         $result = $auth->authenticate($this->_auth);
         if ($result->isValid()) {
             if (!$this->isSession()) {
@@ -503,7 +497,7 @@ class Zend_Amf_Server
                     $headers[Constants::CREDENTIALS_HEADER]->userid,
                     $headers[Constants::CREDENTIALS_HEADER]->password
                 );
-                if ($authResult === true || $authResult->getCode() == \fproject\amf\auth\AuthResult::SUCCESS) {
+                if ($authResult === true || $authResult->getCode() == AuthResult::SUCCESS) {
                     // use RequestPersistentHeader to clear credentials
                     $response->addAmfHeader(
                         new MessageHeader(
@@ -661,7 +655,7 @@ class Zend_Amf_Server
      * Set request object
      *
      * @param  string|Request $request
-     * @return Zend_Amf_Server
+     * @return Server
      * @throws AmfException
      */
     public function setRequest($request)
@@ -696,7 +690,7 @@ class Zend_Amf_Server
      * Public access method to private Response reference
      *
      * @param  string|Response $response
-     * @return Zend_Amf_Server
+     * @return Server
      * @throws AmfException
      */
     public function setResponse($response)
@@ -738,7 +732,7 @@ class Zend_Amf_Server
      * @param  string|object $class
      * @param  string $namespace Optional
      * @param  mixed $argv Optional arguments to pass to a method
-     * @return Zend_Amf_Server
+     * @return Server
      * @throws AmfException on invalid input
      * @throws AmfException
      */
@@ -777,7 +771,7 @@ class Zend_Amf_Server
      *
      * @param  string|array $function Valid callback
      * @param  string $namespace Optional namespace prefix
-     * @return Zend_Amf_Server
+     * @return Server
      * @throws AmfException
      */
     public function addFunction($function, $namespace = '')
@@ -867,14 +861,13 @@ class Zend_Amf_Server
     }
 
 
-
     /**
      * Raise a server fault
      *
      * Unimplemented
      *
      * @param  string|Exception $fault
-     * @return void
+     * @param int $code
      */
     public function fault($fault = null, $code = 404)
     {
@@ -922,7 +915,7 @@ class Zend_Amf_Server
      *
      * @param  string $asClass
      * @param  string $phpClass
-     * @return Zend_Amf_Server
+     * @return Server
      */
     public function setClassMap($asClass, $phpClass)
     {
@@ -948,7 +941,7 @@ class Zend_Amf_Server
      * Takes the provided parameters from the request, and attempts to cast them
      * to objects, if the prototype defines any as explicit object types
      * 
-     * @param  Reflection $reflectionMethod 
+     * @param  MethodReflector $reflectionMethod 
      * @param  array $params 
      * @return array
      * @updated 2014/05/24: Bui Sy Nguyen <nguyenbs@projectkit.net> modified to support typed array parameter

@@ -20,11 +20,10 @@
  * @version    $Id$
  */
 
-require_once 'Zend/Amf/Server.php';
-
 use fproject\amf\value\MessageBody;
 use fproject\amf\parse\TypeLoader;
 use fproject\amf\Request;
+use fproject\amf\Server;
 
 /**
  * @category   Zend
@@ -40,13 +39,13 @@ class Zend_Amf_ResourceTest extends PHPUnit_Framework_TestCase
     /**
      * Enter description here...
      *
-     * @var Zend_Amf_Server
+     * @var Server
      */
     protected $_server;
 
     public function setUp()
     {
-        $this->_server = new Zend_Amf_Server();
+        $this->_server = new Server();
         $this->_server->setProduction(false);
         TypeLoader::resetMap();
     }
