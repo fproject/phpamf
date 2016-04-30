@@ -55,7 +55,7 @@ class HttpRequest extends Request
             $this->_rawRequest = $amfRequest;
             $this->initialize($amfRequest);
         } else {
-            echo '<p>Zend Amf Endpoint</p>' ;
+            echo '<p>F-Project PHP AMF Endpoint</p>' ;
         }
     }
 
