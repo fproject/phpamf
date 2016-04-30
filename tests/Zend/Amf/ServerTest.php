@@ -755,9 +755,9 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
 
     public function testSetResponseShouldAllowValidStringClassNames()
     {
-        $this->_server->setResponse('Zend_Amf_Response');
+        $this->_server->setResponse('fproject\amf\Response');
         $response = $this->_server->getResponse();
-        $this->assertTrue($response instanceof Zend_Amf_Response);
+        $this->assertTrue($response instanceof Response);
         $this->assertFalse($response instanceof Zend_Amf_Response_Http);
     }
 
@@ -771,7 +771,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
 
     public function testSetResponseShouldAllowValidResponseObjects()
     {
-        $response = new Zend_Amf_Response;
+        $response = new Response;
         $this->_server->setResponse($response);
         $this->assertSame($response, $this->_server->getResponse());
     }

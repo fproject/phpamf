@@ -185,7 +185,7 @@ class Request
     /**
      * Return an array of the body objects that were found in the amf request.
      *
-     * @return array {target, response, length, content}
+     * @return MessageBody[] {target, response, length, content}
      */
     public function getAmfBodies()
     {

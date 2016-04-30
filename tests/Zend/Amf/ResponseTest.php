@@ -20,8 +20,6 @@
  * @version    $Id$
  */
 
-require_once 'Zend/Amf/Response.php';
-
 require_once 'Contact.php';
 require_once 'ContactVO.php';
 
@@ -30,9 +28,10 @@ use fproject\amf\value\MessageHeader;
 use fproject\amf\value\MessageBody;
 use fproject\amf\parse\TypeLoader;
 use fproject\amf\Request;
+use fproject\amf\Response;
 
 /**
- * Test case for Zend_Amf_Response
+ * Test case for Response
  *
  * @category   Zend
  * @package    Zend_Amf
@@ -48,7 +47,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
 
     /**
      * Response object
-     * @var Zend_Amf_Response
+     * @var Response
      */
     protected $_response;
 
@@ -59,7 +58,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
     {
         date_default_timezone_set('America/Chicago');
         TypeLoader::resetMap();
-        $this->_response = new Zend_Amf_Response();
+        $this->_response = new Response();
     }
 
     /**

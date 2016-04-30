@@ -20,8 +20,7 @@
  * @version    $Id$
  */
 
-/** Zend_Amf_Response */
-require_once 'Zend/Amf/Response.php';
+use fproject\amf\Response;
 
 /**
  * Creates the proper http headers and send the serialized AMF stream to standard out.
@@ -31,7 +30,7 @@ require_once 'Zend/Amf/Response.php';
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Response_Http extends Zend_Amf_Response
+class Zend_Amf_Response_Http extends Response
 {
     /**
      * Create the application response header for AMF and sends the serialized AMF string

@@ -38,6 +38,7 @@ use fproject\amf\Constants;
 use fproject\amf\parse\TypeLoader;
 use fproject\amf\Request;
 use fproject\amf\HttpRequest;
+use fproject\amf\Response;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -85,7 +86,7 @@ class Zend_Amf_Server
 
     /**
      * Class to use for responses
-     * @var null|Zend_Amf_Response
+     * @var null|Response
      */
     protected $_response;
 
@@ -475,7 +476,7 @@ class Zend_Amf_Server
      * @todo   should implement and SPL observer pattern for custom AMF headers
      * @todo   DescribeService support
      * @param  Request $request
-     * @return Zend_Amf_Response
+     * @return Response
      * @throws AmfException|Exception
      */
     protected function _handle(Request $request)
@@ -622,7 +623,7 @@ class Zend_Amf_Server
      * Handle an AMF call from the gateway.
      *
      * @param  null|Request $request Optional
-     * @return Zend_Amf_Response
+     * @return Response
      * @throws AmfException
      */
     public function handle($request = null)
@@ -643,7 +644,7 @@ class Zend_Amf_Server
         // Check for errors that may have happend in deserialization of Request.
         try {
             // Take converted PHP objects and handle service call.
-            // Serialize to Zend_Amf_response for output stream
+            // Serialize to Response for output stream
             $this->_handle($request);
             $response = $this->getResponse();
         } catch (Exception $e) {
@@ -691,9 +692,9 @@ class Zend_Amf_Server
     }
 
     /**
-     * Public access method to private Zend_Amf_Server_Response reference
+     * Public access method to private Response reference
      *
-     * @param  string|Zend_Amf_Server_Response $response
+     * @param  string|Response $response
      * @return Zend_Amf_Server
      * @throws AmfException
      */
@@ -701,10 +702,10 @@ class Zend_Amf_Server
     {
         if (is_string($response) && class_exists($response)) {
             $response = new $response();
-            if (!$response instanceof Zend_Amf_Response) {
+            if (!$response instanceof Response) {
                 throw new AmfException('Invalid response class');
             }
-        } elseif (!$response instanceof Zend_Amf_Response) {
+        } elseif (!$response instanceof Response) {
             throw new AmfException('Invalid response object');
         }
         $this->_response = $response;
@@ -712,9 +713,9 @@ class Zend_Amf_Server
     }
 
     /**
-     * get a reference to the Zend_Amf_response instance
+     * Get a reference to the Response instance
      *
-     * @return Zend_Amf_Response
+     * @return Response
      */
     public function getResponse()
     {

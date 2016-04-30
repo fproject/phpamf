@@ -30,7 +30,7 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 require_once 'Zend/Amf/Response/Http.php';
 
 /**
- * Test case for Zend_Amf_Response
+ * Test case for Response
  *
  * @category   Zend
  * @package    Zend_Amf
@@ -38,7 +38,7 @@ require_once 'Zend/Amf/Response/Http.php';
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Amf
- * @group      Zend_Amf_Response
+ * @group      Response
  */
 class Zend_Amf_Response_HttpTest extends PHPUnit_Framework_TestCase
 {
