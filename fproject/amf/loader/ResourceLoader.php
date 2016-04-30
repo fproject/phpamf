@@ -357,6 +357,8 @@ class ResourceLoader implements ResourceLoaderInterface
      */
     public function load($name, $throwExceptions = true)
     {
+        echo "\nLoading resource:.$name";
+        
         $name = $this->_formatName($name);
         if ($this->isLoaded($name)) {
             return $this->getClassName($name);
