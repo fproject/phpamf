@@ -21,10 +21,10 @@
  */
 
 require_once 'Zend/Amf/Server.php';
-require_once 'Zend/Amf/Request.php';
 
 use fproject\amf\value\MessageBody;
 use fproject\amf\parse\TypeLoader;
+use fproject\amf\Request;
 
 /**
  * @category   Zend
@@ -58,7 +58,7 @@ class Zend_Amf_ResourceTest extends PHPUnit_Framework_TestCase
 
     protected function _callService($method, $class = 'Zend_Amf_Resource_testclass')
     {
-        $request = new Zend_Amf_Request();
+        $request = new Request();
         $request->setObjectEncoding(0x03);
         $this->_server->setClass($class);
         $newBody = new MessageBody("$class.$method","/1",array("test"));

@@ -20,13 +20,12 @@
  * @version    $Id$
  */
 
-/** @see Zend_Amf_Request */
-require_once 'Zend/Amf/Request.php';
+use fproject\amf\Request;
 
 /**
  * AMF Request object -- Request via HTTP
  *
- * Extends {@link Zend_Amf_Request} to accept a request via HTTP. Request is
+ * Extends {@link Request} to accept a request via HTTP. Request is
  * built at construction time using a raw POST; if no data is available, the
  * request is declared a fault.
  *
@@ -35,7 +34,7 @@ require_once 'Zend/Amf/Request.php';
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Request_Http extends Zend_Amf_Request
+class Zend_Amf_Request_Http extends Request
 {
     /**
      * Raw AMF request

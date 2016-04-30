@@ -20,7 +20,6 @@
  * @version    $Id$
  */
 
-require_once 'Zend/Amf/Request.php';
 require_once 'Contact.php';
 
 use fproject\amf\value\messaging\CommandMessage;
@@ -28,9 +27,10 @@ use fproject\amf\value\messaging\RemotingMessage;
 use fproject\amf\value\MessageHeader;
 use fproject\amf\value\MessageBody;
 use fproject\amf\parse\TypeLoader;
+use fproject\amf\Request;
 
 /**
- * Test case for Zend_Amf_Request
+ * Test case for Request
  *
  * @category   Zend
  * @package    Zend_Amf
@@ -42,8 +42,8 @@ use fproject\amf\parse\TypeLoader;
 class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Zend_Amf_Request object
-     * @var Zend_Amf_Request
+     * Request object
+     * @var Request
      */
     protected $_request;
 
@@ -54,7 +54,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     {
         date_default_timezone_set("America/Chicago");
         TypeLoader::resetMap();
-        $this->_request = new Zend_Amf_Request();
+        $this->_request = new Request();
     }
 
     /**

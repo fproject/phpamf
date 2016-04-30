@@ -21,7 +21,6 @@
  */
 
 require_once 'Zend/Amf/Response.php';
-require_once 'Zend/Amf/Request.php';
 
 require_once 'Contact.php';
 require_once 'ContactVO.php';
@@ -30,6 +29,7 @@ use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\MessageHeader;
 use fproject\amf\value\MessageBody;
 use fproject\amf\parse\TypeLoader;
+use fproject\amf\Request;
 
 /**
  * Test case for Zend_Amf_Response
@@ -47,7 +47,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
     public $responseURI = "/2/onResult";
 
     /**
-     * Zend_Amf_Request object
+     * Response object
      * @var Zend_Amf_Response
      */
     protected $_response;
@@ -1010,7 +1010,7 @@ class Zend_Amf_ResponseTest extends PHPUnit_Framework_TestCase
         $this->_response->finalize();
         $response = $this->_response->getResponse();
 
-        $request = new Zend_Amf_Request();
+        $request = new Request();
         $request->initialize($response);
         $headers = $request->getAmfHeaders();
         $this->assertEquals(2, count($headers));

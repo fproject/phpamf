@@ -26,7 +26,6 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 }
 
 require_once 'Zend/Amf/Server.php';
-require_once 'Zend/Amf/Request.php';
 
 use fproject\amf\value\messaging\AcknowledgeMessage;
 use fproject\amf\value\messaging\CommandMessage;
@@ -34,6 +33,7 @@ use fproject\amf\value\messaging\ErrorMessage;
 use fproject\amf\value\MessageBody;
 use fproject\amf\Constants;
 use fproject\amf\parse\TypeLoader;
+use fproject\amf\Request;
 
 /**
  * @category   Zend
@@ -71,6 +71,13 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
     {
         unset($this->_server);
     }
+
+    /**
+     * @param Request $request
+     * @param string $class
+     * @param string $method
+     * @throws \fproject\amf\AmfException
+     */
     protected function _addServiceCall($request, $class = 'Zend_Amf_Auth_testclass', $method = 'hello')
     {
         $data[] = "12345";
@@ -79,6 +86,9 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $request->addAmfBody($newBody);
     }
 
+    /**
+     * @param Request $request
+     */
     protected function _addLogin($request, $username, $password)
     {
         $cmdBody = new MessageBody("","/1","");
@@ -89,6 +99,9 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $request->addAmfBody($cmdBody);
     }
 
+    /**
+     * @param Request $request
+     */
     protected function _addLogout($request)
     {
         $cmdBody = new MessageBody("","/1","");
@@ -98,9 +111,10 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $request->addAmfBody($cmdBody);
     }
 
+    
     protected function _callService($class = 'Zend_Amf_Auth_testclass', $method = 'hello')
     {
-        $request = new Zend_Amf_Request();
+        $request = new Request();
         $request->setObjectEncoding(0x03);
         $this->_addServiceCall($request, $class, $method);
         $this->_server->handle($request);
@@ -111,7 +125,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
 
     protected function _callServiceAuth($username, $password, $class = 'Zend_Amf_Auth_testclass', $method = 'hello')
     {
-        $request = new Zend_Amf_Request();
+        $request = new Request();
         $request->setObjectEncoding(0x03);
         $this->_addLogin($request, $username, $password);
         $this->_addServiceCall($request, $class, $method);
@@ -269,7 +283,7 @@ class Zend_Amf_AuthTest extends PHPUnit_Framework_TestCase
         $this->setUp();
         $this->_server->setAuth(new RightPassword("testuser", "testrole"));
         $this->_server->setAcl($this->_acl);
-        $request = new Zend_Amf_Request();
+        $request = new Request();
         $request->setObjectEncoding(0x03);
         $this->_addLogout($request);
         $this->_addServiceCall($request);

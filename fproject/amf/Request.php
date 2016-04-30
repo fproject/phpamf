@@ -32,7 +32,7 @@ use Exception;
  *
  * @todo       Currently not checking if the object needs to be Type Mapped to a server object.
  */
-class Zend_Amf_Request
+class Request
 {
     /**
      * @var int AMF client type (AMF0, AMF3)
@@ -74,7 +74,7 @@ class Zend_Amf_Request
      * Prepare the AMF InputStream for parsing.
      *
      * @param  string $request
-     * @return Zend_Amf_Request
+     * @return Request
      */
     public function initialize($request)
     {
@@ -88,7 +88,7 @@ class Zend_Amf_Request
      * Takes the raw AMF input stream and converts it into valid PHP objects
      *
      * @param InputStream $stream
-     * @return Zend_Amf_Request
+     * @return Request
      * @throws AmfException
      */
     public function readMessage(InputStream $stream)
@@ -196,7 +196,7 @@ class Zend_Amf_Request
      * Accessor to private array of message bodies.
      *
      * @param  MessageBody $message
-     * @return Zend_Amf_Request
+     * @return Request
      */
     public function addAmfBody(MessageBody $message)
     {
@@ -228,7 +228,7 @@ class Zend_Amf_Request
      * Set the object response encoding
      *
      * @param  mixed $int
-     * @return Zend_Amf_Request
+     * @return Request
      */
     public function setObjectEncoding($int)
     {

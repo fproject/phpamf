@@ -36,6 +36,7 @@ use fproject\amf\value\MessageHeader;
 use fproject\amf\value\MessageBody;
 use fproject\amf\Constants;
 use fproject\amf\parse\TypeLoader;
+use fproject\amf\Request;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -77,7 +78,7 @@ class Zend_Amf_Server
 
     /**
      * Request processed
-     * @var null|Zend_Amf_Request
+     * @var null|Request
      */
     protected $_request = null;
 
@@ -472,11 +473,11 @@ class Zend_Amf_Server
      *
      * @todo   should implement and SPL observer pattern for custom AMF headers
      * @todo   DescribeService support
-     * @param  Zend_Amf_Request $request
+     * @param  Request $request
      * @return Zend_Amf_Response
      * @throws AmfException|Exception
      */
-    protected function _handle(Zend_Amf_Request $request)
+    protected function _handle(Request $request)
     {
         // Get the object encoding of the request.
         $objectEncoding = $request->getObjectEncoding();
@@ -619,14 +620,14 @@ class Zend_Amf_Server
     /**
      * Handle an AMF call from the gateway.
      *
-     * @param  null|Zend_Amf_Request $request Optional
+     * @param  null|Request $request Optional
      * @return Zend_Amf_Response
      * @throws AmfException
      */
     public function handle($request = null)
     {
         // Check if request was passed otherwise get it from the server
-        if ($request === null || !$request instanceof Zend_Amf_Request) {
+        if ($request === null || !$request instanceof Request) {
             $request = $this->getRequest();
         } else {
             $this->setRequest($request);
@@ -656,7 +657,7 @@ class Zend_Amf_Server
     /**
      * Set request object
      *
-     * @param  string|Zend_Amf_Request $request
+     * @param  string|Request $request
      * @return Zend_Amf_Server
      * @throws AmfException
      */
@@ -664,10 +665,10 @@ class Zend_Amf_Server
     {
         if (is_string($request) && class_exists($request)) {
             $request = new $request();
-            if (!$request instanceof Zend_Amf_Request) {
+            if (!$request instanceof Request) {
                 throw new AmfException('Invalid request class');
             }
-        } elseif (!$request instanceof Zend_Amf_Request) {
+        } elseif (!$request instanceof Request) {
             throw new AmfException('Invalid request object');
         }
         $this->_request = $request;
@@ -677,7 +678,7 @@ class Zend_Amf_Server
     /**
      * Return currently registered request object
      *
-     * @return null|Zend_Amf_Request
+     * @return null|Request
      */
     public function getRequest()
     {
