@@ -39,6 +39,7 @@ use fproject\amf\value\messaging\RemotingMessage;
 use fproject\amf\value\MessageBody;
 use fproject\amf\parse\TypeLoader;
 use fproject\amf\Request;
+use fproject\amf\HttpRequest;
 
 /**
  * @category   Zend
@@ -723,7 +724,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $result  = $this->_server->handle();
         $content = ob_get_clean();
         $request = $this->_server->getRequest();
-        $this->assertTrue($request instanceof Zend_Amf_Request_Http);
+        $this->assertTrue($request instanceof HttpRequest);
         $bodies  = $request->getAmfBodies();
         $this->assertEquals(0, count($bodies));
         $this->assertContains('Endpoint', $content);
@@ -734,7 +735,7 @@ class Zend_Amf_ServerTest extends PHPUnit_Framework_TestCase
         $this->_server->setRequest('fproject\amf\Request');
         $request = $this->_server->getRequest();
         $this->assertTrue($request instanceof Request);
-        $this->assertFalse($request instanceof Zend_Amf_Request_Http);
+        $this->assertFalse($request instanceof HttpRequest);
     }
 
     /**

@@ -37,6 +37,7 @@ use fproject\amf\value\MessageBody;
 use fproject\amf\Constants;
 use fproject\amf\parse\TypeLoader;
 use fproject\amf\Request;
+use fproject\amf\HttpRequest;
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -683,8 +684,7 @@ class Zend_Amf_Server
     public function getRequest()
     {
         if (null === $this->_request) {
-            require_once 'Zend/Amf/Request/Http.php';
-            $this->setRequest(new Zend_Amf_Request_Http());
+            $this->setRequest(new HttpRequest());
         }
 
         return $this->_request;
