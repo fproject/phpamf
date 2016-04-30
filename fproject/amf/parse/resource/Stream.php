@@ -17,8 +17,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace fproject\amf\parse\resource;
-
 /**
  * This class will convert stream resource to string by just reading it
  *
