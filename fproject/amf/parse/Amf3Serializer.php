@@ -408,7 +408,7 @@ class Amf3Serializer extends Serializer
                 return $this->writeObjectVector($array, $len, $vectorInfo['elementType']);
             default:
                 // Unknown vector type tag {type}
-                $this->throwZendException('Undefined vector type: {0}',[$markerType]);
+                $this->throwAmfException('Undefined vector type: {0}',[$markerType]);
         }
 
         $this->writeNumericVector($array, $len, $numberFormat);

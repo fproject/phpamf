@@ -25,7 +25,7 @@ use fproject\common\utils\BinaryStream;
  * Iterate at a binary level through the AMF response
  *
  * OutputStream extends BinaryStream as eventually BinaryStream could be placed
- * outside of Zend_Amf in order to allow other packages to use the class.
+ * outside of PHP AMF in order to allow other packages to use the class.
  *
  */
 class OutputStream extends BinaryStream

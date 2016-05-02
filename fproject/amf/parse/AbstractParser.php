@@ -27,7 +27,7 @@ abstract class AbstractParser
      * @param array $params
      * @throws \fproject\amf\AmfException
      */
-    protected function throwZendException($message, $params=[])
+    protected function throwAmfException($message, $params=[])
     {
         for($i=0; $i<count($params); $i++)
         {

@@ -40,8 +40,7 @@ use fproject\amf\auth\Auth;
 use fproject\amf\auth\AuthResult;
 
 /**
- * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
- * Zend Framework
+ * An AMF gateway server implementation to allow the connection of the Adobe Flash Player/Adobe AIR to PHP server sites
  *
  * @todo       Make the reflection methods cache and autoload.
  */

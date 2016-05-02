@@ -101,7 +101,7 @@ class Amf3Deserializer extends Deserializer
                 return $this->readVector($typeMarker);
             //case Constants::AMF3_DICTIONARY:
             default:
-                $this->throwZendException('Unsupported type marker: {0}',[$typeMarker]);
+                $this->throwAmfException('Unsupported type marker: {0}',[$typeMarker]);
                 return 0;//To avoid PHP warning
         }
     }
@@ -176,7 +176,7 @@ class Amf3Deserializer extends Deserializer
             // reference string
             $stringReference = $stringReference >> 1;
             if ($stringReference >= count($this->_referenceStrings)) {
-                $this->throwZendException('Undefined string reference: {0}',[$stringReference]);
+                $this->throwAmfException('Undefined string reference: {0}',[$stringReference]);
             }
             // reference string found
             return $this->_referenceStrings[$stringReference];
@@ -295,7 +295,7 @@ class Amf3Deserializer extends Deserializer
                 return $this->readObjectVector($len, $fixed);
             default:
                 // Unknown vector type tag {type}
-                $this->throwZendException('Undefined vector type: {0}',[$type]);
+                $this->throwAmfException('Undefined vector type: {0}',[$type]);
         }
 
         return $this->readNumericVector($len, $fixed, $eltSize, $numberFormat);
@@ -496,7 +496,7 @@ class Amf3Deserializer extends Deserializer
             else
             {
                 //user defined typed object
-                $this->throwZendException('Typed object not found: {0}',[$className]);
+                $this->throwAmfException('Typed object not found: {0}',[$className]);
             }
         }
         return ['object' => $returnObject, 'className' => $className];
@@ -556,7 +556,7 @@ class Amf3Deserializer extends Deserializer
         if (($refMarker & 0x01) == 0) {
             $refMarker = $refMarker >> 1;
             if ($refMarker>=count($this->_referenceObjects)) {
-                $this->throwZendException('Undefined object reference: {0}',[$refMarker]);
+                $this->throwAmfException('Undefined object reference: {0}',[$refMarker]);
             }
             return $this->_referenceObjects[$refMarker];
         }
