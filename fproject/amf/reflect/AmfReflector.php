@@ -19,8 +19,6 @@
 
 namespace fproject\amf\reflect;
 
-use fproject\amf\Constants;
-
 class AmfReflector extends \ReflectionObject
 {
     const ANNOTATION_AS3_TYPE = "@as3type";
@@ -94,13 +92,13 @@ class AmfReflector extends \ReflectionObject
     {
         switch($type) {
             case "int":
-                return Constants::AMF3_VECTOR_INT;
+                return \Zend_Amf_Constants::AMF3_VECTOR_INT;
             case "uint":
-                return Constants::AMF3_VECTOR_UINT;
+                return \Zend_Amf_Constants::AMF3_VECTOR_UINT;
             case "Number":
-                return Constants::AMF3_VECTOR_NUMBER;
+                return \Zend_Amf_Constants::AMF3_VECTOR_NUMBER;
             default:
-                return Constants::AMF3_VECTOR_OBJECT;
+                return \Zend_Amf_Constants::AMF3_VECTOR_OBJECT;
         }
     }
 }

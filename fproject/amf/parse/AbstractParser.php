@@ -19,7 +19,7 @@
 
 namespace fproject\amf\parse;
 
-abstract class AbstractParser
+class AbstractParser
 {
     /**
      * Throw Parser Exception
@@ -27,7 +27,7 @@ abstract class AbstractParser
      * @param array $params
      * @throws \fproject\amf\AmfException
      */
-    protected function throwAmfException($message, $params=[])
+    protected function throwZendException($message, $params=[])
     {
         for($i=0; $i<count($params); $i++)
         {

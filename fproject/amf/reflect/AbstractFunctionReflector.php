@@ -35,8 +35,6 @@ use fproject\amf\AmfException;
  * method invocation arguments, and retrieving the
  * method {@link Prototype prototypes}.
  *
- * @method string getName()
- * 
  */
 abstract class AbstractFunctionReflector
 {
@@ -463,7 +461,7 @@ abstract class AbstractFunctionReflector
      * Retrieve all prototypes as array of
      * {@link Prototype Prototypes}
      *
-     * @return Prototype[]
+     * @return array
      */
     public function getPrototypes()
     {

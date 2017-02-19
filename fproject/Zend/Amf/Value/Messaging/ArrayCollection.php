@@ -14,24 +14,22 @@
  *
  * @category   Zend
  * @package    Zend_Amf
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @subpackage Value
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @category   Zend
+ * Type encapsulating Flex ArrayCollection
+ *
+ * Corresponds to flex.messaging.io.ArrayCollection
+ *
  * @package    Zend_Amf
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @subpackage Value
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Parse_Resource_StreamContext
+class Zend_Amf_Value_Messaging_ArrayCollection extends ArrayObject
 {
-    public function parse($resource)
-    {
-        return stream_context_get_options($resource);
-    }
 }
-

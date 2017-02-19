@@ -24,7 +24,7 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Zend_Amf_TypeloaderTest::main');
 }
 
-use fproject\amf\parse\TypeLoader;
+require_once 'Zend/Amf/Parse/TypeLoader.php';
 
 /**
  * @category   Zend
@@ -48,8 +48,8 @@ class Zend_Amf_TypeloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMappedClassNameForClient()
     {
-        $class = TypeLoader::getMappedClassName('flex.messaging.messages.RemotingMessage');
-        $this->assertEquals('fproject\amf\value\messaging\RemotingMessage', $class);
+        $class = Zend_Amf_Parse_TypeLoader::getMappedClassName('flex.messaging.messages.RemotingMessage');
+        $this->assertEquals('Zend_Amf_Value_Messaging_RemotingMessage', $class);
     }
 
     /**
@@ -58,7 +58,7 @@ class Zend_Amf_TypeloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMappedClassNameForServer()
     {
-        $class = TypeLoader::getMappedClassName('fproject\amf\value\messaging\RemotingMessage');
+        $class = Zend_Amf_Parse_TypeLoader::getMappedClassName('Zend_Amf_Value_Messaging_RemotingMessage');
         $this->assertEquals('flex.messaging.messages.RemotingMessage', $class);
     }
 
@@ -67,8 +67,8 @@ class Zend_Amf_TypeloaderTest extends PHPUnit_Framework_TestCase
      *
      */
     public function testLoadTypeSuccess(){
-        $class = TypeLoader::loadType('flex.messaging.messages.RemotingMessage');
-        $this->assertEquals('fproject\amf\value\messaging\RemotingMessage', $class);
+        $class = Zend_Amf_Parse_TypeLoader::loadType('flex.messaging.messages.RemotingMessage');
+        $this->assertEquals('Zend_Amf_Value_Messaging_RemotingMessage', $class);
     }
 
     /**
@@ -77,13 +77,13 @@ class Zend_Amf_TypeloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testSetMappingClass()
     {
-        TypeLoader::setMapping('com.example.vo.Contact','Contact');
-        $class = TypeLoader::getMappedClassName('com.example.vo.Contact');
+        Zend_Amf_Parse_TypeLoader::setMapping('com.example.vo.Contact','Contact');
+        $class = Zend_Amf_Parse_TypeLoader::getMappedClassName('com.example.vo.Contact');
         $this->assertEquals('Contact', $class);
     }
 
     public function testUnknownClassMap() {
-        $class = TypeLoader::loadType('com.example.vo.Bogus');
+        $class = Zend_Amf_Parse_TypeLoader::loadType('com.example.vo.Bogus');
         $this->assertEquals('stdClass', $class);
     }
 }

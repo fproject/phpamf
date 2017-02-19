@@ -23,10 +23,10 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Zend_Amf_Value_ArrayCollectionTest::main');
 }
 
-use fproject\amf\value\messaging\ArrayCollection;
+require_once 'Zend/Amf/Value/Messaging/ArrayCollection.php';
 
 /**
- * Test case for MessageBody
+ * Test case for Zend_Amf_Value_MessageBody
  *
  * @category   Zend
  * @package    Zend_Amf
@@ -41,7 +41,7 @@ class Zend_Amf_Value_ArrayCollectionTest extends PHPUnit_Framework_TestCase
 
     /**
      * Refrence to the array collection
-     * @var ArrayCollection
+     * @var Zend_Amf_Value_Message_ArrayCollection
      */
     protected $_arrayCollection;
 
@@ -77,7 +77,7 @@ class Zend_Amf_Value_ArrayCollectionTest extends PHPUnit_Framework_TestCase
 
     public function testConstructorArrayCollectionTwo()
     {
-        $this->_arrayCollection = new ArrayCollection($this->_data);
+        $this->_arrayCollection = new Zend_Amf_Value_Messaging_ArrayCollection($this->_data);
         $this->assertEquals('bar2', $this->_arrayCollection[1]['bar']);
     }
 
@@ -86,7 +86,7 @@ class Zend_Amf_Value_ArrayCollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testConstructorArrayCollection()
     {
-        $this->_arrayCollection = new ArrayCollection($this->_data);
+        $this->_arrayCollection = new Zend_Amf_Value_Messaging_ArrayCollection($this->_data);
         $this->assertEquals('bar2', $this->_arrayCollection[1]['bar']);
     }
 
@@ -95,7 +95,7 @@ class Zend_Amf_Value_ArrayCollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testCountable()
     {
-        $this->_arrayCollection = new ArrayCollection($this->_data);
+        $this->_arrayCollection = new Zend_Amf_Value_Messaging_ArrayCollection($this->_data);
         $this->assertEquals(2, count($this->_arrayCollection));
     }
 
@@ -104,7 +104,7 @@ class Zend_Amf_Value_ArrayCollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testIteratorArray()
     {
-        $this->_arrayCollection = new ArrayCollection($this->_data);
+        $this->_arrayCollection = new Zend_Amf_Value_Messaging_ArrayCollection($this->_data);
         $total = count($this->_arrayCollection);
         $count = 0;
         foreach($this->_arrayCollection as $row) {
@@ -118,7 +118,7 @@ class Zend_Amf_Value_ArrayCollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testOffsetExists()
     {
-        $this->_arrayCollection = new ArrayCollection($this->_data);
+        $this->_arrayCollection = new Zend_Amf_Value_Messaging_ArrayCollection($this->_data);
         $this->assertTrue($this->_arrayCollection->offsetExists(1));
     }
 
@@ -127,7 +127,7 @@ class Zend_Amf_Value_ArrayCollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testOffsetSetGet()
     {
-        $this->_arrayCollection = new ArrayCollection($this->_data);
+        $this->_arrayCollection = new Zend_Amf_Value_Messaging_ArrayCollection($this->_data);
         $data = array('fooSet' => 'fooSet2', 'barSet' => 'barSet2');
         $this->_arrayCollection->offsetSet(1,$data);
         $this->assertEquals($data, $this->_arrayCollection->offsetGet(1));
@@ -138,7 +138,7 @@ class Zend_Amf_Value_ArrayCollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testOffsetUnset()
     {
-        $this->_arrayCollection = new ArrayCollection($this->_data);
+        $this->_arrayCollection = new Zend_Amf_Value_Messaging_ArrayCollection($this->_data);
         $data = array('foo' => 'foo1', 'bar' => 'bar1');
         $this->assertEquals($data, $this->_arrayCollection->offsetGet(0));
         $this->assertEquals(2, count($this->_arrayCollection));
@@ -151,7 +151,7 @@ class Zend_Amf_Value_ArrayCollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testIteratorToArray()
     {
-        $this->_arrayCollection = new ArrayCollection($this->_data);
+        $this->_arrayCollection = new Zend_Amf_Value_Messaging_ArrayCollection($this->_data);
         $standardArray = iterator_to_array($this->_arrayCollection);
         $this->assertTrue(is_array($standardArray));
     }
@@ -161,8 +161,8 @@ class Zend_Amf_Value_ArrayCollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testAppend()
     {
-        $this->_arrayCollection = new ArrayCollection($this->_data);
-        $arrayCollectionTwo = new ArrayCollection();
+        $this->_arrayCollection = new Zend_Amf_Value_Messaging_ArrayCollection($this->_data);
+        $arrayCollectionTwo = new Zend_Amf_Value_Messaging_ArrayCollection();
         $arrayCollectionTwo->append(array('foo' => 'foo1', 'bar' => 'bar1'));
         $arrayCollectionTwo->append(array('foo' => 'foo2', 'bar' => 'bar2'));
         $this->assertEquals($arrayCollectionTwo, $this->_arrayCollection);
@@ -174,10 +174,10 @@ class Zend_Amf_Value_ArrayCollectionTest extends PHPUnit_Framework_TestCase
     public function testValid()
     {
         unset($this->_arrayCollection);
-        $this->_arrayCollection = new ArrayCollection();
+        $this->_arrayCollection = new Zend_Amf_Value_Messaging_ArrayCollection();
         $this->assertFalse($this->_arrayCollection->valid());
         unset($this->_arrayCollection);
-        $this->_arrayCollection = new ArrayCollection($this->_data);
+        $this->_arrayCollection = new Zend_Amf_Value_Messaging_ArrayCollection($this->_data);
         $this->assertTrue($this->_arrayCollection->valid());
     }
     */
@@ -185,7 +185,7 @@ class Zend_Amf_Value_ArrayCollectionTest extends PHPUnit_Framework_TestCase
     /*
     public function testArrayIterator()
     {
-        $this->_arrayCollection = new ArrayCollection($this->_data);
+        $this->_arrayCollection = new Zend_Amf_Value_Messaging_ArrayCollection($this->_data);
         $data0 = array('foo' => 'foo1', 'bar' => 'bar1');
         $data1 = array('foo' => 'foo2', 'bar' => 'bar2');
         $data3 = array('kung' => 'foo', 'Bruce' => 'Lee');

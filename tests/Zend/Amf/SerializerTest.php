@@ -1,20 +1,19 @@
 <?php
+require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'ContactElt.php';
 require_once 'Container.php';
-
-use fproject\amf\parse\OutputStream;
-use fproject\amf\parse\TypeLoader;
-use fproject\amf\parse\Amf3Serializer;
+//require_once 'Zend/Amf/Parse/Amf3/Serializer';
+//require_once 'Zend/Amf/Parse/OutputStream';
 
 class SerializerTest extends PHPUnit_Framework_TestCase
 {
-    /** @var  \fproject\amf\parse\Serializer $_serializer */
+    /** @var  Zend_Amf_Parse_Serializer $_serializer */
     protected $_serializer;
 
     public function setUp()
     {
         date_default_timezone_set('America/Chicago');
-        TypeLoader::resetMap();
+        Zend_Amf_Parse_TypeLoader::resetMap();
     }
 
     public function tearDown()
@@ -33,8 +32,8 @@ class SerializerTest extends PHPUnit_Framework_TestCase
         $container = new Container();
         $container->data = $data;
 
-        $outputStream = new OutputStream();
-        $serializer = new Amf3Serializer($outputStream);
+        $outputStream = new Zend_Amf_Parse_OutputStream();
+        $serializer = new Zend_Amf_Parse_Amf3_Serializer($outputStream);
         $serializer->writeTypeMarker($container);
         // Load the expected binary.
         $mockFile = file_get_contents(dirname(__FILE__) .'/Parse/mock/amf3TypedVector.bin');

@@ -24,10 +24,10 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Zend_Amf_Value_MessageBodyTest::main');
 }
 
-use fproject\amf\value\MessageBody;
+require_once 'Zend/Amf/Value/MessageBody.php';
 
 /**
- * Test case for MessageBody
+ * Test case for Zend_Amf_Value_MessageBody
  *
  * @category   Zend
  * @package    Zend_Amf
@@ -51,7 +51,7 @@ class Zend_Amf_Value_MessageBodyTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->body = new MessageBody('/foo', '/bar', 'data');
+        $this->body = new Zend_Amf_Value_MessageBody('/foo', '/bar', 'data');
     }
 
     public function testMessageBodyShouldAllowSettingData()

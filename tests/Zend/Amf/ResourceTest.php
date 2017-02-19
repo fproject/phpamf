@@ -20,10 +20,10 @@
  * @version    $Id$
  */
 
-use fproject\amf\value\MessageBody;
-use fproject\amf\parse\TypeLoader;
-use fproject\amf\Request;
-use fproject\amf\Server;
+require_once 'Zend/Amf/Server.php';
+require_once 'Zend/Amf/Request.php';
+require_once 'Zend/Amf/Parse/TypeLoader.php';
+require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
 
 /**
  * @category   Zend
@@ -39,15 +39,15 @@ class Zend_Amf_ResourceTest extends PHPUnit_Framework_TestCase
     /**
      * Enter description here...
      *
-     * @var Server
+     * @var Zend_Amf_Server
      */
     protected $_server;
 
     public function setUp()
     {
-        $this->_server = new Server();
+        $this->_server = new Zend_Amf_Server();
         $this->_server->setProduction(false);
-        TypeLoader::resetMap();
+        Zend_Amf_Parse_TypeLoader::resetMap();
     }
 
     protected function tearDown()
@@ -57,10 +57,10 @@ class Zend_Amf_ResourceTest extends PHPUnit_Framework_TestCase
 
     protected function _callService($method, $class = 'Zend_Amf_Resource_testclass')
     {
-        $request = new Request();
+        $request = new Zend_Amf_Request();
         $request->setObjectEncoding(0x03);
         $this->_server->setClass($class);
-        $newBody = new MessageBody("$class.$method","/1",array("test"));
+        $newBody = new Zend_Amf_Value_MessageBody("$class.$method","/1",array("test"));
         $request->addAmfBody($newBody);
         $this->_server->handle($request);
         $response = $this->_server->getResponse();
@@ -96,7 +96,7 @@ class Zend_Amf_ResourceTest extends PHPUnit_Framework_TestCase
      */
     public function testCtxLoader()
     {
-        TypeLoader::addResourceDirectory("Test_Resource", dirname(__FILE__)."/Resources");
+        Zend_Amf_Parse_TypeLoader::addResourceDirectory("Test_Resource", dirname(__FILE__)."/Resources");
         $resp = $this->_callService("returnCtx");
         $this->assertContains("Accept-language:", $resp->getResponse());
         $this->assertContains("foo=bar", $resp->getResponse());
@@ -108,7 +108,7 @@ class Zend_Amf_ResourceTest extends PHPUnit_Framework_TestCase
      */
     public function testCtx()
     {
-        TypeLoader::setResourceLoader(new Zend_Amf_TestResourceLoader("2"));
+        Zend_Amf_Parse_TypeLoader::setResourceLoader(new Zend_Amf_TestResourceLoader("2"));
         $resp = $this->_callService("returnCtx");
         $this->assertContains("Accept-language:", $resp->getResponse());
         $this->assertContains("foo=bar", $resp->getResponse());
@@ -120,7 +120,7 @@ class Zend_Amf_ResourceTest extends PHPUnit_Framework_TestCase
      */
     public function testCtxNoParse()
     {
-        TypeLoader::setResourceLoader(new Zend_Amf_TestResourceLoader("3"));
+        Zend_Amf_Parse_TypeLoader::setResourceLoader(new Zend_Amf_TestResourceLoader("3"));
         try {
             $resp = $this->_callService("returnCtx");
         } catch(\fproject\amf\AmfException $e) {

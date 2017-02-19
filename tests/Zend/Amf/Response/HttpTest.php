@@ -24,10 +24,13 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Zend_Amf_Response_HttpTest::main');
 }
 
-use fproject\amf\HttpResponse;
+/**
+ * @see Zend_Amf_Response_Http
+ */
+require_once 'Zend/Amf/Response/Http.php';
 
 /**
- * Test case for Response
+ * Test case for Zend_Amf_Response
  *
  * @category   Zend
  * @package    Zend_Amf
@@ -35,7 +38,7 @@ use fproject\amf\HttpResponse;
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Amf
- * @group      Response
+ * @group      Zend_Amf_Response
  */
 class Zend_Amf_Response_HttpTest extends PHPUnit_Framework_TestCase
 {
@@ -65,10 +68,10 @@ class Zend_Amf_Response_HttpTest extends PHPUnit_Framework_TestCase
 }
 
 /**
- * Expose HttpResponse::isIeOverSsl for testing
+ * Expose Zend_Amf_Response_Http::isIeOverSsl for testing
  * @see ZF-11783
  */
-class ZF11783_ExposeIsIeOverSsl extends HttpResponse
+class ZF11783_ExposeIsIeOverSsl extends Zend_Amf_Response_Http
 {
     public function isIeOverSsl() {
         return parent::isIeOverSsl();

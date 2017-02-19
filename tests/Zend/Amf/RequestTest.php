@@ -20,17 +20,13 @@
  * @version    $Id$
  */
 
+require_once 'Zend/Amf/Request.php';
+require_once 'Zend/Amf/Parse/TypeLoader.php';
 require_once 'Contact.php';
 
-use fproject\amf\value\messaging\CommandMessage;
-use fproject\amf\value\messaging\RemotingMessage;
-use fproject\amf\value\MessageHeader;
-use fproject\amf\value\MessageBody;
-use fproject\amf\parse\TypeLoader;
-use fproject\amf\Request;
 
 /**
- * Test case for Request
+ * Test case for Zend_Amf_Request
  *
  * @category   Zend
  * @package    Zend_Amf
@@ -42,8 +38,8 @@ use fproject\amf\Request;
 class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Request object
-     * @var Request
+     * Zend_Amf_Request object
+     * @var Zend_Amf_Request
      */
     protected $_request;
 
@@ -53,8 +49,8 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         date_default_timezone_set("America/Chicago");
-        TypeLoader::resetMap();
-        $this->_request = new Request();
+        Zend_Amf_Parse_TypeLoader::resetMap();
+        $this->_request = new Zend_Amf_Request();
     }
 
     /**
@@ -81,9 +77,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnUndefined', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -108,9 +104,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnString', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -137,9 +133,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnArray', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -167,9 +163,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnNumber', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -196,9 +192,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnDate', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -215,7 +211,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     public function testComplexTypedObjectParameterDeserializedToPhp()
     {
         require_once "WorkCalendar.php";
-        TypeLoader::$classMap['net.fproject.calendar.WorkCalendar'] = 'WorkCalendar';
+        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.WorkCalendar'] = 'WorkCalendar';
 
         $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/complexTypedObjectAmf3Request.bin');
         // send the mock object request to be deserialized
@@ -226,12 +222,12 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
-        /** @var MessageBody[] $bodies */
+        /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
-        /** @var RemotingMessage $message */
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('SampleService', $message->source);
@@ -247,10 +243,10 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
      */
     public function testComplexTypedObjectParameterDeserializedToPhpUsingPSR0()
     {
-        TypeLoader::$classMap['net.fproject.calendar.WorkCalendar'] = 'fproject\calendar\WorkCalendar';
-        TypeLoader::$classMap['net.fproject.calendar.Period'] = 'fproject\calendar\Period';
-        TypeLoader::$classMap['net.fproject.calendar.WorkShift'] = 'fproject\calendar\WorkShift';
-        TypeLoader::$classMap['net.fproject.calendar.WeekDay'] = 'fproject\calendar\WeekDay';
+        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.WorkCalendar'] = 'fproject\calendar\WorkCalendar';
+        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.Period'] = 'fproject\calendar\Period';
+        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.WorkShift'] = 'fproject\calendar\WorkShift';
+        Zend_Amf_Parse_TypeLoader::$classMap['net.fproject.calendar.WeekDay'] = 'fproject\calendar\WeekDay';
 
         $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/complexTypedObjectAmf3Request.bin');
         // send the mock object request to be deserialized
@@ -261,12 +257,12 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
-        /** @var MessageBody[] $bodies */
+        /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
-        /** @var RemotingMessage $message */
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('SampleService', $message->source);
@@ -281,7 +277,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * ActionScript mx.messaging.messages.CommandMessage to CommandMessage
+     * ActionScript mx.messaging.messages.CommandMessage to Zend_Amf_Value_Messaging_CommandMessage
      *
      */
     public function testAmf3CommandMessageRequest()
@@ -295,12 +291,12 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
-        /** @var MessageBody[] $bodies */
+        /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
-        /** @var RemotingMessage $message */
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof CommandMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_CommandMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals(5, $message->operation);
     }
@@ -320,12 +316,12 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
-        /** @var MessageBody[] $bodies */
+        /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
-        /** @var RemotingMessage $message */
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('ContactService', $message->source);
@@ -355,12 +351,12 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
-        /** @var MessageBody[] $bodies */
+        /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
-        /** @var RemotingMessage $message */
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('ContactService', $message->source);
@@ -390,12 +386,12 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
-        /** @var MessageBody[] $bodies */
+        /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
-        /** @var RemotingMessage $message */
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('ContactService', $message->source);
@@ -425,12 +421,12 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0 , sizeof($this->_request->getAmfHeaders()));
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
-        /** @var MessageBody[] $bodies */
+        /** @var Zend_Amf_Value_MessageBody[] $bodies */
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
-        /** @var RemotingMessage $message */
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
+        /** @var Zend_Amf_Value_Messaging_RemotingMessage $message */
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('save', $message->operation);
         $this->assertEquals('ContactService', $message->source);
@@ -462,9 +458,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnInt', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -489,9 +485,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnBool', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -516,9 +512,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnBool', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -541,9 +537,9 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $message = $bodies[0]->getData();
-        $this->assertTrue($message instanceof RemotingMessage);
+        $this->assertTrue($message instanceof Zend_Amf_Value_Messaging_RemotingMessage);
         // Make sure that our endpoint is properly set.
         $this->assertEquals('returnXml', $message->operation);
         $this->assertEquals('RoundTrip', $message->source);
@@ -564,7 +560,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $requestBody = $this->_request->getAmfBodies();
-        $this->assertTrue($requestBody[0] instanceof MessageBody);
+        $this->assertTrue($requestBody[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $requestBody[0]->getData();
         // Make sure that we are dealing with a PHP string
         $this->assertTrue(is_string($data[0]));
@@ -587,7 +583,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $requestBody = $this->_request->getAmfBodies();
-        $this->assertTrue($requestBody[0] instanceof MessageBody);
+        $this->assertTrue($requestBody[0] instanceof Zend_Amf_Value_MessageBody);
         $this->assertEquals('RoundTrip.returnString', $requestBody[0]->getTargetURI());
         $data = $requestBody[0]->getData();
         // Make sure that we are dealing with a PHP string
@@ -610,7 +606,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that we are dealing with a PHP string
         // Make sure that the string was deserialized properly and check its value
@@ -632,7 +628,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that we are dealing with a PHP string
         // Make sure that the string was deserialized properly and check its value
@@ -655,7 +651,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that the string was deserialized properly and check its value
         $this->assertTrue(array_key_exists(1, $data[0]));
@@ -676,7 +672,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that the string was deserialized properly and check its value
         $this->assertTrue(is_float($data[0]));
@@ -697,7 +693,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that the string was deserialized properly and check its value
         $this->assertEquals('Oct', $data[0]->format('M'));
@@ -718,7 +714,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that the string was deserialized properly and check its value
         $this->assertEquals(268435456, $data[0]);
@@ -738,7 +734,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that the string was deserialized properly and check its value
         $this->assertTrue(is_bool($data[0]));
@@ -759,7 +755,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that the string was deserialized properly and check its value
         $this->assertTrue(is_bool($data[0]));
@@ -776,7 +772,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that the string was deserialized properly and check its value
         $this->assertTrue(is_null($data[0]));
@@ -792,7 +788,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that the string was deserialized properly and check its value
         $this->assertTrue(is_null($data[0]));
@@ -808,7 +804,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that we are dealing with a PHP simpleXml element
         $this->assertTrue($data[0] instanceof SimpleXMLElement);
@@ -826,7 +822,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that we are dealing with a PHP a number
         // Make sure that the xml was deserialized properly and check its value
@@ -835,7 +831,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
 
     public function testAmf0TypedObjecDeserializedToNativePHPObject()
     {
-        TypeLoader::setMapping("ContactVO","Contact");
+        Zend_Amf_Parse_TypeLoader::setMapping("ContactVO","Contact");
         $myRequest = file_get_contents(dirname(__FILE__) .'/Request/mock/typedObjectAmf0Request.bin');
         // send the mock object request to be deserialized
         $this->_request->initialize($myRequest);
@@ -844,7 +840,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that the message body was set after deserialization
         $this->assertEquals(1, sizeof($this->_request->getAmfBodies()));
         $bodies = $this->_request->getAmfBodies();
-        $this->assertTrue($bodies[0] instanceof MessageBody);
+        $this->assertTrue($bodies[0] instanceof Zend_Amf_Value_MessageBody);
         $data = $bodies[0]->getData();
         // Make sure that we are dealing with a PHP simpleXml element
         $this->assertTrue($data[0] instanceof Contact);
@@ -878,7 +874,7 @@ class Zend_Amf_RequestTest extends PHPUnit_Framework_TestCase
         // Make sure that no headers where recieved
         $this->assertEquals(1 , sizeof($this->_request->getAmfHeaders()));
         $requestHeaders = $this->_request->getAmfHeaders();
-        $this->assertTrue($requestHeaders[0] instanceof MessageHeader);
+        $this->assertTrue($requestHeaders[0] instanceof Zend_Amf_Value_MessageHeader);
         $this->assertEquals('Credentials', $requestHeaders[0]->name);
         $this->assertFalse($requestHeaders[0]->mustRead);
         $data = $requestHeaders[0]->data;

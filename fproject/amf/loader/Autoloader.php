@@ -55,8 +55,8 @@ class Autoloader
      * @var array Supported namespaces 'Zend' and 'ZendX' by default.
      */
     protected $_namespaces = array(
-        //'Zend_'  => true,
-        //'ZendX_' => true,
+        'Zend_'  => true,
+        'ZendX_' => true,
     );
 
     /**

@@ -28,11 +28,7 @@ use fproject\amf\AmfException;
  *
  * Proxies calls to a ReflectionClass object, and decorates getMethods() by
  * creating its own list of {@link MethodReflector}s.
- * 
- * @method string getName()
- * 
- * @method mixed newInstance()
- * 
+ *
  */
 class ClassReflector
 {
@@ -143,7 +139,7 @@ class ClassReflector
      * Return array of dispatchable {@link MethodReflector}s.
      *
      * @access public
-     * @return MethodReflector[]
+     * @return array
      */
     public function getMethods()
     {

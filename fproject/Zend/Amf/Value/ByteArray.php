@@ -14,24 +14,44 @@
  *
  * @category   Zend
  * @package    Zend_Amf
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @subpackage Value
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @category   Zend
+ * Wrapper class to store an AMF3 flash.utils.ByteArray
+ *
  * @package    Zend_Amf
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @subpackage Value
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Parse_Resource_StreamContext
+class Zend_Amf_Value_ByteArray
 {
-    public function parse($resource)
+    /**
+     * @var string ByteString Data
+     */
+    protected $_data = '';
+
+    /**
+     * Create a ByteArray
+     *
+     * @param  string $data
+     */
+    public function __construct($data)
     {
-        return stream_context_get_options($resource);
+        $this->_data = $data;
+    }
+
+    /**
+     * Return the byte stream
+     *
+     * @return string
+     */
+    public function getData()
+    {
+        return $this->_data;
     }
 }
-

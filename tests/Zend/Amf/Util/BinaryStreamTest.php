@@ -24,10 +24,10 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Zend_Amf_Util_BinaryStreamTest::main');
 }
 
-use fproject\common\utils\BinaryStream;
+require_once 'Zend/Amf/Util/BinaryStream.php';
 
 /**
- * Test case for BinaryStream
+ * Test case for Zend_Amf_Util_BinaryStream
  *
  * @category   Zend
  * @package    Zend_Amf
@@ -50,20 +50,20 @@ class Zend_Amf_Util_BinaryStreamTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \fproject\amf\AmfException
      */
     public function testConstructorShouldThrowExceptionForInvalidStream()
     {
-        $test = new BinaryStream(array('foo', 'bar'));
+        $test = new Zend_Amf_Util_BinaryStream(array('foo', 'bar'));
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \fproject\amf\AmfException
      */
     public function testReadBytesShouldRaiseExceptionForBufferUnderrun()
     {
         $string = 'this is a short stream';
-        $stream = new BinaryStream($string);
+        $stream = new Zend_Amf_Util_BinaryStream($string);
         $length = strlen($string);
         $test   = $stream->readBytes(10 * $length);
     }
@@ -71,7 +71,7 @@ class Zend_Amf_Util_BinaryStreamTest extends PHPUnit_Framework_TestCase
     public function testReadBytesShouldReturnSubsetOfStringFromCurrentNeedle()
     {
         $string = 'this is a short stream';
-        $stream = new BinaryStream($string);
+        $stream = new Zend_Amf_Util_BinaryStream($string);
         $test   = $stream->readBytes(4);
         $this->assertEquals('this', $test);
         $test   = $stream->readBytes(5);
@@ -81,7 +81,7 @@ class Zend_Amf_Util_BinaryStreamTest extends PHPUnit_Framework_TestCase
     public function testBinaryStreamsShouldAllowWritingUtf8()
     {
         $string = str_repeat('赵勇', 1000);
-        $stream = new BinaryStream('');
+        $stream = new Zend_Amf_Util_BinaryStream('');
         $stream->writeLongUtf($string);
         $test = $stream->getStream();
         $this->assertContains($string, $test);

@@ -14,24 +14,30 @@
  *
  * @category   Zend
  * @package    Zend_Amf
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @subpackage Value
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
+
+/** Zend_Amf_Value_Messaging_AbstractMessage */
+require_once 'Zend/Amf/Value/Messaging/AbstractMessage.php';
+
 /**
- * @category   Zend
+ * This type of message contains information necessary to perform
+ * point-to-point or publish-subscribe messaging.
+ *
  * @package    Zend_Amf
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @subpackage Value
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Parse_Resource_StreamContext
+class Zend_Amf_Value_Messaging_AsyncMessage extends Zend_Amf_Value_Messaging_AbstractMessage
 {
-    public function parse($resource)
-    {
-        return stream_context_get_options($resource);
-    }
+    /**
+     * The message id to be responded to.
+     * @var String
+     */
+    public $correlationId;
 }
-
