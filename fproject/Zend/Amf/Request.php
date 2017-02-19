@@ -56,7 +56,7 @@ class Zend_Amf_Request
     protected $_bodies = [];
 
     /**
-     * @var array Message headers
+     * @var Zend_Amf_Value_MessageHeader[] $_headers Message headers
      */
     protected $_headers = [];
 
@@ -218,11 +218,29 @@ class Zend_Amf_Request
     /**
      * Return an array of headers that were found in the amf request.
      *
-     * @return array {operation, mustUnderstand, length, param}
+     * @return Zend_Amf_Value_MessageHeader[] {operation, mustUnderstand, length, param}
      */
     public function getAmfHeaders()
     {
         return $this->_headers;
+    }
+
+    /**
+     * Find a header by its name.
+     *
+     * @return Zend_Amf_Value_MessageHeader|false
+     */
+    public function getAmfHeader($name)
+    {
+        if($this->_headers)
+        {
+            foreach ($this->_headers as $head)
+            {
+                if($head->name == $name)
+                    return $head;
+            }
+        }
+        return false;
     }
 
     /**

@@ -497,15 +497,15 @@ class Zend_Amf_Server
 
         // Authenticate, if we have credential headers
         $error   = false;
-        $headers = $request->getAmfHeaders();
-        if (isset($headers[Zend_Amf_Constants::CREDENTIALS_HEADER]) 
+        $credential = $request->getAmfHeader(Zend_Amf_Constants::CREDENTIALS_HEADER);
+        if ($credential !== false && isset($credential->data)
             /*&& isset($headers[Zend_Amf_Constants::CREDENTIALS_HEADER]->userid)*/
-            && isset($headers[Zend_Amf_Constants::CREDENTIALS_HEADER]->password)
+            && isset($credential->data->password)
         ) {
             try {
                 $authResult = $this->_handleAuth(
-                    $headers[Zend_Amf_Constants::CREDENTIALS_HEADER]->userid,
-                    $headers[Zend_Amf_Constants::CREDENTIALS_HEADER]->password
+                    $credential->data->userid,
+                    $credential->data->password
                 );
                 if ($authResult === true || $authResult->getCode() == \fproject\amf\auth\AuthResult::SUCCESS) {
                     // use RequestPersistentHeader to clear credentials
