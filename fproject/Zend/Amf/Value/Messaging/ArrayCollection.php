@@ -32,4 +32,6 @@
  */
 class Zend_Amf_Value_Messaging_ArrayCollection extends ArrayObject
 {
+    /** @var mixed Data carried by an externalizable AMF value */
+    public $externalizedData;
 }

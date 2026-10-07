@@ -17,7 +17,7 @@ php composer.phar require fproject/phpamf "*"
 or add this block to the *require* section of your `composer.json` file:
 ```javascript
 "require" : {
-		"php" : ">=5.4.0",
+    "php" : "^8.4",
 		"fproject/phpamf": "*",
 		// ...
 	}
@@ -26,7 +26,12 @@ or add this block to the *require* section of your `composer.json` file:
 ## REQUIREMENTS
 
 The minimum requirement by phpamf:
-- Your Web server supports PHP 5.4 or above
+- Your Web server supports PHP 8.4 or above
+
+Mapped value object classes should declare their AMF properties. On PHP 8.2 and
+later, PHP deprecates assigning undeclared properties; add the
+`#[AllowDynamicProperties]` attribute to a mapped class only when it needs to
+accept arbitrary AMF fields.
 
 ##LICENSE
 

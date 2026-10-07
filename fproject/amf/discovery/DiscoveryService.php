@@ -23,6 +23,7 @@ namespace fproject\amf\discovery;
 use stdClass;
 use ReflectionObject;
 use ReflectionMethod;
+use fproject\amf\reflect\ParameterReflector;
 
 /**
  * Analyses existing services. Warning: if 2 or more services have the same name, t-only one will appear in the returned data,
@@ -207,8 +208,9 @@ class DiscoveryService {
                 {
                     $parameterName = $rflParam->name;
                     $type = '';
-                    if ($rflParam->getClass()) {
-                        $type = $rflParam->getClass()->name;
+                    $parameterClass = (new ParameterReflector($rflParam))->getClass();
+                    if ($parameterClass !== null) {
+                        $type = $parameterClass->getName();
                     } else if (isset($parsedMethodComment['param'][$parameterName])) {
                         $type = $parsedMethodComment['param'][$parameterName];
                     }

@@ -49,7 +49,7 @@ class ReflectionNode
      * @param ReflectionNode $parent Optional
      * @return ReflectionNode
      */
-    public function __construct($value, ReflectionNode $parent = null)
+    public function __construct($value, ?ReflectionNode $parent = null)
     {
         $this->_value = $value;
         if (null !== $parent) {

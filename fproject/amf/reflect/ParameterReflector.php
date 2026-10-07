@@ -20,6 +20,8 @@
 namespace fproject\amf\reflect;
 
 use ReflectionParameter;
+use ReflectionClass;
+use ReflectionNamedType;
 use fproject\amf\AmfException;
 
 /**
@@ -82,6 +84,34 @@ class ParameterReflector
         }
 
         throw new AmfException('Invalid reflection method');
+    }
+
+    /**
+     * Return the class type for this parameter, when it has a named object type.
+     *
+     * This preserves the old ReflectionParameter::getClass() behavior without
+     * calling that deprecated PHP API.
+     *
+     * @return ReflectionClass|null
+     */
+    public function getClass()
+    {
+        $type = $this->_reflection->getType();
+        if ($type instanceof ReflectionNamedType && !$type->isBuiltin()) {
+            $className = $type->getName();
+            $declaringClass = $this->_reflection->getDeclaringClass();
+
+            if (($className === 'self' || $className === 'static') && $declaringClass) {
+                $className = $declaringClass->getName();
+            } elseif ($className === 'parent' && $declaringClass) {
+                $parentClass = $declaringClass->getParentClass();
+                return $parentClass ?: null;
+            }
+
+            return new ReflectionClass($className);
+        }
+
+        return null;
     }
 
     /**

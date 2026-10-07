@@ -16,7 +16,7 @@
       "phpunit/phpunit": "4.8.36"
     },
     "require": {
-      "php": ">=5.4.0",
+      "php": "^8.4",
       "fproject/php-common": "*",
       "fproject/fprj-php": "*"
     },

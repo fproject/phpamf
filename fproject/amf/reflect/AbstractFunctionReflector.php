@@ -23,6 +23,7 @@ use Reflector;
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;
+use ReflectionNamedType;
 use fproject\amf\AmfException;
 
 /**
@@ -298,7 +299,8 @@ abstract class AbstractFunctionReflector
             $paramTypesTmp = [];
             foreach ($parameters as $i => $param) {
                 $paramType = 'mixed';
-                if ($param->isArray()) {
+                $type = $param->getType();
+                if ($type instanceof ReflectionNamedType && $type->getName() === 'array') {
                     $paramType = 'array';
                 }
                 $paramTypesTmp[$i] = $paramType;

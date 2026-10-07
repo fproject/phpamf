@@ -445,7 +445,7 @@ class Acl
      * @uses   Acl::setRule()
      * @return Acl Provides a fluent interface
      */
-    public function allow($roles = null, $resources = null, $privileges = null, AssertInterface $assert = null)
+    public function allow($roles = null, $resources = null, $privileges = null, ?AssertInterface $assert = null)
     {
         return $this->setRule(self::OP_ADD, self::TYPE_ALLOW, $roles, $resources, $privileges, $assert);
     }
@@ -460,7 +460,7 @@ class Acl
      * @uses   Acl::setRule()
      * @return Acl Provides a fluent interface
      */
-    public function deny($roles = null, $resources = null, $privileges = null, AssertInterface $assert = null)
+    public function deny($roles = null, $resources = null, $privileges = null, ?AssertInterface $assert = null)
     {
         return $this->setRule(self::OP_ADD, self::TYPE_DENY, $roles, $resources, $privileges, $assert);
     }
@@ -546,7 +546,7 @@ class Acl
      * @return Acl Provides a fluent interface
      */
     public function setRule($operation, $type, $roles = null, $resources = null, $privileges = null,
-                            AssertInterface $assert = null)
+                            ?AssertInterface $assert = null)
     {
         // ensure that the rule type is valid; normalize input to uppercase
         $type = strtoupper($type);
@@ -868,7 +868,7 @@ class Acl
      * @param  ResourceInterface $resource
      * @return boolean|null
      */
-    protected function _roleDFSAllPrivileges(RoleInterface $role, ResourceInterface $resource = null)
+    protected function _roleDFSAllPrivileges(RoleInterface $role, ?ResourceInterface $resource = null)
     {
         $dfs = array(
             'visited' => array(),
@@ -904,7 +904,7 @@ class Acl
      * @return boolean|null
      * @throws AmfException
      */
-    protected function _roleDFSVisitAllPrivileges(RoleInterface $role, ResourceInterface $resource = null,
+    protected function _roleDFSVisitAllPrivileges(RoleInterface $role, ?ResourceInterface $resource = null,
                                                  &$dfs = null)
     {
         if (null === $dfs) {
@@ -943,7 +943,7 @@ class Acl
      * @return boolean|null
      * @throws AmfException
      */
-    protected function _roleDFSOnePrivilege(RoleInterface $role, ResourceInterface $resource = null,
+    protected function _roleDFSOnePrivilege(RoleInterface $role, ?ResourceInterface $resource = null,
                                             $privilege = null)
     {
         if (null === $privilege) {
@@ -985,7 +985,7 @@ class Acl
      * @return boolean|null
      * @throws AmfException
      */
-    protected function _roleDFSVisitOnePrivilege(RoleInterface $role, ResourceInterface $resource = null,
+    protected function _roleDFSVisitOnePrivilege(RoleInterface $role, ?ResourceInterface $resource = null,
                                                 $privilege = null, &$dfs = null)
     {
         if (null === $privilege) {
@@ -1031,7 +1031,7 @@ class Acl
      * @param  string                      $privilege
      * @return string|null
      */
-    protected function _getRuleType(ResourceInterface $resource = null, RoleInterface $role = null,
+    protected function _getRuleType(?ResourceInterface $resource = null, ?RoleInterface $role = null,
                                     $privilege = null)
     {
         // get the rules for the $resource and $role
@@ -1092,7 +1092,7 @@ class Acl
      * @param  boolean                     $create
      * @return array|null
      */
-    protected function &_getRules(ResourceInterface $resource = null, RoleInterface $role = null,
+    protected function &_getRules(?ResourceInterface $resource = null, ?RoleInterface $role = null,
                                   $create = false)
     {
         // create a reference to null
@@ -1160,4 +1160,3 @@ class Acl
     }
 
 }
-

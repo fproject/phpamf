@@ -21,8 +21,7 @@
  */
 
 /**
- * This class will convert mysql result resource to array suitable for passing
- * to the external entities.
+ * Legacy adapter for the removed ext/mysql extension.
  *
  * @package    Zend_Amf
  * @subpackage Parse
@@ -49,22 +48,9 @@ class Zend_Amf_Parse_Resource_MysqlResult
      * @return array
      */
     public function parse($resource) {
-        $result = [];
-        $fieldcnt = mysql_num_fields($resource);
-        $fields_transform = [];
-        for($i=0;$i<$fieldcnt;$i++) {
-            $type = mysql_field_type($resource, $i);
-            if(isset(self::$fieldTypes[$type])) {
-                $fields_transform[mysql_field_name($resource, $i)] = self::$fieldTypes[$type];
-            }
-        }
-
-        while($row = mysql_fetch_object($resource)) {
-            foreach($fields_transform as $fieldname => $fieldtype) {
-               settype($row->$fieldname, $fieldtype);
-            }
-            $result[] = $row;
-        }
-        return $result;
+        throw new \BadMethodCallException(
+            'The ext/mysql extension is not available on PHP 8.4. '
+            . 'Use Zend_Amf_Parse_Resource_MysqliResult with a mysqli result instead.'
+        );
     }
 }
